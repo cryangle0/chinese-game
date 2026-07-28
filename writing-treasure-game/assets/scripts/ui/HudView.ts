@@ -69,6 +69,21 @@ export class HudView {
     if (assets.scoreIcon) spriteLoader.apply(this.scoreIcon, assets.scoreIcon, 'contain');
   }
 
+  scoreRewardTarget(): Node {
+    return this.scoreIcon;
+  }
+
+  showScoreReward(score: number): void {
+    const increased = this.renderedScore >= 0 && score > this.renderedScore;
+    this.score.string = `\u79ef\u5206\uff1a${score}`;
+    this.renderedScore = score;
+    if (typeof document !== 'undefined') {
+      document.body.dataset.gameScore = String(score);
+      document.body.dataset.scoreCoinCommittedScore = String(score);
+    }
+    if (increased) this.pulseScore();
+  }
+
   render(state: HudState): void {
     const second = Math.ceil(state.seconds);
     if (second !== this.renderedSecond) {

@@ -124,15 +124,15 @@ const layouts: Readonly<Record<string, ResultThemeLayout>> = {
       { x: -287.43, y: -263.25, w: 57.38, h: 54 },
     ],
     rank: {
-      // 微调：标题略上；记录上移 + 右移
       titleX: -5, x: -18, titleY: 100,
+      titleSize: { width: 340, height: 48 },
       rows: [-8, -96, -184],
       width: 308.25, rowHeight: 81.56,
       nameX: -18.49, scoreX: 101.71,
     },
     review: {
-      // 微调：再加宽、拉开行距、整体上移
       x: 410, titleY: 100, subtitleY: 40,
+      titleSize: { width: 246, height: 48 },
       textX: 392, iconX: 558, iconSize: 34,
       rows: [22, -34, -90, -146, -202],
       width: 352, textHeight: 44,
@@ -163,12 +163,12 @@ const layouts: Readonly<Record<string, ResultThemeLayout>> = {
       nameX: -27, scoreX: 125,
       hidePanel: true,
     },
-    // 对齐 HTML 原型：整体下移 + 行距收紧，避免盖住「答题回顾」
+    // 记录组在右侧内容区内做光学校正；保持 47px 行距，避免小程序端重叠。
     review: {
-      x: 441, titleY: 79.59, subtitleY: 44.69,
-      textX: 430, iconX: 578, iconSize: 30,
-      rows: [-3, -40, -76, -112, -149],
-      width: 300, textHeight: 40,
+      x: 461, titleY: 79.59, subtitleY: 44.69,
+      textX: 450, iconX: 595, iconSize: 30,
+      rows: [18, -29, -76, -123, -170],
+      width: 300, textHeight: 36,
     },
   },
 };

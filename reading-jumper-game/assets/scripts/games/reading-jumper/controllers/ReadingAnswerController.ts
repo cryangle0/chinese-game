@@ -6,6 +6,7 @@ import { GameSession } from '../../../services/GameSession';
 import { GameServices } from '../../../services/GameServices';
 import { RoundTimer } from '../../../services/RoundTimer';
 import { ChineseQuestion } from '../../../shared/types/Question';
+import type { ScoreCoinSnapshot } from '../../../ui/ScoreCoinEffectView';
 import { readingLayout } from '../config/ReadingLayout';
 import { readingThemes } from '../config/ReadingTheme';
 import { ReadingRound } from '../model/ReadingRound';
@@ -34,21 +35,73 @@ export class ReadingAnswerController {
     this.timer.pause();
     this.motion.setAnswerEnabled(false);
     this.view.bricks.setEnabled(false);
+    const scoreRewardStart = this.view.captureScoreRewardOrigin(index);
+    const scoreBefore = this.session.score();
     const correct = this.session.answer(question, index);
+    const scoreAwarded = this.session.score() - scoreBefore;
     this.lastAnswerIndex = index;
     if (typeof document !== 'undefined') {
       document.body.dataset.answerCorrect = String(correct);
+      document.body.dataset.scoreCoinFeedbackGate =
+        scoreAwarded > 0 ? 'arrival-and-landing' : 'landing';
     }
     this.services.audio.play('strike');
     this.trackAnswer(question, correct);
+    let landed = false;
+    let rewardArrived = scoreAwarded <= 0;
+    let feedbackShown = false;
+    const showFeedbackWhenReady = (): void => {
+      if (!landed || !rewardArrived || feedbackShown) return;
+      feedbackShown = true;
+      this.showFeedback(correct, question);
+    };
+    const onLanding = this.scope.guard(() => {
+      landed = true;
+      showFeedbackWhenReady();
+    });
+    const onRewardArrival = this.scope.guard(() => {
+      rewardArrived = true;
+      showFeedbackWhenReady();
+    });
     this.view.deer.jumpTo(
       index,
-      this.scope.guard(() => this.showFeedback(correct, question)),
-      this.scope.guard(() => this.view.bricks.showResult(index, correct)),
+      onLanding,
+      this.scope.guard(() =>
+        this.showTriggerReward(
+          index,
+          correct,
+          scoreAwarded,
+          scoreRewardStart,
+          onRewardArrival,
+        )),
     );
   }
 
-  private showFeedback(correct: boolean, question: ChineseQuestion): void {
+  private showTriggerReward(
+    index: number,
+    correct: boolean,
+    scoreAwarded: number,
+    scoreRewardStart: ScoreCoinSnapshot | null,
+    onRewardArrival: () => void,
+  ): void {
+    this.view.bricks.showResult(index, correct);
+    if (scoreAwarded <= 0) return;
+    this.services.audio.play('coin');
+    if (typeof document !== 'undefined') {
+      document.body.dataset.scoreCoinTriggerPhase = 'brick-apex';
+    }
+    this.view.playScoreReward(
+      scoreRewardStart,
+      this.session.score(),
+      scoreAwarded,
+      onRewardArrival,
+    );
+  }
+
+  private showFeedback(
+    correct: boolean,
+    question: ChineseQuestion,
+  ): void {
     const theme = this.campaign.current();
     const message = correct ? question.correctFeedback : question.wrongFeedback;
     const columnX = readingLayout(theme.id).option.columns[this.lastAnswerIndex] ?? 0;

@@ -38,6 +38,7 @@ export interface ResultThemeLayout {
     readonly titleX: number;
     readonly x: number;
     readonly titleY: number;
+    readonly titleSize?: { readonly width: number; readonly height: number };
     readonly rows: readonly [number, number, number];
     readonly width: number;
     readonly rowHeight: number;
@@ -49,6 +50,7 @@ export interface ResultThemeLayout {
   readonly review: {
     readonly x: number;
     readonly titleY: number;
+    readonly titleSize?: { readonly width: number; readonly height: number };
     readonly subtitleY: number;
     readonly textX: number;
     readonly iconX: number;

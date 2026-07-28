@@ -10,6 +10,7 @@ import { FeedbackView } from '../../../ui/FeedbackView';
 import { HudView } from '../../../ui/HudView';
 import { QuestionBoardView } from '../../../ui/QuestionBoardView';
 import { VoiceAnswerView } from '../../../ui/VoiceAnswerView';
+import { ScoreCoinEffectView } from '../../../ui/ScoreCoinEffectView';
 import { MagicBookGroupView } from './MagicBookGroupView';
 import { WizardDeerView } from './WizardDeerView';
 
@@ -22,13 +23,14 @@ export class WritingGameView {
   readonly feedback: FeedbackView;
   readonly prompt: ActionPromptView;
   readonly voice: VoiceAnswerView;
+  readonly scoreCoins: ScoreCoinEffectView;
   private readonly transitionAnchor: Node;
   private readonly transition: DomMotionSprite;
   private transitionTimer = 0;
   private readonly syncBackdrop = () => {
     const sx = applyStretchXBackdrop(this.background);
     this.books?.setBackdropScale(sx);
-    this.feedback?.setChoiceColumns(this.books?.columns() ?? [0, 0, 0]);
+    this.feedback?.setChoiceColumns(this.books?.columns() ?? [0, 0, 0], sx);
     if (typeof document !== 'undefined') {
       document.body.dataset.playBackdropScale = sx.toFixed(6);
     }
@@ -76,6 +78,7 @@ export class WritingGameView {
       810,
       { fit: 'cover', zIndex: 40, fullscreen: true },
     );
+    this.scoreCoins = new ScoreCoinEffectView(root);
   }
 
   setActive(active: boolean): void {
@@ -167,6 +170,7 @@ export class WritingGameView {
       if (this.transitionTimer) window.clearTimeout(this.transitionTimer);
     }
     this.transition.dispose();
+    this.scoreCoins.dispose();
     this.deer.dispose();
     this.feedback.dispose();
   }

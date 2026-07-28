@@ -2,10 +2,17 @@ import { _decorator, Component, Node, UITransform } from 'cc';
 import { PageLifecycle } from '../core/lifecycle/PageLifecycle';
 import { dismissStartupCoverAfterDraws } from '../core/lifecycle/StartupCover';
 import { createUiNode } from '../core/ui/UiFactory';
-import { preloadIntro, retainThemes } from '../core/assets/ThemePreloader';
+import {
+  preloadIntro, preloadPlayableTheme, retainThemes,
+} from '../core/assets/ThemePreloader';
 import { ReadingGameController } from '../games/reading-jumper/controllers/ReadingGameController';
-import { readingIntro, readingThemes } from '../games/reading-jumper/config/ReadingTheme';
+import {
+  marioAudio, readingAudio, readingIntro, readingThemes,
+} from '../games/reading-jumper/config/ReadingTheme';
 import { hostAdapter, HostMessenger, LaunchContext } from '../platform/HostAdapter';
+import {
+  prefetchMoveNetModel, preloadPoseRuntime,
+} from '../platform/pose/PoseRuntimeLoader';
 import { createGameServices, GameServices } from '../services/GameServices';
 import { AppConfig } from '../shared/config/AppConfig';
 import { resolveBookOption } from '../shared/config/BookCatalog';
@@ -16,6 +23,7 @@ import { LoadingView } from '../ui/LoadingView';
 import { ResultView } from '../ui/ResultView';
 import { StartupErrorView } from '../ui/StartupErrorView';
 const { ccclass } = _decorator; const GAME_ID = 'reading-jumper' as const;
+const STARTUP_QUESTION_WAIT_MS = 3000;
 @ccclass('GameEntry')
 export class GameEntry extends Component {
   private appRoot: Node | null = null;
@@ -72,11 +80,27 @@ export class GameEntry extends Component {
     try {
       this.services?.dispose();
       services = createGameServices(launch); this.services = services;
+      const initialTheme = readingThemes.find((theme) => theme.id === launch.scene)
+        ?? readingThemes[0];
       const introReady = launch.skipIntro
         ? Promise.resolve()
         : preloadIntro(readingIntro);
-      await Promise.all([services.initialize(), loadRuntimeConfig(), introReady]);
+      const servicesReady = services.initialize();
+      services.audio.preload(marioAudio);
+      if (initialTheme) services.audio.preload(readingAudio(initialTheme.id));
+      const questionsReady = servicesReady.then(
+        () => services?.questions.waitForRefresh(STARTUP_QUESTION_WAIT_MS),
+      );
+      await Promise.all([
+        servicesReady,
+        loadRuntimeConfig(),
+        introReady,
+        preloadPlayableTheme(initialTheme),
+        questionsReady,
+        preloadPoseRuntime(),
+      ]);
       this.introPreloaded = true;
+      prefetchMoveNetModel();
       void hostAdapter.lockLandscape();
       if (this.destroyed || this.services !== services || !this.appRoot?.isValid) {
         services.dispose(); return;

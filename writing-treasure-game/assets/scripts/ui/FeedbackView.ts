@@ -2,7 +2,9 @@ import { Node, tween, Tween, UIOpacity, UITransform, Vec3 } from 'cc';
 import { spriteLoader } from '../core/assets/SpriteLoader';
 import { DomMotionSprite } from '../core/media/DomMotionSprite';
 import { createUiNode } from '../core/ui/UiFactory';
-import { FeedbackSequencePlan } from '../shared/config/WritingFeedbackPolicy';
+import {
+  feedbackStageMotionPath, FeedbackSequencePlan,
+} from '../shared/config/WritingFeedbackPolicy';
 import { WritingPlayLayout } from '../shared/config/WritingPlayLayout';
 import { StaticFeedbackVariant } from '../shared/config/WritingStaticFeedback';
 import { FeedbackLayerView } from './FeedbackLayerView';
@@ -24,6 +26,7 @@ export class FeedbackView {
   private restoreBackground = '';
   private usingStatic = false;
   private choiceColumns: readonly [number, number, number] = WritingPlayLayout.choiceColumns;
+  private backdropScaleX = 1;
   constructor(parent: Node, private readonly background: Node) {
     this.root = createUiNode(parent, 'Feedback', 1440, 810, Vec3.ZERO);
     this.root.addComponent(UIOpacity);
@@ -68,7 +71,7 @@ export class FeedbackView {
       this.fallbackMotion.hide();
       this.fallbackImage.active = false;
       this.layers.hide();
-      this.stageMotion.show(motionPath);
+      this.stageMotion.show(feedbackStageMotionPath(motionPath, selectedIndex), selectedIndex);
       if (staticFeedback) this.showStatic(staticFeedback, selectedIndex, undefined, true);
       return;
     }
@@ -116,7 +119,13 @@ export class FeedbackView {
     this.root.active = false;
   }
 
-  setChoiceColumns(columns: readonly [number, number, number]): void { this.choiceColumns = columns; }
+  setChoiceColumns(
+    columns: readonly [number, number, number],
+    backdropScaleX = 1,
+  ): void {
+    this.choiceColumns = columns;
+    this.backdropScaleX = backdropScaleX;
+  }
 
   dispose(): void {
     Tween.stopAllByTarget(this.root);
@@ -164,7 +173,13 @@ export class FeedbackView {
     this.fallbackImage.active = false;
     if (!keepStageMotion) this.stageMotion.hide();
     this.applyFeedbackBackground(staticFeedback);
-    this.layers.show(staticFeedback, selectedIndex, chase, this.choiceColumns);
+    this.layers.show(
+      staticFeedback,
+      selectedIndex,
+      chase,
+      this.choiceColumns,
+      this.backdropScaleX,
+    );
     if (typeof document !== 'undefined') {
       document.body.dataset.feedbackLayers = String(staticFeedback.layers.length);
       document.body.dataset.feedbackLayer0 = staticFeedback.layers[0]?.path ?? '';

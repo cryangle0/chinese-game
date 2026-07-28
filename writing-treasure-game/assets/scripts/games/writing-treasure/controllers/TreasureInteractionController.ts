@@ -5,10 +5,11 @@ import { GameSession } from '../../../services/GameSession';
 import { GameServices } from '../../../services/GameServices';
 import { resolveStaticFeedback } from '../../../shared/config/WritingStaticFeedback';
 import {
-  feedbackPresentation, feedbackSequencePlan, feedbackUsesStageMotion,
+  feedbackPresentation, feedbackSequencePlan, feedbackUsesStageMotion, writingActionTiming,
 } from '../../../shared/config/WritingFeedbackPolicy';
 import { ChineseQuestion } from '../../../shared/types/Question';
 import { GameTheme } from '../../../shared/types/Theme';
+import type { ScoreCoinSnapshot } from '../../../ui/ScoreCoinEffectView';
 import { TreasureRound } from '../model/TreasureRound';
 import { WritingGameView } from '../views/WritingGameView';
 
@@ -20,6 +21,8 @@ export class TreasureInteractionController {
   private selected = -1;
   private correct = false;
   private revealing = false;
+  private scoreAwarded = 0;
+  private scoreRewardStart: ScoreCoinSnapshot | null = null;
 
   constructor(
     private readonly root: Node,
@@ -37,10 +40,15 @@ export class TreasureInteractionController {
     this.selected = -1;
     this.correct = false;
     this.revealing = false;
+    this.scoreAwarded = 0;
+    this.scoreRewardStart = null;
     if (typeof document !== 'undefined') {
       delete document.body.dataset.actionReady;
       delete document.body.dataset.actionAttempts;
       delete document.body.dataset.actionStrikes;
+      delete document.body.dataset.digEffectActive;
+      delete document.body.dataset.digEffectDurationMs;
+      delete document.body.dataset.digEffectScene;
     }
     this.view.prompt.hide();
     this.view.books.setVisible(true);
@@ -56,35 +64,51 @@ export class TreasureInteractionController {
     this.view.books.setEnabled(false);
     this.view.books.setVisible(true);
     this.view.prompt.hide();
+    const rewardOrigin = this.view.books.scoreRewardOrigin(index);
+    this.scoreRewardStart = rewardOrigin
+      ? this.view.scoreCoins.capture(rewardOrigin)
+      : null;
+    const scoreBefore = this.session.score();
     this.correct = this.session.answer(question, index);
+    this.scoreAwarded = this.session.score() - scoreBefore;
     this.services.analytics.track({
       name: 'answer',
       game: 'writing-treasure',
       properties: { questionId: question.id, correct: this.correct, scene: this.theme().id },
     });
-    if (typeof document !== 'undefined') delete document.body.dataset.actionReady;
+    const actionTiming = writingActionTiming(this.theme().id);
+    if (typeof document !== 'undefined') {
+      delete document.body.dataset.actionReady;
+      document.body.dataset.digEffectActive = 'playing';
+      document.body.dataset.digEffectDurationMs = String(actionTiming.holdMs);
+      document.body.dataset.digEffectScene = this.theme().id;
+    }
     this.services.audio.play('walk');
-    tween(this.root)
-      .delay(0.28)
-      .call(() => this.services.audio.play('strike'))
-      .start();
+    this.scheduleActionImpacts(actionTiming.impactAtMs);
     this.view.deer.castAt(
       this.view.books.columnX(index),
-      this.scope.guard(() => this.afterDig()),
-      0.9,
+      this.scope.guard(() => this.openChestThenFeedback()),
+      actionTiming.holdMs / 1000,
     );
   }
 
-  private afterDig(): void {
-    this.services.audio.play('strike');
-    this.view.deer.strike(this.scope.guard(() => {
-      this.services.audio.play('strike');
-      this.view.deer.strike(this.scope.guard(() => this.openChestThenFeedback()));
-    }));
+  private scheduleActionImpacts(impactAtMs: readonly number[]): void {
+    let elapsedMs = 0;
+    const sequence = tween(this.root);
+    impactAtMs.forEach((impactMs) => {
+      sequence
+        .delay(Math.max(0, impactMs - elapsedMs) / 1000)
+        .call(this.scope.guard(() => this.services.audio.play('strike')));
+      elapsedMs = impactMs;
+    });
+    sequence.start();
   }
 
   private openChestThenFeedback(): void {
     const theme = this.theme();
+    if (typeof document !== 'undefined') {
+      document.body.dataset.digEffectActive = 'opened';
+    }
     this.view.books.reveal(
       this.selected,
       this.correct,
@@ -97,11 +121,49 @@ export class TreasureInteractionController {
     if (theme.id === 'magic') this.services.audio.play('reveal');
     else if (this.correct) this.services.audio.play('unlock');
     this.view.books.pulse(this.selected, 1.12);
+    const source = this.scoreRewardStart;
+    this.scoreRewardStart = null;
+    let feedbackDelayComplete = false;
+    let rewardArrived = this.scoreAwarded <= 0 || !source;
+    let feedbackShown = false;
+    const showFeedbackWhenReady = (): void => {
+      if (!feedbackDelayComplete || !rewardArrived || feedbackShown) return;
+      feedbackShown = true;
+      this.showFeedback();
+    };
+    const onRewardArrival = this.scope.guard(() => {
+      rewardArrived = true;
+      showFeedbackWhenReady();
+    });
+    if (this.scoreAwarded > 0) {
+      this.services.audio.play('coin');
+      const score = this.session.score();
+      if (!source) {
+        this.view.hud.showScoreReward(score);
+      } else {
+        if (typeof document !== 'undefined') {
+          document.body.dataset.scoreCoinTriggerPhase = 'chest-open';
+          document.body.dataset.scoreCoinFeedbackGate = 'arrival-and-chest-open';
+        }
+        this.view.scoreCoins.play({
+          source,
+          target: { node: this.view.hud.scoreRewardTarget() },
+          awarded: this.scoreAwarded,
+          onFirstArrival: () => {
+            this.view.hud.showScoreReward(score);
+            onRewardArrival();
+          },
+        });
+      }
+    }
     tween(this.root)
       .delay(0.2)
       .call(() => this.view.books.pulse(this.selected, 1.06))
       .delay(0.35)
-      .call(this.scope.guard(() => this.showFeedback()))
+      .call(this.scope.guard(() => {
+        feedbackDelayComplete = true;
+        showFeedbackWhenReady();
+      }))
       .start();
   }
 

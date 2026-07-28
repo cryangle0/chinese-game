@@ -3,7 +3,9 @@ import {
 } from 'cc';
 import { DomMotionSprite } from '../core/media/DomMotionSprite';
 import { createUiNode } from '../core/ui/UiFactory';
-import { FeedbackSequencePlan } from '../shared/config/WritingFeedbackPolicy';
+import {
+  anchoredFeedbackLayerPlacement, FeedbackSequencePlan,
+} from '../shared/config/WritingFeedbackPolicy';
 import { box } from '../shared/config/WritingPlayLayout';
 import {
   resolveFeedbackLayerPath, StaticFeedbackVariant,
@@ -32,6 +34,7 @@ export class FeedbackLayerView {
     selectedIndex: number,
     chase?: ChasePlan,
     choiceColumns: readonly [number, number, number] = [0, 0, 0],
+    backdropScaleX = 1,
   ): void {
     this.hide();
     feedback.layers.forEach((layer, index) => {
@@ -39,19 +42,24 @@ export class FeedbackLayerView {
       const motion = this.motions[index];
       if (!node || !motion) return;
       const placed = box(layer.left, layer.top, layer.width, layer.height);
-      const selectedX = choiceColumns[selectedIndex] ?? 0;
-      const anchorX = layer.selectedAnchor === undefined
-        ? selectedX
-        : choiceColumns[layer.selectedAnchor] ?? selectedX;
-      const offsetX = layer.selectedAnchor === undefined ? 0 : selectedX - anchorX;
-      const finalX = placed.position.x + offsetX;
       const [width, height] = placed.size;
-      node.getComponent(UITransform)?.setContentSize(width, height);
-      node.setPosition(finalX, placed.position.y);
+      const placement = anchoredFeedbackLayerPlacement(
+        placed.position.x,
+        width,
+        selectedIndex,
+        layer.selectedAnchor,
+        choiceColumns,
+        backdropScaleX,
+        layer.stretchWithBackdrop,
+      );
+      node.getComponent(UITransform)?.setContentSize(placement.width, height);
+      node.setPosition(placement.x, placed.position.y);
       node.active = true;
-      motion.resize(width, height);
+      motion.resize(placement.width, height);
       motion.show(resolveFeedbackLayerPath(layer, selectedIndex), true);
-      if (index === 0 && chase) this.playChase(node, finalX, placed.position.y, chase);
+      if (index === 0 && chase) {
+        this.playChase(node, placement.x, placed.position.y, chase);
+      }
     });
   }
 

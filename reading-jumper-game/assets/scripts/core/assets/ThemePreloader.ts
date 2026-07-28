@@ -1,4 +1,5 @@
 import { spriteLoader } from './SpriteLoader';
+import { preloadMotion } from '../media/DomMotionPrefetch';
 import { GameTheme, IntroTheme } from '../../shared/types/Theme';
 
 function values(source: unknown): string[] {
@@ -49,10 +50,50 @@ export function preloadCriticalTheme(theme?: GameTheme): Promise<void> {
   );
 }
 
+export function preloadPlayableTheme(theme?: GameTheme): Promise<void> {
+  if (!theme) return Promise.resolve();
+  const motion = theme.assets.motion;
+  return Promise.all([
+    preloadCriticalTheme(theme),
+    preloadMotion(
+      motion?.idle,
+      motion?.action,
+      motion?.runLeft,
+      motion?.runRight,
+      motion?.correct,
+      motion?.wrong,
+    ),
+  ]).then(() => undefined);
+}
+
+export function preloadPlayableThemeWhenIdle(theme?: GameTheme): void {
+  if (!theme) return;
+  const preload = () => { void preloadPlayableTheme(theme); };
+  if (typeof window === 'undefined') {
+    preload();
+    return;
+  }
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(preload, { timeout: 1500 });
+    return;
+  }
+  setTimeout(preload, 500);
+}
+
 export function retainThemes(themes: readonly (GameTheme | undefined)[]): void {
   spriteLoader.retainOnly(themes.flatMap((theme) => theme ? themeAssetPaths(theme) : []));
 }
 
 export function retainIntro(theme: IntroTheme): void {
   spriteLoader.retainOnly(introAssetPaths(theme));
+}
+
+export function retainIntroAndThemes(
+  intro: IntroTheme,
+  themes: readonly (GameTheme | undefined)[],
+): void {
+  spriteLoader.retainOnly([
+    ...introAssetPaths(intro),
+    ...themes.flatMap((theme) => theme ? themeAssetPaths(theme) : []),
+  ]);
 }

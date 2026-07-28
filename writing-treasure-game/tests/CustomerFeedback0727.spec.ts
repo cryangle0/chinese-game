@@ -2,10 +2,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { wrapChineseText } from '../assets/scripts/shared/config/ChineseTextWrap';
 import {
+  anchoredFeedbackLayerPlacement,
   feedbackPresentation,
+  feedbackStageMotionPath,
   feedbackUsesStageMotion,
   formatWritingOption,
   revealChoiceAsset,
+  writingActionTiming,
 } from '../assets/scripts/shared/config/WritingFeedbackPolicy';
 import * as FeedbackPolicy from '../assets/scripts/shared/config/WritingFeedbackPolicy';
 import { resolveStaticFeedback } from '../assets/scripts/shared/config/WritingStaticFeedback';
@@ -71,7 +74,30 @@ describe('customer feedback 0727', () => {
       width: 258.75,
       height: 222,
       selectedAnchor: 0,
+      stretchWithBackdrop: true,
     })]);
+  });
+
+  it('centers and stretches desert wrong feedback over the selected wide-screen pit', () => {
+    const placement = anchoredFeedbackLayerPlacement(
+      -364.875,
+      258.75,
+      1,
+      0,
+      [-454.72, -13.74, 416],
+      1.249242,
+      true,
+    );
+    expect(placement.x).toBeCloseTo(-14.83, 1);
+    expect(placement.width).toBeCloseTo(323.24, 1);
+  });
+
+  it('lets every supplied action animation reach its visible effect phase', () => {
+    expect(writingActionTiming('treasure').holdMs).toBe(1500);
+    expect(writingActionTiming('desert').holdMs).toBe(1200);
+    expect(writingActionTiming('dinosaur').holdMs).toBe(1200);
+    expect(writingActionTiming('dunhuang').holdMs).toBe(2600);
+    expect(writingActionTiming('magic').holdMs).toBe(2000);
   });
 
   it('keeps dinosaur final artwork anchored to the selected egg column', () => {
@@ -115,6 +141,13 @@ describe('customer feedback 0727', () => {
     });
   });
 
+  it('ships a full-stage dinosaur chase for every answered egg column', () => {
+    const directory = path.resolve(__dirname, '../customer-media/dinosaur');
+    [1, 2, 3].forEach((index) => {
+      expect(fs.existsSync(path.join(directory, `wrong-${index}.webp`))).toBe(true);
+    });
+  });
+
   it('keeps the dinosaur wrong chase in the full-stage motion asset', () => {
     const sequencePlan = (
       FeedbackPolicy as unknown as {
@@ -126,6 +159,14 @@ describe('customer feedback 0727', () => {
     });
     expect(sequencePlan?.('dinosaur', false)).toBeUndefined();
     expect(sequencePlan?.('treasure', true)).toBeUndefined();
+  });
+
+  it('selects the dinosaur chase matching the answered egg column', () => {
+    const path = './media/dinosaur/wrong.webp';
+    expect(feedbackStageMotionPath(path, 0)).toBe('./media/dinosaur/wrong-1.webp');
+    expect(feedbackStageMotionPath(path, 1)).toBe('./media/dinosaur/wrong-2.webp');
+    expect(feedbackStageMotionPath(path, 2)).toBe('./media/dinosaur/wrong-3.webp');
+    expect(feedbackStageMotionPath(path, 99)).toBe('./media/dinosaur/wrong-3.webp');
   });
 
   it('uses a supplied scene state image before the original choice artwork', () => {

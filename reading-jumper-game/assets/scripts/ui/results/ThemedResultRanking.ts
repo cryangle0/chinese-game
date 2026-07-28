@@ -31,7 +31,7 @@ export function buildThemedResultRanking(
     layout.rank.titleY,
     layout.text.heading,
     layout.text.headingOutline,
-    layout.headingSize,
+    layout.rank.titleSize ?? layout.headingSize,
   );
   const rows = buildRankRows(result.score).map((row) => ({
     name: row.name,

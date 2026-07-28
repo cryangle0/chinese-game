@@ -17,6 +17,24 @@ export interface FeedbackSequencePlan {
   };
 }
 
+export interface WritingActionTiming {
+  readonly holdMs: number;
+  readonly impactAtMs: readonly number[];
+}
+
+export interface AnchoredFeedbackLayerPlacement {
+  readonly x: number;
+  readonly width: number;
+}
+
+const actionTiming: Readonly<Record<string, WritingActionTiming>> = {
+  treasure: { holdMs: 1500, impactAtMs: [280, 880, 1320] },
+  desert: { holdMs: 1200, impactAtMs: [280, 720, 1080] },
+  dinosaur: { holdMs: 1200, impactAtMs: [280, 760, 1080] },
+  dunhuang: { holdMs: 2600, impactAtMs: [280, 1320, 2280] },
+  magic: { holdMs: 2000, impactAtMs: [280, 1040, 1760] },
+};
+
 const choiceFeedbackGeometry: Readonly<
 Record<string, { readonly correct?: ChoiceFeedbackGeometry; readonly wrong?: ChoiceFeedbackGeometry }>
 > = {
@@ -36,6 +54,35 @@ Record<string, { readonly correct?: ChoiceFeedbackGeometry; readonly wrong?: Cho
     wrong: { width: 165, height: 161, localY: -4 },
   },
 };
+
+export function writingActionTiming(sceneId: string): WritingActionTiming {
+  return actionTiming[sceneId] ?? actionTiming.treasure;
+}
+
+export function anchoredFeedbackLayerPlacement(
+  placedX: number,
+  width: number,
+  selectedIndex: number,
+  anchorIndex: number | undefined,
+  choiceColumns: readonly number[],
+  backdropScaleX: number,
+  stretchWithBackdrop = false,
+): AnchoredFeedbackLayerPlacement {
+  if (anchorIndex === undefined) return { x: placedX, width };
+  const scaleX = Number.isFinite(backdropScaleX) && backdropScaleX > 0
+    ? backdropScaleX
+    : 1;
+  const selected = Math.max(0, Math.min(choiceColumns.length - 1, selectedIndex));
+  const anchor = Math.max(0, Math.min(choiceColumns.length - 1, anchorIndex));
+  const selectedX = choiceColumns[selected] ?? placedX;
+  const scaledAnchorX = choiceColumns[anchor] ?? selectedX;
+  const designAnchorX = scaledAnchorX / scaleX;
+  const localOffsetX = placedX - designAnchorX;
+  return {
+    x: selectedX + localOffsetX * scaleX,
+    width: stretchWithBackdrop ? width * scaleX : width,
+  };
+}
 
 export function formatWritingOption(index: number, raw: string): string {
   const text = normalizeChineseTypography(
@@ -58,6 +105,12 @@ export function feedbackPresentation(
 
 export function feedbackUsesStageMotion(sceneId: string, correct: boolean): boolean {
   return sceneId === 'dinosaur' && !correct;
+}
+
+/** Select the dinosaur chase rendered for the answered egg column. */
+export function feedbackStageMotionPath(path: string, selectedIndex: number): string {
+  const index = Math.max(0, Math.min(2, Math.trunc(selectedIndex))) + 1;
+  return path.replace(/\.webp(?:[?#].*)?$/i, `-${index}.webp`);
 }
 
 export function feedbackSequencePlan(

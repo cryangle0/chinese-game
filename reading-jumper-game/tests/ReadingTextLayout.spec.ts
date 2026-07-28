@@ -82,6 +82,18 @@ describe('Reading play text size + bounds', () => {
     expect(readingLayout('space').option.padX ?? 0).toBeGreaterThanOrEqual(108);
   });
 
+  it('uses an independent measured countdown content box for every scene', () => {
+    const timerTextLayouts = readingLayoutIds().map((id) => readingLayout(id).timerText);
+    expect(new Set(timerTextLayouts.map((layout) => JSON.stringify(layout))).size).toBe(5);
+    timerTextLayouts.forEach((layout, index) => {
+      const timer = readingLayout(readingLayoutIds()[index]).timer;
+      expect(Math.abs(layout.x) + layout.width / 2).toBeLessThan(timer.width / 2);
+      expect(Math.abs(layout.y) + layout.height / 2).toBeLessThan(timer.height / 2);
+      expect(layout.fontSize).toBeGreaterThanOrEqual(23);
+      expect(layout.lineHeight).toBeLessThan(layout.height);
+    });
+  });
+
   it('shrinks long space options while keeping short options at full size', () => {
     const layout = readingLayout('space');
     const box = readingOptionLabelBox(layout.option, layout.option.padX);
@@ -97,6 +109,28 @@ describe('Reading play text size + bounds', () => {
     readingLayoutIds().forEach((id) => {
       expect(resultThemeLayout(id).stars).toHaveLength(5);
     });
+  });
+
+  it('keeps the food settlement headings on one native-height baseline', () => {
+    const layout = resultThemeLayout('food');
+    expect(layout.rank.titleY).toBe(layout.review.titleY);
+    expect(layout.rank.titleSize).toEqual({ width: 340, height: 48 });
+    expect(layout.review.titleSize).toEqual({ width: 246, height: 48 });
+  });
+
+  it('keeps poetry review rows separated with state icons inside each row', () => {
+    const review = resultThemeLayout('poetry').review;
+    expect(review.x).toBe(461);
+    expect(review.textX).toBe(450);
+    expect(review.rows[0]).toBe(18);
+    const pitches = review.rows.slice(1).map((row, index) => (
+      Math.abs(review.rows[index] - row)
+    ));
+    pitches.forEach((pitch) => {
+      expect(pitch - review.textHeight).toBeGreaterThanOrEqual(10);
+    });
+    expect(review.iconX + review.iconSize / 2)
+      .toBeLessThanOrEqual(review.x + review.width / 2);
   });
 
   it.each([

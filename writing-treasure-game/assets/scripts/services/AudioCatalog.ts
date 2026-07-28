@@ -8,6 +8,7 @@ export type SoundName =
   | 'voiceComplete'
   | 'correct'
   | 'wrong'
+  | 'coin'
   | 'unlock'
   | 'strike'
   | 'walk'
@@ -50,6 +51,7 @@ export const defaultAudioCatalog: AudioCatalog = {
   voiceComplete: {},
   correct: { tone: { from: 660, to: 880, duration: 0.18 }, volume: 0.9 },
   wrong: { tone: { from: 240, to: 170, duration: 0.22 }, volume: 0.85 },
+  coin: {},
   unlock: { tone: { from: 440, to: 660, duration: 0.14 }, volume: 0.85 },
   strike: { tone: { from: 130, to: 90, duration: 0.08, wave: 'square' }, volume: 0.75 },
   walk: {},

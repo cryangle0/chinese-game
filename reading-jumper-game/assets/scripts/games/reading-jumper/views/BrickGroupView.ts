@@ -137,6 +137,13 @@ export class BrickGroupView {
     item.root.setScale(1.06, 1.06, 1);
   }
 
+  scoreRewardOrigin(index: number): { readonly node: Node; readonly localPoint: Vec3 } | null {
+    const item = this.items[index];
+    const transform = item?.root.getComponent(UITransform);
+    if (!item || !transform) return null;
+    return { node: item.root, localPoint: new Vec3(0, transform.contentSize.height / 2 + 8) };
+  }
+
   private createBrick(parent: Node, assetPath: string, x: number, index: number): BrickItem {
     const root = createUiNode(parent, `Brick${index}`, 380, 108, new Vec3(x, -25));
     if (assetPath) spriteLoader.apply(root, assetPath, 'stretch');

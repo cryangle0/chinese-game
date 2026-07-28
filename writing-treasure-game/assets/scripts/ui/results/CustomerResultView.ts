@@ -32,6 +32,7 @@ function addRank(root: Node, result: GameResult, theme: GameTheme): void {
   const layout = WritingSettlementLayout[theme.id];
   if (!layout) return;
   const assets = theme.assets;
+  const rankTextOffsetY = layout.rankTextOffsetY ?? 0;
   // 排行榜底板与背景木板重复，全场景不绘制
   image(root, 'CustomerRank', assets.resultRank, layout.rankTitle);
   layout.rankRows.forEach((row, index) => {
@@ -46,13 +47,21 @@ function addRank(root: Node, result: GameResult, theme: GameTheme): void {
     name.horizontalAlign = HorizontalTextAlignment.CENTER;
     name.overflow = Label.Overflow.SHRINK;
     name.node.name = `CustomerRankName${index + 1}`;
-    name.node.setPosition(nameBox.position);
+    name.node.setPosition(
+      nameBox.position.x,
+      nameBox.position.y + rankTextOffsetY,
+      nameBox.position.z,
+    );
     const scoreBox = settlementBoxNode(text.score);
     const score = createLabel(root, `${row.score}分`, {
       size: 22, color: '#EF6B11', width: scoreBox.width, height: scoreBox.height, bold: true,
     });
     score.node.name = `CustomerRankScore${index + 1}`;
-    score.node.setPosition(scoreBox.position);
+    score.node.setPosition(
+      scoreBox.position.x,
+      scoreBox.position.y + rankTextOffsetY,
+      scoreBox.position.z,
+    );
   });
 }
 

@@ -1,5 +1,7 @@
 import { Node, tween } from 'cc';
-import { preloadCriticalTheme, retainIntro } from '../../../core/assets/ThemePreloader';
+import {
+  preloadPlayableTheme, retainIntroAndThemes,
+} from '../../../core/assets/ThemePreloader';
 import { TaskScope } from '../../../core/lifecycle/TaskScope';
 import { CampaignProgress } from '../../../services/CampaignProgress';
 import { GameServices } from '../../../services/GameServices';
@@ -23,8 +25,8 @@ export function mountReadingIntro(options: ReadingIntroOptions): Promise<unknown
   const {
     root, scope, campaign, services, launch, motion, start,
   } = options;
-  retainIntro(readingIntro);
-  const preload = preloadCriticalTheme(campaign.current())
+  retainIntroAndThemes(readingIntro, [campaign.current()]);
+  const preload = preloadPlayableTheme(campaign.current())
     .then(() => null, (error: unknown) => error);
   if (typeof document !== 'undefined') document.body.dataset.gameView = 'intro';
   tween(root).delay(0.35).call(scope.guard(() => motion.start())).start();

@@ -22,10 +22,7 @@ export interface HudLayout {
   readonly timer: { readonly width: number; readonly height: number; readonly x: number; readonly y: number };
   readonly score: { readonly width: number; readonly height: number; readonly x: number; readonly y: number };
   readonly scoreIcon: { readonly width: number; readonly height: number; readonly x: number; readonly y: number };
-  /** Shift countdown label right inside the timer chrome (space robot head). */
-  readonly timerTextOffsetX?: number;
-  /** Shift countdown label up/down inside the timer chrome (positive = up). */
-  readonly timerTextOffsetY?: number;
+  readonly timerText: { readonly width: number; readonly height: number; readonly x: number; readonly y: number; readonly fontSize: number; readonly lineHeight: number };
 }
 
 export class HudView {
@@ -64,6 +61,7 @@ export class HudView {
     this.timer = createLabel(this.timerRoot, '', {
       size: 25, width: 220, height: 64, bold: true,
     });
+    this.timer.enableWrapText = false;
     // 统一「倒计时：xxx秒」；略下移，避免贴顶/溢出切图
     this.timer.node.setPosition(0, -10);
     this.score = createLabel(this.scoreRoot, '', {
@@ -93,17 +91,29 @@ export class HudView {
     setLabelOutline(this.score, outlineColor, 2);
   }
 
+  scoreRewardTarget(): Node { return this.scoreIcon; }
+
+  showScoreReward(score: number): void {
+    const increased = this.renderedScore >= 0 && score > this.renderedScore;
+    this.score.string = `\u79ef\u5206\uff1a${score}`;
+    this.renderedScore = score;
+    if (typeof document !== 'undefined') Object.assign(document.body.dataset, {
+      gameScore: String(score), scoreCoinCommittedScore: String(score),
+    });
+    if (increased) this.pulseScore();
+  }
+
   setLayout(layout: HudLayout): void {
     this.applyRect(this.timerRoot, layout.timer);
     this.applyRect(this.scoreRoot, layout.score);
     this.applyRect(this.scoreIcon, layout.scoreIcon);
-    const timerTextW = Math.max(160, layout.timer.width - 36);
-    const timerTextH = Math.max(40, layout.timer.height - 20);
-    this.timer.node.setPosition(
-      layout.timerTextOffsetX ?? 0,
-      -10 + (layout.timerTextOffsetY ?? 0),
+    this.timer.node.setPosition(layout.timerText.x, layout.timerText.y);
+    this.timer.node.getComponent(UITransform)?.setContentSize(
+      layout.timerText.width, layout.timerText.height,
     );
-    this.timer.node.getComponent(UITransform)?.setContentSize(timerTextW, timerTextH);
+    this.timer.fontSize = layout.timerText.fontSize;
+    this.timer.lineHeight = layout.timerText.lineHeight;
+    this.timer.enableWrapText = false;
     this.score.node.getComponent(UITransform)?.setContentSize(layout.score.width - 48, layout.score.height - 8);
   }
 

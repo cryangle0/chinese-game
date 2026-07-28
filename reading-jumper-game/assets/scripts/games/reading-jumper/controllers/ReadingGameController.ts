@@ -1,7 +1,7 @@
 import { director, Director, Node } from 'cc';
 import { TaskScope } from '../../../core/lifecycle/TaskScope';
 import { stopTweensRecursively } from '../../../core/lifecycle/TweenCleanup';
-import { preloadCriticalTheme, retainThemes } from '../../../core/assets/ThemePreloader';
+import { preloadPlayableTheme, retainThemes } from '../../../core/assets/ThemePreloader';
 import { createUiNode } from '../../../core/ui/UiFactory';
 import { CampaignProgress } from '../../../services/CampaignProgress';
 import { GameSession } from '../../../services/GameSession';
@@ -26,6 +26,7 @@ import { ReadingMotionController } from './ReadingMotionController';
 import { ReadingStageCoordinator } from './ReadingStageCoordinator';
 
 const PLAY_HANDOFF_FRAMES = 6;
+const CLICK_QUESTION_GRACE_MS = 250;
 
 export class ReadingGameController implements GameController {
   readonly root: Node;
@@ -85,6 +86,7 @@ export class ReadingGameController implements GameController {
       () => this.stageResults.completeQuestion(),
     );
     this.view.setActive(false);
+    this.view.mount(this.campaign.current());
     this.options.knowledgePoint = resolveBookOption(this.options.knowledgePoint ?? DEFAULT_BOOK);
     if (options.skipIntro) void this.start().catch((error) => this.completion.fail(error));
     else this.initialThemePreload = mountReadingIntro({
@@ -118,9 +120,9 @@ export class ReadingGameController implements GameController {
       this.initialThemePreload = null;
       if (preloadError) throw preloadError;
     } else {
-      await preloadCriticalTheme(this.campaign.current());
+      await preloadPlayableTheme(this.campaign.current());
     }
-    await this.services.questions.whenRefreshed();
+    await this.services.questions.waitForRefresh(CLICK_QUESTION_GRACE_MS);
     if (!this.scope.isActive()) return;
     const intro = this.root.getChildByName('GameIntro');
     this.view.setActive(true);

@@ -27,6 +27,38 @@ export interface MoveNetDetector {
 }
 
 let runtimePromise: Promise<{ tf: TfRuntime; pose: PoseDetectionRuntime }> | null = null;
+let modelPrefetchTask: Promise<void> | null = null;
+const MODEL_URL = './models/movenet/singlepose-lightning-v4/model.json';
+const MODEL_FILES = [
+  MODEL_URL,
+  './models/movenet/singlepose-lightning-v4/group1-shard1of2.bin',
+  './models/movenet/singlepose-lightning-v4/group1-shard2of2.bin',
+] as const;
+
+export async function preloadPoseRuntime(timeoutMs = 2500): Promise<boolean> {
+  if (typeof document === 'undefined') return true;
+  const runtime = loadRuntime().then(() => true, (error: unknown) => {
+    console.warn('[PoseRuntimeLoader] runtime preload failed', error);
+    return false;
+  });
+  if (timeoutMs <= 0) return false;
+  return Promise.race([
+    runtime,
+    new Promise<boolean>((resolve) => setTimeout(() => resolve(false), timeoutMs)),
+  ]);
+}
+
+export function prefetchMoveNetModel(): void {
+  if (modelPrefetchTask || typeof fetch === 'undefined' || typeof location === 'undefined') return;
+  modelPrefetchTask = Promise.all(MODEL_FILES.map(async (source) => {
+    const response = await fetch(new URL(source, location.href), { cache: 'force-cache' });
+    if (!response.ok) throw new Error(`model preload HTTP ${response.status}: ${source}`);
+    await response.arrayBuffer();
+  })).then(() => undefined).catch((error: unknown) => {
+    modelPrefetchTask = null;
+    console.warn('[PoseRuntimeLoader] model preload failed', error);
+  });
+}
 
 export async function createMoveNetDetector(): Promise<{
   detector: MoveNetDetector;
@@ -55,7 +87,7 @@ export async function createMoveNetDetector(): Promise<{
     modelType: pose.movenet.modelType.SINGLEPOSE_LIGHTNING,
     enableSmoothing: true,
     minPoseScore: 0.25,
-    modelUrl: './models/movenet/singlepose-lightning-v4/model.json',
+    modelUrl: MODEL_URL,
   });
   return { detector, backend: tf.getBackend() };
 }

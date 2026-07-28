@@ -4,6 +4,7 @@ const readingAudioBase = './audio/reading';
 const marioAudioBase = './audio/mario';
 const sharedReadingAudio: AudioTheme = {
   bgm: { url: `${readingAudioBase}/bgm.mp3`, volume: 0.22 },
+  coin: { url: './audio/shared/score-coin.mp3', volume: 0.68 },
   button: { url: `${marioAudioBase}/button.mp3`, volume: 0.8 },
   strike: { url: `${marioAudioBase}/strike.mp3`, volume: 0.78 },
   run: { url: `${marioAudioBase}/run.mp3`, volume: 0.34 },

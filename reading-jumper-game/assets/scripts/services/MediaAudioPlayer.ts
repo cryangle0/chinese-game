@@ -90,9 +90,10 @@ export class MediaAudioPlayer {
 
   private create(url: string): HTMLAudioElement {
     const audio = new Audio();
-    audio.preload = 'metadata';
+    audio.preload = 'auto';
     audio.src = url;
     audio.addEventListener('ended', () => this.releaseIfUnused(url, audio));
+    audio.load();
     this.elements.set(url, audio);
     return audio;
   }

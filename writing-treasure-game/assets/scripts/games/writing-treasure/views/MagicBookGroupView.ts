@@ -134,6 +134,15 @@ export class MagicBookGroupView {
     return this.columns()[index] ?? 0;
   }
 
+  scoreRewardOrigin(index: number): { readonly node: Node; readonly localPoint: Vec3 } | null {
+    const item = this.items[index];
+    if (!item) return null;
+    return {
+      node: item.chest,
+      localPoint: Vec3.ZERO.clone(),
+    };
+  }
+
   columns(): readonly [number, number, number] {
     return scaledWritingChoiceColumns(this.sceneId, this.backgroundScaleX);
   }

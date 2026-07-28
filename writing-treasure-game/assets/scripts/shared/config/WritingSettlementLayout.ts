@@ -1,5 +1,9 @@
 import { Vec3 } from 'cc';
 import { box } from './WritingPlayLayout';
+import {
+  DUNHUANG_REVIEW_SHIFT_X,
+  WRITING_RANK_TEXT_OFFSET_Y,
+} from './WritingSettlementTuning';
 import type { SettlementBox, SettlementLayout } from './WritingSettlementTypes';
 
 export type { SettlementBox, SettlementLayout } from './WritingSettlementTypes';
@@ -57,7 +61,12 @@ function scene(
   reviewArgs: Parameters<typeof reviews>,
   score: SettlementBox,
   stars: SettlementLayout['stars'],
-  flags: { useReviewPanel: boolean; scoreAsSummary: boolean; characterSoleLift?: number },
+  flags: {
+    useReviewPanel: boolean;
+    scoreAsSummary: boolean;
+    characterSoleLift?: number;
+    rankTextOffsetY?: number;
+  },
 ): SettlementLayout {
   return {
     character,
@@ -131,7 +140,11 @@ export const WritingSettlementLayout: Readonly<Record<string, SettlementLayout>>
     [870.8, 304, 480.75, 64.5, 73.25, 18, 1304.75, 12.75],
     fromHtml(252, 670.5, 78, 51),
     { left: 81, top: 726, width: 66.75, height: 48, gap: -5.25 },
-    { useReviewPanel: true, scoreAsSummary: true },
+    {
+      useReviewPanel: true,
+      scoreAsSummary: true,
+      rankTextOffsetY: WRITING_RANK_TEXT_OFFSET_Y.dinosaur,
+    },
   ),
   // Applied from settlement-hotspots-dunhuang.json; rankBase not drawn.
   dunhuang: scene(
@@ -147,10 +160,24 @@ export const WritingSettlementLayout: Readonly<Record<string, SettlementLayout>>
     ['714.69,317.94,78.56,51.87', '715.17,413.76,78.19,41.73', '717.12,495.72,77.25,40.56'],
     fromHtml(948, 172.5, 314.25, 90.75),
     fromHtml(1005, 265.5, 199.5, 26.25),
-    [856.9, 285.5, 458.25, 60, 75.5, 18, 1268.25, 10.5],
+    [
+      856.9 + DUNHUANG_REVIEW_SHIFT_X,
+      285.5,
+      458.25,
+      60,
+      75.5,
+      18,
+      1268.25 + DUNHUANG_REVIEW_SHIFT_X,
+      10.5,
+    ],
     fromHtml(237, 655.5, 70.5, 51),
     { left: 121.5, top: 712.5, width: 46.5, height: 42, gap: 4.5 },
-    { useReviewPanel: true, scoreAsSummary: true, characterSoleLift: 56 },
+    {
+      useReviewPanel: true,
+      scoreAsSummary: true,
+      characterSoleLift: 56,
+      rankTextOffsetY: WRITING_RANK_TEXT_OFFSET_Y.dunhuang,
+    },
   ),
   // Applied from settlement-hotspots-magic.json; rankBase not drawn.
   magic: scene(
@@ -169,7 +196,12 @@ export const WritingSettlementLayout: Readonly<Record<string, SettlementLayout>>
     [879, 293.25, 458.25, 60, 64.5, 18, 1290.25, 10.5],
     fromHtml(138.75, 613.5, 168.75, 51),
     { left: 91.5, top: 674.25, width: 45.75, height: 44.25, gap: 5.25 },
-    { useReviewPanel: true, scoreAsSummary: true, characterSoleLift: 48 },
+    {
+      useReviewPanel: true,
+      scoreAsSummary: true,
+      characterSoleLift: 48,
+      rankTextOffsetY: WRITING_RANK_TEXT_OFFSET_Y.magic,
+    },
   ),
 };
 

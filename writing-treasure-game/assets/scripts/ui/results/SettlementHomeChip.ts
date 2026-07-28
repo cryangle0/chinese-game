@@ -26,7 +26,7 @@ export function addSettlementHomeChip(parent: Node, onReturnHome: () => void): N
     node.setPosition(new Vec3(SETTLEMENT_HOME_CHIP.x * sx, SETTLEMENT_HOME_CHIP.y, 0));
   };
   syncPosition();
-  node.setScale(0.86, 0.86, 1);
+  node.setScale(SETTLEMENT_HOME_CHIP.scale, SETTLEMENT_HOME_CHIP.scale, 1);
   if (typeof window !== 'undefined') window.addEventListener('resize', syncPosition);
   if (typeof document !== 'undefined') {
     document.body.dataset.stageHomeChip = '1';

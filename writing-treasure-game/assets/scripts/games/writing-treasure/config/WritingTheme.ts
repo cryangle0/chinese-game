@@ -8,6 +8,7 @@ export function writingAudio(id: string): AudioTheme {
   const base = `${writingAudioBase}/${id}`;
   return {
     bgm: { url: `${writingAudioBase}/bgm.mp3`, volume: 0.22 },
+    coin: { url: './audio/shared/score-coin.mp3', volume: 0.68 },
     opening: { url: `${writingAudioBase}/opening.mp3`, volume: 0.68 },
     start: { url: `${writingAudioBase}/start.mp3`, volume: 0.7 },
     question: { url: `${writingAudioBase}/question.mp3`, volume: 0.68 },

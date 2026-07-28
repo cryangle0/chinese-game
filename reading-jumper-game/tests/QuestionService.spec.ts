@@ -35,6 +35,30 @@ describe('QuestionService', () => {
     expect(service.version()).toBe('remote_v1');
   });
 
+  it('bounds the gameplay wait while the full refresh continues in the background', async () => {
+    jest.useFakeTimers();
+    let resolveResponse: ((value: Response) => void) | undefined;
+    global.fetch = jest.fn(() => new Promise<Response>((resolve) => {
+      resolveResponse = resolve;
+    }));
+    const service = new QuestionService();
+    await service.initialize('/api/bank');
+    const ready = service.waitForRefresh(3000);
+    await jest.advanceTimersByTimeAsync(3000);
+    await expect(ready).resolves.toBe(false);
+    resolveResponse?.({
+      ok: true,
+      json: async () => ({
+        version: 'remote_after_timeout',
+        questions: sampleQuestions,
+      }),
+      status: 200,
+    } as Response);
+    await service.whenRefreshed();
+    expect(service.version()).toBe('remote_after_timeout');
+    jest.useRealTimers();
+  });
+
   it('keeps the builtin bank when the remote endpoint cannot be reached', async () => {
     jest.useFakeTimers();
     global.fetch = jest.fn(async () => { throw new Error('offline'); });

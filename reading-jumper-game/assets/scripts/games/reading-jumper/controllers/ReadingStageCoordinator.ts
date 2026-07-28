@@ -1,5 +1,5 @@
 import {
-  preloadCriticalTheme, preloadTheme, retainThemes,
+  preloadPlayableThemeWhenIdle, preloadTheme, retainThemes,
 } from '../../../core/assets/ThemePreloader';
 import { prefetchMotion } from '../../../core/media/DomMotionSprite';
 import { CampaignProgress } from '../../../services/CampaignProgress';
@@ -38,7 +38,7 @@ export class ReadingStageCoordinator {
     );
     if (this.campaign.index() > 0) this.view.playTransition(theme.assets.motion?.transition);
     if (nextTheme) this.services.audio.preload(readingAudio(nextTheme.id));
-    void preloadCriticalTheme(nextTheme);
+    preloadPlayableThemeWhenIdle(nextTheme);
     this.view.mount(theme);
     const cursor = this.services.questions.createCursor({
       game: 'reading-jumper',

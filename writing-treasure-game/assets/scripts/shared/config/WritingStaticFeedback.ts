@@ -10,6 +10,8 @@ export interface StaticFeedbackLayer {
   readonly height: number;
   /** Source composition column; this layer follows the actual selected option. */
   readonly selectedAnchor?: 0 | 1 | 2;
+  /** Stretch scene-colored crop layers with the horizontally filled backdrop. */
+  readonly stretchWithBackdrop?: boolean;
 }
 
 export interface StaticFeedbackVariant {
@@ -76,6 +78,7 @@ export const WritingStaticFeedback: Readonly<Record<string, StaticFeedbackPair>>
         width: 258.75,
         height: 222,
         selectedAnchor: 0,
+        stretchWithBackdrop: true,
       }],
     },
   },

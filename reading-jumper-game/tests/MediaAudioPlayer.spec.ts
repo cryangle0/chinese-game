@@ -79,7 +79,7 @@ describe('MediaAudioPlayer', () => {
     player.preload('/next.mp3');
     player.preload('/next.mp3');
     expect(FakeAudio.instances.size).toBe(1);
-    expect(FakeAudio.instances.get('/next.mp3')?.preload).toBe('metadata');
+    expect(FakeAudio.instances.get('/next.mp3')?.preload).toBe('auto');
     player.dispose();
   });
 

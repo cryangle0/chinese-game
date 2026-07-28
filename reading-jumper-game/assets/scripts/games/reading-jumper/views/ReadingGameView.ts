@@ -7,6 +7,8 @@ import { GameTheme } from '../../../shared/types/Theme';
 import { FeedbackView } from '../../../ui/FeedbackView';
 import { HudView } from '../../../ui/HudView';
 import { QuestionBoardView } from '../../../ui/QuestionBoardView';
+import { ScoreCoinEffectView } from '../../../ui/ScoreCoinEffectView';
+import type { ScoreCoinSnapshot } from '../../../ui/ScoreCoinEffectView';
 import { BrickGroupView } from './BrickGroupView';
 import { DeerView } from './DeerView';
 import { readingLayout } from '../config/ReadingLayout';
@@ -20,6 +22,8 @@ export class ReadingGameView {
   readonly deer: DeerView;
   readonly feedback: FeedbackView;
   private readonly transition: ReadingTransitionView;
+  private readonly scoreCoins: ScoreCoinEffectView;
+  private mountedThemeId = '';
   private readonly syncBackdrop = () => {
     const sx = applyStretchXBackdrop(this.background);
     if (typeof document !== 'undefined') {
@@ -60,6 +64,7 @@ export class ReadingGameView {
       readingLayout(firstTheme?.id ?? 'mario').feedback.height,
     );
     this.transition = new ReadingTransitionView(root);
+    this.scoreCoins = new ScoreCoinEffectView(root);
   }
 
   setActive(active: boolean): void {
@@ -73,6 +78,8 @@ export class ReadingGameView {
   }
 
   mount(theme: GameTheme): void {
+    if (this.mountedThemeId === theme.id) return;
+    this.mountedThemeId = theme.id;
     const layout = readingLayout(theme.id);
     spriteLoader.apply(this.background, theme.assets.background, 'cover');
     this.syncBackdrop();
@@ -109,6 +116,33 @@ export class ReadingGameView {
     if (!visible) this.feedback.hide();
   }
 
+  captureScoreRewardOrigin(index: number): ScoreCoinSnapshot | null {
+    const origin = this.bricks.scoreRewardOrigin(index);
+    return origin ? this.scoreCoins.capture(origin) : null;
+  }
+
+  playScoreReward(
+    source: ScoreCoinSnapshot | null,
+    score: number,
+    awarded: number,
+    onFirstArrival?: () => void,
+  ): void {
+    if (!source) {
+      this.hud.showScoreReward(score);
+      onFirstArrival?.();
+      return;
+    }
+    this.scoreCoins.play({
+      source,
+      target: { node: this.hud.scoreRewardTarget() },
+      awarded,
+      onFirstArrival: () => {
+        this.hud.showScoreReward(score);
+        onFirstArrival?.();
+      },
+    });
+  }
+
   renderHud(
     seconds: number,
     score: number,
@@ -126,6 +160,7 @@ export class ReadingGameView {
   dispose(): void {
     if (typeof window !== 'undefined') window.removeEventListener('resize', this.syncBackdrop);
     this.transition.dispose();
+    this.scoreCoins.dispose();
     this.deer.dispose();
     this.feedback.dispose();
   }

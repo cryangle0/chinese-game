@@ -37,6 +37,23 @@ export class QuestionService {
     return this.refreshTask ?? Promise.resolve();
   }
 
+  waitForRefresh(timeoutMs: number): Promise<boolean> {
+    const task = this.refreshTask;
+    if (!task) return Promise.resolve(true);
+    if (timeoutMs <= 0) return Promise.resolve(false);
+    return new Promise((resolve) => {
+      let settled = false;
+      const finish = (completed: boolean) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timeout);
+        resolve(completed);
+      };
+      const timeout = setTimeout(() => finish(false), timeoutMs);
+      void task.then(() => finish(true), () => finish(true));
+    });
+  }
+
   private async refresh(url: string): Promise<void> {
     let lastError: unknown = null;
     for (let attempt = 0; attempt < 3; attempt += 1) {

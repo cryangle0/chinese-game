@@ -25,7 +25,7 @@ export function buildThemedResultReview(
     layout.review.titleY,
     layout.text.heading,
     layout.text.headingOutline,
-    layout.headingSize,
+    layout.review.titleSize ?? layout.headingSize,
   );
   const answers = result.answers.slice(0, 5);
   const rows = answers.map((answer, index) => ({

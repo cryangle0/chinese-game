@@ -15,6 +15,8 @@ export interface SettlementLayout {
     { name: SettlementBox; score: SettlementBox },
     { name: SettlementBox; score: SettlementBox },
   ];
+  /** Cocos Y offset used to optically center rank text inside illustrated rows. */
+  readonly rankTextOffsetY?: number;
   readonly reviewTitle: SettlementBox;
   readonly achievement: SettlementBox;
   readonly reviewRows: readonly SettlementBox[];
