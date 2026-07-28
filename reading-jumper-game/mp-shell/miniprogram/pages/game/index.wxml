@@ -1,0 +1,17 @@
+<web-view
+  class="game-webview"
+  wx:if="{{gameUrl}}"
+  src="{{gameUrl}}"
+  bindmessage="handleMessage"
+  binderror="handleError"
+/>
+<view wx:else class="fallback">
+  <text class="fallback__title">{{errorMessage || '正在进入游戏'}}</text>
+  <button
+    wx:if="{{errorMessage}}"
+    class="fallback__button"
+    bindtap="retry"
+  >
+    重新加载
+  </button>
+</view>

@@ -1,0 +1,7257 @@
+{
+  "version": "20260712_v3",
+  "contentStatus": "placeholder",
+  "generatedAt": "2026-07-12T14:53:03.934Z",
+  "questions": [
+    {
+      "id": "TTYL_MARIO_001",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“春风”的“春”读音是？",
+      "options": [
+        "chūn",
+        "cūn",
+        "chōng"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“chūn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_002",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“森林”的“森”读音是？",
+      "options": [
+        "shēn",
+        "sēn",
+        "sēng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“sēn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_003",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“快乐”的“乐”在这里读什么？",
+      "options": [
+        "yuè",
+        "lè",
+        "yào"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“lè”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_004",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“长大”的“长”在这里读什么？",
+      "options": [
+        "cháng",
+        "zhǎng",
+        "zàng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“zhǎng”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_005",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“因为”的“为”在这里读什么？",
+      "options": [
+        "wéi",
+        "wèi",
+        "wěi"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“wèi”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_006",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "已经",
+        "以经",
+        "己经"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“已经”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_007",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "再接再励",
+        "再接再厉",
+        "在接再厉"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“再接再厉”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_008",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "迫不急待",
+        "迫不及待",
+        "迫不几待"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“迫不及待”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_009",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "近义词",
+      "stemType": "text",
+      "stem": "“安静”的近义词是？",
+      "options": [
+        "宁静",
+        "热闹",
+        "急忙"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“宁静”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_010",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "反义词",
+      "stemType": "text",
+      "stem": "“温暖”的反义词是？",
+      "options": [
+        "炎热",
+        "寒冷",
+        "明亮"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“寒冷”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_011",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“守株待兔”告诉我们什么？",
+      "options": [
+        "不能心存侥幸",
+        "做事越快越好",
+        "要天天种树"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不能心存侥幸”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_012",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“画蛇添足”的意思是？",
+      "options": [
+        "做多余的事",
+        "画得很认真",
+        "帮助别人"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做多余的事”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_013",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“井底之蛙”常用来形容？",
+      "options": [
+        "见识短浅",
+        "声音响亮",
+        "行动敏捷"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“见识短浅”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_014",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“亡羊补牢”告诉我们？",
+      "options": [
+        "出错后及时补救",
+        "永远不要养羊",
+        "遇事马上放弃"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“出错后及时补救”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_015",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“胸有成竹”形容？",
+      "options": [
+        "做事前已有把握",
+        "喜欢画竹子",
+        "心里很紧张"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做事前已有把握”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_016",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“坚持不懈”中的“懈”指？",
+      "options": [
+        "松懈",
+        "高兴",
+        "迅速"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“松懈”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_017",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "近义成语",
+      "stemType": "text",
+      "stem": "与“聚精会神”意思相近的是？",
+      "options": [
+        "专心致志",
+        "东张西望",
+        "漫不经心"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“专心致志”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_018",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“雪中送炭”比喻？",
+      "options": [
+        "急需时给予帮助",
+        "冬天运送木炭",
+        "给别人增加麻烦"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“急需时给予帮助”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_019",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“一叶知秋”说明？",
+      "options": [
+        "从细微处看趋势",
+        "叶子只有一片",
+        "秋天没有花"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“从细微处看趋势”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_MARIO_020",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "传统故事",
+      "stemType": "text",
+      "stem": "“闻鸡起舞”赞扬的是？",
+      "options": [
+        "勤奋进取",
+        "爱听音乐",
+        "善于养鸡"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“勤奋进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_021",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“床前明月光”的下一句是？",
+      "options": [
+        "疑是地上霜",
+        "低头思故乡",
+        "举头望明月"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“疑是地上霜”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_022",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“白日依山尽”的下一句是？",
+      "options": [
+        "黄河入海流",
+        "更上一层楼",
+        "春风吹又生"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“黄河入海流”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_023",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“谁知盘中餐”的下一句是？",
+      "options": [
+        "粒粒皆辛苦",
+        "汗滴禾下土",
+        "处处闻啼鸟"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“粒粒皆辛苦”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_024",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“野火烧不尽”的下一句是？",
+      "options": [
+        "春风吹又生",
+        "草色遥看近却无",
+        "一岁一枯荣"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“春风吹又生”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_025",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“小荷才露尖尖角”的下一句是？",
+      "options": [
+        "早有蜻蜓立上头",
+        "映日荷花别样红",
+        "接天莲叶无穷碧"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“早有蜻蜓立上头”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_026",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“飞流直下三千尺”描写的是？",
+      "options": [
+        "瀑布",
+        "大雪",
+        "长城"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“瀑布”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_027",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“两个黄鹂鸣翠柳”中的“鸣”是？",
+      "options": [
+        "鸣叫",
+        "飞翔",
+        "休息"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“鸣叫”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_028",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "情感理解",
+      "stemType": "text",
+      "stem": "“独在异乡为异客”表达了？",
+      "options": [
+        "思乡之情",
+        "喜爱旅行",
+        "赞美春天"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“思乡之情”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_029",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“欲穷千里目，更上一层楼”鼓励我们？",
+      "options": [
+        "不断进取",
+        "早点回家",
+        "保护眼睛"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不断进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_030",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "文学常识",
+      "stemType": "text",
+      "stem": "《静夜思》的作者是？",
+      "options": [
+        "李白",
+        "杜甫",
+        "白居易"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“李白”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_031",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "拟人",
+      "stemType": "text",
+      "stem": "“小鸟在枝头唱歌”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "排比"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“拟人”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_032",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "比喻",
+      "stemType": "text",
+      "stem": "“弯弯的月亮像小船”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "反问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“比喻”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_033",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "修辞",
+      "knowledgePoint": "夸张",
+      "stemType": "text",
+      "stem": "“桂子花开，十里飘香”使用了？",
+      "options": [
+        "夸张",
+        "对偶",
+        "设问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“夸张”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_034",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句式",
+      "knowledgePoint": "反问句",
+      "stemType": "text",
+      "stem": "“难道我们不该珍惜时间吗？”是？",
+      "options": [
+        "反问句",
+        "陈述句",
+        "祈使句"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“反问句”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_035",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "标点",
+      "knowledgePoint": "引号",
+      "stemType": "text",
+      "stem": "下面标点使用正确的是？",
+      "options": [
+        "妈妈说：“快回家。”",
+        "妈妈说，“快回家”。",
+        "妈妈说：“快回家”。"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“妈妈说：“快回家。””。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_036",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "感叹号",
+      "stemType": "text",
+      "stem": "表示强烈感情的句末标点是？",
+      "options": [
+        "句号",
+        "问号",
+        "感叹号"
+      ],
+      "correctIndex": 2,
+      "explain": "正确答案是“感叹号”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_037",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "顿号",
+      "stemType": "text",
+      "stem": "“苹果、梨、桃子”中的顿号表示？",
+      "options": [
+        "并列词语停顿",
+        "一句话结束",
+        "提出问题"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“并列词语停顿”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_038",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“因为下雨，所以比赛延期。”是什么关系？",
+      "options": [
+        "因果关系",
+        "转折关系",
+        "并列关系"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“因果关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_039",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“虽然很累，但是他没有停下。”是什么关系？",
+      "options": [
+        "递进关系",
+        "转折关系",
+        "选择关系"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“转折关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_040",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "语法",
+      "knowledgePoint": "的地得",
+      "stemType": "text",
+      "stem": "“他跑得像风一样快”中“得”的作用是？",
+      "options": [
+        "连接补语",
+        "表示拥有",
+        "表示过去"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“连接补语”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_MARIO_041",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "观察顺序",
+      "stemType": "text",
+      "stem": "写景文章通常要注意什么？",
+      "options": [
+        "观察顺序",
+        "只写人物姓名",
+        "省略所有细节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“观察顺序”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_042",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "人物描写",
+      "stemType": "text",
+      "stem": "描写人物外貌可以写？",
+      "options": [
+        "神态和穿着",
+        "天气预报",
+        "数学公式"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“神态和穿着”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_043",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "动作描写",
+      "stemType": "text",
+      "stem": "让动作描写更具体，可以多用？",
+      "options": [
+        "准确的动词",
+        "重复的句号",
+        "无关的数字"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“准确的动词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_044",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "写作",
+      "knowledgePoint": "开头方法",
+      "stemType": "text",
+      "stem": "文章开头直接点明主题叫？",
+      "options": [
+        "开门见山",
+        "画蛇添足",
+        "自相矛盾"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“开门见山”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_045",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "叙事顺序",
+      "stemType": "text",
+      "stem": "按事情发展顺序写，通常先写？",
+      "options": [
+        "起因",
+        "结果",
+        "感想"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“起因”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_046",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "概括段意",
+      "stemType": "text",
+      "stem": "概括一段话主要意思，要抓住？",
+      "options": [
+        "关键句和关键词",
+        "每个标点",
+        "字数多少"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“关键句和关键词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_047",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "理解词语",
+      "stemType": "text",
+      "stem": "读到不理解的词语，合适的做法是？",
+      "options": [
+        "联系上下文",
+        "直接跳过全文",
+        "随意猜答案"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“联系上下文”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_048",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "说明方法",
+      "stemType": "text",
+      "stem": "说明文介绍事物时常使用？",
+      "options": [
+        "列数字和举例子",
+        "只写对话",
+        "只写想象"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“列数字和举例子”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_MARIO_049",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "文体特点",
+      "stemType": "text",
+      "stem": "童话故事最常见的特点是？",
+      "options": [
+        "想象丰富",
+        "只能写真人真事",
+        "没有情节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“想象丰富”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_MARIO_050",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "mario"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "语法",
+      "knowledgePoint": "病句修改",
+      "stemType": "text",
+      "stem": "修改病句首先要检查？",
+      "options": [
+        "成分和搭配",
+        "纸张颜色",
+        "段落数量"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“成分和搭配”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_001",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“春风”的“春”读音是？",
+      "options": [
+        "chūn",
+        "cūn",
+        "chōng"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“chūn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_002",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“森林”的“森”读音是？",
+      "options": [
+        "shēn",
+        "sēn",
+        "sēng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“sēn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_003",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“快乐”的“乐”在这里读什么？",
+      "options": [
+        "yuè",
+        "lè",
+        "yào"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“lè”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_004",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“长大”的“长”在这里读什么？",
+      "options": [
+        "cháng",
+        "zhǎng",
+        "zàng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“zhǎng”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_005",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“因为”的“为”在这里读什么？",
+      "options": [
+        "wéi",
+        "wèi",
+        "wěi"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“wèi”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_006",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "已经",
+        "以经",
+        "己经"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“已经”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_007",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "再接再励",
+        "再接再厉",
+        "在接再厉"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“再接再厉”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_008",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "迫不急待",
+        "迫不及待",
+        "迫不几待"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“迫不及待”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_009",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "近义词",
+      "stemType": "text",
+      "stem": "“安静”的近义词是？",
+      "options": [
+        "宁静",
+        "热闹",
+        "急忙"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“宁静”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_010",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "反义词",
+      "stemType": "text",
+      "stem": "“温暖”的反义词是？",
+      "options": [
+        "炎热",
+        "寒冷",
+        "明亮"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“寒冷”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_011",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“守株待兔”告诉我们什么？",
+      "options": [
+        "不能心存侥幸",
+        "做事越快越好",
+        "要天天种树"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不能心存侥幸”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_012",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“画蛇添足”的意思是？",
+      "options": [
+        "做多余的事",
+        "画得很认真",
+        "帮助别人"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做多余的事”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_013",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“井底之蛙”常用来形容？",
+      "options": [
+        "见识短浅",
+        "声音响亮",
+        "行动敏捷"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“见识短浅”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_014",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“亡羊补牢”告诉我们？",
+      "options": [
+        "出错后及时补救",
+        "永远不要养羊",
+        "遇事马上放弃"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“出错后及时补救”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_015",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“胸有成竹”形容？",
+      "options": [
+        "做事前已有把握",
+        "喜欢画竹子",
+        "心里很紧张"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做事前已有把握”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_016",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“坚持不懈”中的“懈”指？",
+      "options": [
+        "松懈",
+        "高兴",
+        "迅速"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“松懈”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_017",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "近义成语",
+      "stemType": "text",
+      "stem": "与“聚精会神”意思相近的是？",
+      "options": [
+        "专心致志",
+        "东张西望",
+        "漫不经心"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“专心致志”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_018",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“雪中送炭”比喻？",
+      "options": [
+        "急需时给予帮助",
+        "冬天运送木炭",
+        "给别人增加麻烦"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“急需时给予帮助”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_019",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“一叶知秋”说明？",
+      "options": [
+        "从细微处看趋势",
+        "叶子只有一片",
+        "秋天没有花"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“从细微处看趋势”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_DEEP_SEA_020",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "传统故事",
+      "stemType": "text",
+      "stem": "“闻鸡起舞”赞扬的是？",
+      "options": [
+        "勤奋进取",
+        "爱听音乐",
+        "善于养鸡"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“勤奋进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_021",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“床前明月光”的下一句是？",
+      "options": [
+        "疑是地上霜",
+        "低头思故乡",
+        "举头望明月"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“疑是地上霜”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_022",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“白日依山尽”的下一句是？",
+      "options": [
+        "黄河入海流",
+        "更上一层楼",
+        "春风吹又生"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“黄河入海流”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_023",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“谁知盘中餐”的下一句是？",
+      "options": [
+        "粒粒皆辛苦",
+        "汗滴禾下土",
+        "处处闻啼鸟"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“粒粒皆辛苦”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_024",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“野火烧不尽”的下一句是？",
+      "options": [
+        "春风吹又生",
+        "草色遥看近却无",
+        "一岁一枯荣"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“春风吹又生”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_025",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“小荷才露尖尖角”的下一句是？",
+      "options": [
+        "早有蜻蜓立上头",
+        "映日荷花别样红",
+        "接天莲叶无穷碧"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“早有蜻蜓立上头”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_026",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“飞流直下三千尺”描写的是？",
+      "options": [
+        "瀑布",
+        "大雪",
+        "长城"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“瀑布”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_027",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“两个黄鹂鸣翠柳”中的“鸣”是？",
+      "options": [
+        "鸣叫",
+        "飞翔",
+        "休息"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“鸣叫”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_028",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "情感理解",
+      "stemType": "text",
+      "stem": "“独在异乡为异客”表达了？",
+      "options": [
+        "思乡之情",
+        "喜爱旅行",
+        "赞美春天"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“思乡之情”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_029",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“欲穷千里目，更上一层楼”鼓励我们？",
+      "options": [
+        "不断进取",
+        "早点回家",
+        "保护眼睛"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不断进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_030",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "文学常识",
+      "stemType": "text",
+      "stem": "《静夜思》的作者是？",
+      "options": [
+        "李白",
+        "杜甫",
+        "白居易"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“李白”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_031",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "拟人",
+      "stemType": "text",
+      "stem": "“小鸟在枝头唱歌”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "排比"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“拟人”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_032",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "比喻",
+      "stemType": "text",
+      "stem": "“弯弯的月亮像小船”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "反问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“比喻”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_033",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "修辞",
+      "knowledgePoint": "夸张",
+      "stemType": "text",
+      "stem": "“桂子花开，十里飘香”使用了？",
+      "options": [
+        "夸张",
+        "对偶",
+        "设问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“夸张”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_034",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句式",
+      "knowledgePoint": "反问句",
+      "stemType": "text",
+      "stem": "“难道我们不该珍惜时间吗？”是？",
+      "options": [
+        "反问句",
+        "陈述句",
+        "祈使句"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“反问句”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_035",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "标点",
+      "knowledgePoint": "引号",
+      "stemType": "text",
+      "stem": "下面标点使用正确的是？",
+      "options": [
+        "妈妈说：“快回家。”",
+        "妈妈说，“快回家”。",
+        "妈妈说：“快回家”。"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“妈妈说：“快回家。””。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_036",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "感叹号",
+      "stemType": "text",
+      "stem": "表示强烈感情的句末标点是？",
+      "options": [
+        "句号",
+        "问号",
+        "感叹号"
+      ],
+      "correctIndex": 2,
+      "explain": "正确答案是“感叹号”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_037",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "顿号",
+      "stemType": "text",
+      "stem": "“苹果、梨、桃子”中的顿号表示？",
+      "options": [
+        "并列词语停顿",
+        "一句话结束",
+        "提出问题"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“并列词语停顿”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_038",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“因为下雨，所以比赛延期。”是什么关系？",
+      "options": [
+        "因果关系",
+        "转折关系",
+        "并列关系"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“因果关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_039",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“虽然很累，但是他没有停下。”是什么关系？",
+      "options": [
+        "递进关系",
+        "转折关系",
+        "选择关系"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“转折关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_040",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "语法",
+      "knowledgePoint": "的地得",
+      "stemType": "text",
+      "stem": "“他跑得像风一样快”中“得”的作用是？",
+      "options": [
+        "连接补语",
+        "表示拥有",
+        "表示过去"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“连接补语”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_DEEP_SEA_041",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "观察顺序",
+      "stemType": "text",
+      "stem": "写景文章通常要注意什么？",
+      "options": [
+        "观察顺序",
+        "只写人物姓名",
+        "省略所有细节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“观察顺序”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_042",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "人物描写",
+      "stemType": "text",
+      "stem": "描写人物外貌可以写？",
+      "options": [
+        "神态和穿着",
+        "天气预报",
+        "数学公式"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“神态和穿着”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_043",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "动作描写",
+      "stemType": "text",
+      "stem": "让动作描写更具体，可以多用？",
+      "options": [
+        "准确的动词",
+        "重复的句号",
+        "无关的数字"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“准确的动词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_044",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "写作",
+      "knowledgePoint": "开头方法",
+      "stemType": "text",
+      "stem": "文章开头直接点明主题叫？",
+      "options": [
+        "开门见山",
+        "画蛇添足",
+        "自相矛盾"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“开门见山”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_045",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "叙事顺序",
+      "stemType": "text",
+      "stem": "按事情发展顺序写，通常先写？",
+      "options": [
+        "起因",
+        "结果",
+        "感想"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“起因”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_046",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "概括段意",
+      "stemType": "text",
+      "stem": "概括一段话主要意思，要抓住？",
+      "options": [
+        "关键句和关键词",
+        "每个标点",
+        "字数多少"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“关键句和关键词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_047",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "理解词语",
+      "stemType": "text",
+      "stem": "读到不理解的词语，合适的做法是？",
+      "options": [
+        "联系上下文",
+        "直接跳过全文",
+        "随意猜答案"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“联系上下文”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_048",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "说明方法",
+      "stemType": "text",
+      "stem": "说明文介绍事物时常使用？",
+      "options": [
+        "列数字和举例子",
+        "只写对话",
+        "只写想象"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“列数字和举例子”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_DEEP_SEA_049",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "文体特点",
+      "stemType": "text",
+      "stem": "童话故事最常见的特点是？",
+      "options": [
+        "想象丰富",
+        "只能写真人真事",
+        "没有情节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“想象丰富”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_DEEP_SEA_050",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "deep-sea"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "语法",
+      "knowledgePoint": "病句修改",
+      "stemType": "text",
+      "stem": "修改病句首先要检查？",
+      "options": [
+        "成分和搭配",
+        "纸张颜色",
+        "段落数量"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“成分和搭配”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_001",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“春风”的“春”读音是？",
+      "options": [
+        "chūn",
+        "cūn",
+        "chōng"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“chūn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_002",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“森林”的“森”读音是？",
+      "options": [
+        "shēn",
+        "sēn",
+        "sēng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“sēn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_003",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“快乐”的“乐”在这里读什么？",
+      "options": [
+        "yuè",
+        "lè",
+        "yào"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“lè”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_004",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“长大”的“长”在这里读什么？",
+      "options": [
+        "cháng",
+        "zhǎng",
+        "zàng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“zhǎng”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_005",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“因为”的“为”在这里读什么？",
+      "options": [
+        "wéi",
+        "wèi",
+        "wěi"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“wèi”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_006",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "已经",
+        "以经",
+        "己经"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“已经”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_007",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "再接再励",
+        "再接再厉",
+        "在接再厉"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“再接再厉”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_008",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "迫不急待",
+        "迫不及待",
+        "迫不几待"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“迫不及待”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_009",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "近义词",
+      "stemType": "text",
+      "stem": "“安静”的近义词是？",
+      "options": [
+        "宁静",
+        "热闹",
+        "急忙"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“宁静”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_010",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "反义词",
+      "stemType": "text",
+      "stem": "“温暖”的反义词是？",
+      "options": [
+        "炎热",
+        "寒冷",
+        "明亮"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“寒冷”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_011",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“守株待兔”告诉我们什么？",
+      "options": [
+        "不能心存侥幸",
+        "做事越快越好",
+        "要天天种树"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不能心存侥幸”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_012",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“画蛇添足”的意思是？",
+      "options": [
+        "做多余的事",
+        "画得很认真",
+        "帮助别人"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做多余的事”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_013",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“井底之蛙”常用来形容？",
+      "options": [
+        "见识短浅",
+        "声音响亮",
+        "行动敏捷"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“见识短浅”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_014",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“亡羊补牢”告诉我们？",
+      "options": [
+        "出错后及时补救",
+        "永远不要养羊",
+        "遇事马上放弃"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“出错后及时补救”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_015",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“胸有成竹”形容？",
+      "options": [
+        "做事前已有把握",
+        "喜欢画竹子",
+        "心里很紧张"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做事前已有把握”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_016",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“坚持不懈”中的“懈”指？",
+      "options": [
+        "松懈",
+        "高兴",
+        "迅速"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“松懈”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_017",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "近义成语",
+      "stemType": "text",
+      "stem": "与“聚精会神”意思相近的是？",
+      "options": [
+        "专心致志",
+        "东张西望",
+        "漫不经心"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“专心致志”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_018",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“雪中送炭”比喻？",
+      "options": [
+        "急需时给予帮助",
+        "冬天运送木炭",
+        "给别人增加麻烦"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“急需时给予帮助”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_019",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“一叶知秋”说明？",
+      "options": [
+        "从细微处看趋势",
+        "叶子只有一片",
+        "秋天没有花"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“从细微处看趋势”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_SPACE_020",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "传统故事",
+      "stemType": "text",
+      "stem": "“闻鸡起舞”赞扬的是？",
+      "options": [
+        "勤奋进取",
+        "爱听音乐",
+        "善于养鸡"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“勤奋进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_021",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“床前明月光”的下一句是？",
+      "options": [
+        "疑是地上霜",
+        "低头思故乡",
+        "举头望明月"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“疑是地上霜”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_022",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“白日依山尽”的下一句是？",
+      "options": [
+        "黄河入海流",
+        "更上一层楼",
+        "春风吹又生"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“黄河入海流”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_023",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“谁知盘中餐”的下一句是？",
+      "options": [
+        "粒粒皆辛苦",
+        "汗滴禾下土",
+        "处处闻啼鸟"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“粒粒皆辛苦”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_024",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“野火烧不尽”的下一句是？",
+      "options": [
+        "春风吹又生",
+        "草色遥看近却无",
+        "一岁一枯荣"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“春风吹又生”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_025",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“小荷才露尖尖角”的下一句是？",
+      "options": [
+        "早有蜻蜓立上头",
+        "映日荷花别样红",
+        "接天莲叶无穷碧"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“早有蜻蜓立上头”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_026",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“飞流直下三千尺”描写的是？",
+      "options": [
+        "瀑布",
+        "大雪",
+        "长城"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“瀑布”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_027",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“两个黄鹂鸣翠柳”中的“鸣”是？",
+      "options": [
+        "鸣叫",
+        "飞翔",
+        "休息"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“鸣叫”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_028",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "情感理解",
+      "stemType": "text",
+      "stem": "“独在异乡为异客”表达了？",
+      "options": [
+        "思乡之情",
+        "喜爱旅行",
+        "赞美春天"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“思乡之情”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_029",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“欲穷千里目，更上一层楼”鼓励我们？",
+      "options": [
+        "不断进取",
+        "早点回家",
+        "保护眼睛"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不断进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_030",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "文学常识",
+      "stemType": "text",
+      "stem": "《静夜思》的作者是？",
+      "options": [
+        "李白",
+        "杜甫",
+        "白居易"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“李白”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_031",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "拟人",
+      "stemType": "text",
+      "stem": "“小鸟在枝头唱歌”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "排比"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“拟人”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_032",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "比喻",
+      "stemType": "text",
+      "stem": "“弯弯的月亮像小船”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "反问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“比喻”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_033",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "修辞",
+      "knowledgePoint": "夸张",
+      "stemType": "text",
+      "stem": "“桂子花开，十里飘香”使用了？",
+      "options": [
+        "夸张",
+        "对偶",
+        "设问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“夸张”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_034",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句式",
+      "knowledgePoint": "反问句",
+      "stemType": "text",
+      "stem": "“难道我们不该珍惜时间吗？”是？",
+      "options": [
+        "反问句",
+        "陈述句",
+        "祈使句"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“反问句”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_035",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "标点",
+      "knowledgePoint": "引号",
+      "stemType": "text",
+      "stem": "下面标点使用正确的是？",
+      "options": [
+        "妈妈说：“快回家。”",
+        "妈妈说，“快回家”。",
+        "妈妈说：“快回家”。"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“妈妈说：“快回家。””。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_036",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "感叹号",
+      "stemType": "text",
+      "stem": "表示强烈感情的句末标点是？",
+      "options": [
+        "句号",
+        "问号",
+        "感叹号"
+      ],
+      "correctIndex": 2,
+      "explain": "正确答案是“感叹号”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_037",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "顿号",
+      "stemType": "text",
+      "stem": "“苹果、梨、桃子”中的顿号表示？",
+      "options": [
+        "并列词语停顿",
+        "一句话结束",
+        "提出问题"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“并列词语停顿”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_038",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“因为下雨，所以比赛延期。”是什么关系？",
+      "options": [
+        "因果关系",
+        "转折关系",
+        "并列关系"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“因果关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_039",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“虽然很累，但是他没有停下。”是什么关系？",
+      "options": [
+        "递进关系",
+        "转折关系",
+        "选择关系"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“转折关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_040",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "语法",
+      "knowledgePoint": "的地得",
+      "stemType": "text",
+      "stem": "“他跑得像风一样快”中“得”的作用是？",
+      "options": [
+        "连接补语",
+        "表示拥有",
+        "表示过去"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“连接补语”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_SPACE_041",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "观察顺序",
+      "stemType": "text",
+      "stem": "写景文章通常要注意什么？",
+      "options": [
+        "观察顺序",
+        "只写人物姓名",
+        "省略所有细节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“观察顺序”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_042",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "人物描写",
+      "stemType": "text",
+      "stem": "描写人物外貌可以写？",
+      "options": [
+        "神态和穿着",
+        "天气预报",
+        "数学公式"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“神态和穿着”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_043",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "动作描写",
+      "stemType": "text",
+      "stem": "让动作描写更具体，可以多用？",
+      "options": [
+        "准确的动词",
+        "重复的句号",
+        "无关的数字"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“准确的动词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_044",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "写作",
+      "knowledgePoint": "开头方法",
+      "stemType": "text",
+      "stem": "文章开头直接点明主题叫？",
+      "options": [
+        "开门见山",
+        "画蛇添足",
+        "自相矛盾"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“开门见山”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_045",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "叙事顺序",
+      "stemType": "text",
+      "stem": "按事情发展顺序写，通常先写？",
+      "options": [
+        "起因",
+        "结果",
+        "感想"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“起因”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_046",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "概括段意",
+      "stemType": "text",
+      "stem": "概括一段话主要意思，要抓住？",
+      "options": [
+        "关键句和关键词",
+        "每个标点",
+        "字数多少"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“关键句和关键词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_047",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "理解词语",
+      "stemType": "text",
+      "stem": "读到不理解的词语，合适的做法是？",
+      "options": [
+        "联系上下文",
+        "直接跳过全文",
+        "随意猜答案"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“联系上下文”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_048",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "说明方法",
+      "stemType": "text",
+      "stem": "说明文介绍事物时常使用？",
+      "options": [
+        "列数字和举例子",
+        "只写对话",
+        "只写想象"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“列数字和举例子”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_SPACE_049",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "文体特点",
+      "stemType": "text",
+      "stem": "童话故事最常见的特点是？",
+      "options": [
+        "想象丰富",
+        "只能写真人真事",
+        "没有情节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“想象丰富”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_SPACE_050",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "space"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "语法",
+      "knowledgePoint": "病句修改",
+      "stemType": "text",
+      "stem": "修改病句首先要检查？",
+      "options": [
+        "成分和搭配",
+        "纸张颜色",
+        "段落数量"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“成分和搭配”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_001",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“春风”的“春”读音是？",
+      "options": [
+        "chūn",
+        "cūn",
+        "chōng"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“chūn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_002",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“森林”的“森”读音是？",
+      "options": [
+        "shēn",
+        "sēn",
+        "sēng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“sēn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_003",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“快乐”的“乐”在这里读什么？",
+      "options": [
+        "yuè",
+        "lè",
+        "yào"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“lè”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_004",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“长大”的“长”在这里读什么？",
+      "options": [
+        "cháng",
+        "zhǎng",
+        "zàng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“zhǎng”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_005",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“因为”的“为”在这里读什么？",
+      "options": [
+        "wéi",
+        "wèi",
+        "wěi"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“wèi”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_006",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "已经",
+        "以经",
+        "己经"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“已经”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_007",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "再接再励",
+        "再接再厉",
+        "在接再厉"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“再接再厉”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_008",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "迫不急待",
+        "迫不及待",
+        "迫不几待"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“迫不及待”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_009",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "近义词",
+      "stemType": "text",
+      "stem": "“安静”的近义词是？",
+      "options": [
+        "宁静",
+        "热闹",
+        "急忙"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“宁静”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_010",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "反义词",
+      "stemType": "text",
+      "stem": "“温暖”的反义词是？",
+      "options": [
+        "炎热",
+        "寒冷",
+        "明亮"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“寒冷”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_011",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“守株待兔”告诉我们什么？",
+      "options": [
+        "不能心存侥幸",
+        "做事越快越好",
+        "要天天种树"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不能心存侥幸”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_012",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“画蛇添足”的意思是？",
+      "options": [
+        "做多余的事",
+        "画得很认真",
+        "帮助别人"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做多余的事”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_013",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“井底之蛙”常用来形容？",
+      "options": [
+        "见识短浅",
+        "声音响亮",
+        "行动敏捷"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“见识短浅”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_014",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“亡羊补牢”告诉我们？",
+      "options": [
+        "出错后及时补救",
+        "永远不要养羊",
+        "遇事马上放弃"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“出错后及时补救”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_015",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“胸有成竹”形容？",
+      "options": [
+        "做事前已有把握",
+        "喜欢画竹子",
+        "心里很紧张"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做事前已有把握”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_016",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“坚持不懈”中的“懈”指？",
+      "options": [
+        "松懈",
+        "高兴",
+        "迅速"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“松懈”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_017",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "近义成语",
+      "stemType": "text",
+      "stem": "与“聚精会神”意思相近的是？",
+      "options": [
+        "专心致志",
+        "东张西望",
+        "漫不经心"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“专心致志”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_018",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“雪中送炭”比喻？",
+      "options": [
+        "急需时给予帮助",
+        "冬天运送木炭",
+        "给别人增加麻烦"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“急需时给予帮助”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_019",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“一叶知秋”说明？",
+      "options": [
+        "从细微处看趋势",
+        "叶子只有一片",
+        "秋天没有花"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“从细微处看趋势”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_FOOD_020",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "传统故事",
+      "stemType": "text",
+      "stem": "“闻鸡起舞”赞扬的是？",
+      "options": [
+        "勤奋进取",
+        "爱听音乐",
+        "善于养鸡"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“勤奋进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_021",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“床前明月光”的下一句是？",
+      "options": [
+        "疑是地上霜",
+        "低头思故乡",
+        "举头望明月"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“疑是地上霜”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_022",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“白日依山尽”的下一句是？",
+      "options": [
+        "黄河入海流",
+        "更上一层楼",
+        "春风吹又生"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“黄河入海流”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_023",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“谁知盘中餐”的下一句是？",
+      "options": [
+        "粒粒皆辛苦",
+        "汗滴禾下土",
+        "处处闻啼鸟"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“粒粒皆辛苦”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_024",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“野火烧不尽”的下一句是？",
+      "options": [
+        "春风吹又生",
+        "草色遥看近却无",
+        "一岁一枯荣"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“春风吹又生”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_025",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“小荷才露尖尖角”的下一句是？",
+      "options": [
+        "早有蜻蜓立上头",
+        "映日荷花别样红",
+        "接天莲叶无穷碧"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“早有蜻蜓立上头”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_026",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“飞流直下三千尺”描写的是？",
+      "options": [
+        "瀑布",
+        "大雪",
+        "长城"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“瀑布”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_027",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“两个黄鹂鸣翠柳”中的“鸣”是？",
+      "options": [
+        "鸣叫",
+        "飞翔",
+        "休息"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“鸣叫”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_028",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "情感理解",
+      "stemType": "text",
+      "stem": "“独在异乡为异客”表达了？",
+      "options": [
+        "思乡之情",
+        "喜爱旅行",
+        "赞美春天"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“思乡之情”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_029",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“欲穷千里目，更上一层楼”鼓励我们？",
+      "options": [
+        "不断进取",
+        "早点回家",
+        "保护眼睛"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不断进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_030",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "文学常识",
+      "stemType": "text",
+      "stem": "《静夜思》的作者是？",
+      "options": [
+        "李白",
+        "杜甫",
+        "白居易"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“李白”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_031",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "拟人",
+      "stemType": "text",
+      "stem": "“小鸟在枝头唱歌”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "排比"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“拟人”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_032",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "比喻",
+      "stemType": "text",
+      "stem": "“弯弯的月亮像小船”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "反问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“比喻”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_033",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "修辞",
+      "knowledgePoint": "夸张",
+      "stemType": "text",
+      "stem": "“桂子花开，十里飘香”使用了？",
+      "options": [
+        "夸张",
+        "对偶",
+        "设问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“夸张”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_034",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句式",
+      "knowledgePoint": "反问句",
+      "stemType": "text",
+      "stem": "“难道我们不该珍惜时间吗？”是？",
+      "options": [
+        "反问句",
+        "陈述句",
+        "祈使句"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“反问句”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_035",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "标点",
+      "knowledgePoint": "引号",
+      "stemType": "text",
+      "stem": "下面标点使用正确的是？",
+      "options": [
+        "妈妈说：“快回家。”",
+        "妈妈说，“快回家”。",
+        "妈妈说：“快回家”。"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“妈妈说：“快回家。””。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_036",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "感叹号",
+      "stemType": "text",
+      "stem": "表示强烈感情的句末标点是？",
+      "options": [
+        "句号",
+        "问号",
+        "感叹号"
+      ],
+      "correctIndex": 2,
+      "explain": "正确答案是“感叹号”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_037",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "顿号",
+      "stemType": "text",
+      "stem": "“苹果、梨、桃子”中的顿号表示？",
+      "options": [
+        "并列词语停顿",
+        "一句话结束",
+        "提出问题"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“并列词语停顿”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_038",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“因为下雨，所以比赛延期。”是什么关系？",
+      "options": [
+        "因果关系",
+        "转折关系",
+        "并列关系"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“因果关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_039",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“虽然很累，但是他没有停下。”是什么关系？",
+      "options": [
+        "递进关系",
+        "转折关系",
+        "选择关系"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“转折关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_040",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "语法",
+      "knowledgePoint": "的地得",
+      "stemType": "text",
+      "stem": "“他跑得像风一样快”中“得”的作用是？",
+      "options": [
+        "连接补语",
+        "表示拥有",
+        "表示过去"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“连接补语”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_FOOD_041",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "观察顺序",
+      "stemType": "text",
+      "stem": "写景文章通常要注意什么？",
+      "options": [
+        "观察顺序",
+        "只写人物姓名",
+        "省略所有细节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“观察顺序”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_042",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "人物描写",
+      "stemType": "text",
+      "stem": "描写人物外貌可以写？",
+      "options": [
+        "神态和穿着",
+        "天气预报",
+        "数学公式"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“神态和穿着”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_043",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "动作描写",
+      "stemType": "text",
+      "stem": "让动作描写更具体，可以多用？",
+      "options": [
+        "准确的动词",
+        "重复的句号",
+        "无关的数字"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“准确的动词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_044",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "写作",
+      "knowledgePoint": "开头方法",
+      "stemType": "text",
+      "stem": "文章开头直接点明主题叫？",
+      "options": [
+        "开门见山",
+        "画蛇添足",
+        "自相矛盾"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“开门见山”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_045",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "叙事顺序",
+      "stemType": "text",
+      "stem": "按事情发展顺序写，通常先写？",
+      "options": [
+        "起因",
+        "结果",
+        "感想"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“起因”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_046",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "概括段意",
+      "stemType": "text",
+      "stem": "概括一段话主要意思，要抓住？",
+      "options": [
+        "关键句和关键词",
+        "每个标点",
+        "字数多少"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“关键句和关键词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_047",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "理解词语",
+      "stemType": "text",
+      "stem": "读到不理解的词语，合适的做法是？",
+      "options": [
+        "联系上下文",
+        "直接跳过全文",
+        "随意猜答案"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“联系上下文”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_048",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "说明方法",
+      "stemType": "text",
+      "stem": "说明文介绍事物时常使用？",
+      "options": [
+        "列数字和举例子",
+        "只写对话",
+        "只写想象"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“列数字和举例子”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_FOOD_049",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "文体特点",
+      "stemType": "text",
+      "stem": "童话故事最常见的特点是？",
+      "options": [
+        "想象丰富",
+        "只能写真人真事",
+        "没有情节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“想象丰富”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_FOOD_050",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "food"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "语法",
+      "knowledgePoint": "病句修改",
+      "stemType": "text",
+      "stem": "修改病句首先要检查？",
+      "options": [
+        "成分和搭配",
+        "纸张颜色",
+        "段落数量"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“成分和搭配”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_001",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“春风”的“春”读音是？",
+      "options": [
+        "chūn",
+        "cūn",
+        "chōng"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“chūn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_002",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "拼音",
+      "stemType": "text",
+      "stem": "“森林”的“森”读音是？",
+      "options": [
+        "shēn",
+        "sēn",
+        "sēng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“sēn”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_003",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“快乐”的“乐”在这里读什么？",
+      "options": [
+        "yuè",
+        "lè",
+        "yào"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“lè”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_004",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“长大”的“长”在这里读什么？",
+      "options": [
+        "cháng",
+        "zhǎng",
+        "zàng"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“zhǎng”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_005",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "多音字",
+      "stemType": "text",
+      "stem": "“因为”的“为”在这里读什么？",
+      "options": [
+        "wéi",
+        "wèi",
+        "wěi"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“wèi”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_006",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "已经",
+        "以经",
+        "己经"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“已经”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_007",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "再接再励",
+        "再接再厉",
+        "在接再厉"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“再接再厉”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_008",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "字词",
+      "knowledgePoint": "易错字",
+      "stemType": "text",
+      "stem": "下列词语书写正确的是？",
+      "options": [
+        "迫不急待",
+        "迫不及待",
+        "迫不几待"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“迫不及待”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_009",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "近义词",
+      "stemType": "text",
+      "stem": "“安静”的近义词是？",
+      "options": [
+        "宁静",
+        "热闹",
+        "急忙"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“宁静”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_010",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "字词",
+      "knowledgePoint": "反义词",
+      "stemType": "text",
+      "stem": "“温暖”的反义词是？",
+      "options": [
+        "炎热",
+        "寒冷",
+        "明亮"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“寒冷”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_011",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“守株待兔”告诉我们什么？",
+      "options": [
+        "不能心存侥幸",
+        "做事越快越好",
+        "要天天种树"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不能心存侥幸”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_012",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“画蛇添足”的意思是？",
+      "options": [
+        "做多余的事",
+        "画得很认真",
+        "帮助别人"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做多余的事”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_013",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“井底之蛙”常用来形容？",
+      "options": [
+        "见识短浅",
+        "声音响亮",
+        "行动敏捷"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“见识短浅”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_014",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“亡羊补牢”告诉我们？",
+      "options": [
+        "出错后及时补救",
+        "永远不要养羊",
+        "遇事马上放弃"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“出错后及时补救”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_015",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语理解",
+      "stemType": "text",
+      "stem": "“胸有成竹”形容？",
+      "options": [
+        "做事前已有把握",
+        "喜欢画竹子",
+        "心里很紧张"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“做事前已有把握”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_016",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“坚持不懈”中的“懈”指？",
+      "options": [
+        "松懈",
+        "高兴",
+        "迅速"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“松懈”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_017",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "成语",
+      "knowledgePoint": "近义成语",
+      "stemType": "text",
+      "stem": "与“聚精会神”意思相近的是？",
+      "options": [
+        "专心致志",
+        "东张西望",
+        "漫不经心"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“专心致志”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_018",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“雪中送炭”比喻？",
+      "options": [
+        "急需时给予帮助",
+        "冬天运送木炭",
+        "给别人增加麻烦"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“急需时给予帮助”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_019",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "成语",
+      "knowledgePoint": "成语寓意",
+      "stemType": "text",
+      "stem": "“一叶知秋”说明？",
+      "options": [
+        "从细微处看趋势",
+        "叶子只有一片",
+        "秋天没有花"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“从细微处看趋势”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_POETRY_020",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "成语",
+      "knowledgePoint": "传统故事",
+      "stemType": "text",
+      "stem": "“闻鸡起舞”赞扬的是？",
+      "options": [
+        "勤奋进取",
+        "爱听音乐",
+        "善于养鸡"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“勤奋进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_021",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“床前明月光”的下一句是？",
+      "options": [
+        "疑是地上霜",
+        "低头思故乡",
+        "举头望明月"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“疑是地上霜”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_022",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“白日依山尽”的下一句是？",
+      "options": [
+        "黄河入海流",
+        "更上一层楼",
+        "春风吹又生"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“黄河入海流”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_023",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“谁知盘中餐”的下一句是？",
+      "options": [
+        "粒粒皆辛苦",
+        "汗滴禾下土",
+        "处处闻啼鸟"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“粒粒皆辛苦”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_024",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“野火烧不尽”的下一句是？",
+      "options": [
+        "春风吹又生",
+        "草色遥看近却无",
+        "一岁一枯荣"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“春风吹又生”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_025",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗句衔接",
+      "stemType": "text",
+      "stem": "“小荷才露尖尖角”的下一句是？",
+      "options": [
+        "早有蜻蜓立上头",
+        "映日荷花别样红",
+        "接天莲叶无穷碧"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“早有蜻蜓立上头”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_026",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“飞流直下三千尺”描写的是？",
+      "options": [
+        "瀑布",
+        "大雪",
+        "长城"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“瀑布”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_027",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "字义",
+      "stemType": "text",
+      "stem": "“两个黄鹂鸣翠柳”中的“鸣”是？",
+      "options": [
+        "鸣叫",
+        "飞翔",
+        "休息"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“鸣叫”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_028",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "情感理解",
+      "stemType": "text",
+      "stem": "“独在异乡为异客”表达了？",
+      "options": [
+        "思乡之情",
+        "喜爱旅行",
+        "赞美春天"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“思乡之情”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_029",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "古诗",
+      "knowledgePoint": "诗意理解",
+      "stemType": "text",
+      "stem": "“欲穷千里目，更上一层楼”鼓励我们？",
+      "options": [
+        "不断进取",
+        "早点回家",
+        "保护眼睛"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“不断进取”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_030",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "古诗",
+      "knowledgePoint": "文学常识",
+      "stemType": "text",
+      "stem": "《静夜思》的作者是？",
+      "options": [
+        "李白",
+        "杜甫",
+        "白居易"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“李白”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_031",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "拟人",
+      "stemType": "text",
+      "stem": "“小鸟在枝头唱歌”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "排比"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“拟人”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_032",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "修辞",
+      "knowledgePoint": "比喻",
+      "stemType": "text",
+      "stem": "“弯弯的月亮像小船”使用了什么修辞？",
+      "options": [
+        "比喻",
+        "拟人",
+        "反问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“比喻”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_033",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "修辞",
+      "knowledgePoint": "夸张",
+      "stemType": "text",
+      "stem": "“桂子花开，十里飘香”使用了？",
+      "options": [
+        "夸张",
+        "对偶",
+        "设问"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“夸张”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_034",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句式",
+      "knowledgePoint": "反问句",
+      "stemType": "text",
+      "stem": "“难道我们不该珍惜时间吗？”是？",
+      "options": [
+        "反问句",
+        "陈述句",
+        "祈使句"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“反问句”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_035",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "标点",
+      "knowledgePoint": "引号",
+      "stemType": "text",
+      "stem": "下面标点使用正确的是？",
+      "options": [
+        "妈妈说：“快回家。”",
+        "妈妈说，“快回家”。",
+        "妈妈说：“快回家”。"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“妈妈说：“快回家。””。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_036",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "感叹号",
+      "stemType": "text",
+      "stem": "表示强烈感情的句末标点是？",
+      "options": [
+        "句号",
+        "问号",
+        "感叹号"
+      ],
+      "correctIndex": 2,
+      "explain": "正确答案是“感叹号”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_037",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "标点",
+      "knowledgePoint": "顿号",
+      "stemType": "text",
+      "stem": "“苹果、梨、桃子”中的顿号表示？",
+      "options": [
+        "并列词语停顿",
+        "一句话结束",
+        "提出问题"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“并列词语停顿”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_038",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“因为下雨，所以比赛延期。”是什么关系？",
+      "options": [
+        "因果关系",
+        "转折关系",
+        "并列关系"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“因果关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_039",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "句子",
+      "knowledgePoint": "关联词",
+      "stemType": "text",
+      "stem": "“虽然很累，但是他没有停下。”是什么关系？",
+      "options": [
+        "递进关系",
+        "转折关系",
+        "选择关系"
+      ],
+      "correctIndex": 1,
+      "explain": "正确答案是“转折关系”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_040",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "challenge",
+      "type": "语法",
+      "knowledgePoint": "的地得",
+      "stemType": "text",
+      "stem": "“他跑得像风一样快”中“得”的作用是？",
+      "options": [
+        "连接补语",
+        "表示拥有",
+        "表示过去"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“连接补语”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 2
+    },
+    {
+      "id": "TTYL_POETRY_041",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "观察顺序",
+      "stemType": "text",
+      "stem": "写景文章通常要注意什么？",
+      "options": [
+        "观察顺序",
+        "只写人物姓名",
+        "省略所有细节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“观察顺序”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_042",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "人物描写",
+      "stemType": "text",
+      "stem": "描写人物外貌可以写？",
+      "options": [
+        "神态和穿着",
+        "天气预报",
+        "数学公式"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“神态和穿着”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_043",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "动作描写",
+      "stemType": "text",
+      "stem": "让动作描写更具体，可以多用？",
+      "options": [
+        "准确的动词",
+        "重复的句号",
+        "无关的数字"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“准确的动词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_044",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "写作",
+      "knowledgePoint": "开头方法",
+      "stemType": "text",
+      "stem": "文章开头直接点明主题叫？",
+      "options": [
+        "开门见山",
+        "画蛇添足",
+        "自相矛盾"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“开门见山”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_045",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "写作",
+      "knowledgePoint": "叙事顺序",
+      "stemType": "text",
+      "stem": "按事情发展顺序写，通常先写？",
+      "options": [
+        "起因",
+        "结果",
+        "感想"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“起因”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_046",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "概括段意",
+      "stemType": "text",
+      "stem": "概括一段话主要意思，要抓住？",
+      "options": [
+        "关键句和关键词",
+        "每个标点",
+        "字数多少"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“关键句和关键词”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_047",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "理解词语",
+      "stemType": "text",
+      "stem": "读到不理解的词语，合适的做法是？",
+      "options": [
+        "联系上下文",
+        "直接跳过全文",
+        "随意猜答案"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“联系上下文”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_048",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "阅读",
+      "knowledgePoint": "说明方法",
+      "stemType": "text",
+      "stem": "说明文介绍事物时常使用？",
+      "options": [
+        "列数字和举例子",
+        "只写对话",
+        "只写想象"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“列数字和举例子”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    },
+    {
+      "id": "TTYL_POETRY_049",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "basic",
+      "type": "阅读",
+      "knowledgePoint": "文体特点",
+      "stemType": "text",
+      "stem": "童话故事最常见的特点是？",
+      "options": [
+        "想象丰富",
+        "只能写真人真事",
+        "没有情节"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“想象丰富”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 10
+    },
+    {
+      "id": "TTYL_POETRY_050",
+      "packId": "20260712_v3",
+      "games": [
+        "reading-jumper"
+      ],
+      "scenes": [
+        "poetry"
+      ],
+      "grade": "ALL",
+      "term": "ALL",
+      "difficulty": "advanced",
+      "type": "语法",
+      "knowledgePoint": "病句修改",
+      "stemType": "text",
+      "stem": "修改病句首先要检查？",
+      "options": [
+        "成分和搭配",
+        "纸张颜色",
+        "段落数量"
+      ],
+      "correctIndex": 0,
+      "explain": "正确答案是“成分和搭配”。",
+      "correctFeedback": "答对了，继续向下一关前进！",
+      "wrongFeedback": "别着急，看看正确答案再继续。",
+      "source": "小学语文通用知识",
+      "enabled": true,
+      "weight": 4
+    }
+  ]
+}

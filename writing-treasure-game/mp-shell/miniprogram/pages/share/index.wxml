@@ -1,0 +1,12 @@
+<view class="share" bindtap="back">
+  <view class="share__card" catchtap="noop">
+    <text class="share__title">{{title}}</text>
+    <text class="share__hint">发送给好友，一起来挑战</text>
+    <view class="share__actions">
+      <button class="share__button share__button--primary" open-type="share">
+        发送给朋友
+      </button>
+      <button class="share__button" bindtap="back">返回游戏</button>
+    </view>
+  </view>
+</view>

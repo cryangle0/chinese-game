@@ -1,0 +1,21 @@
+name: release-check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: [self-hosted, Windows, cocos-3.8.8]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run check:release:technical
+        env:
+          COCOS_CREATOR: ${{ vars.COCOS_CREATOR }}

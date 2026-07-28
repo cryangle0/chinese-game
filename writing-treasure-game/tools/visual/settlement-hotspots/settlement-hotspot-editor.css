@@ -1,0 +1,196 @@
+:root {
+  color-scheme: dark;
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: #11151c;
+  color: #e9edf5;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 1120px; min-height: 100vh; overflow: hidden; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+#root { height: 100vh; }
+.app {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  height: 100vh;
+  background: #11151c;
+}
+.workspace {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: 44px minmax(0, 1fr);
+  overflow: hidden;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  border-bottom: 1px solid #2d3542;
+  background: #171d26;
+}
+.toolbar button,
+.sidebar button {
+  border: 1px solid #465164;
+  border-radius: 7px;
+  padding: 6px 10px;
+  background: #242c38;
+  color: #dbe2ed;
+}
+.sidebar .primary {
+  border: 0;
+  background: #2e86ef;
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 14px;
+}
+.cursor {
+  margin-left: auto;
+  color: #7f8a9b;
+  font-variant-numeric: tabular-nums;
+}
+.frame-shell {
+  align-self: center;
+  justify-self: center;
+  position: relative;
+  width: min(calc(100vw - 400px), calc(177.777vh - 78.22px));
+  aspect-ratio: 16 / 9;
+}
+.frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #080b10;
+  touch-action: none;
+  user-select: none;
+}
+.reference {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+.grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(95, 176, 255, .14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 176, 255, .14) 1px, transparent 1px);
+  background-size: calc(100% / 18) calc(100% / 10.125);
+}
+.cross-x {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed rgba(255, 221, 86, .45);
+  pointer-events: none;
+}
+.cross-y {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed rgba(255, 221, 86, .45);
+  pointer-events: none;
+}
+.hotspot {
+  position: absolute;
+  border: 2px solid #55aaff;
+  cursor: move;
+}
+.hotspot.selected {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .55);
+  z-index: 3;
+}
+.hotspot-label {
+  position: absolute;
+  left: 0;
+  top: -22px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(15, 24, 36, .92);
+  color: #fff;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.resize {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  right: -8px;
+  bottom: -8px;
+  border: 2px solid #fff;
+  border-radius: 3px;
+  background: #2e86ef;
+  cursor: nwse-resize;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  overflow: auto;
+  border-left: 1px solid #2d3542;
+  background: #171d26;
+}
+.panel-title { font-size: 18px; font-weight: 800; color: #fff; }
+.panel-subtitle { margin-top: 4px; font-weight: 700; color: #9dc8ff; }
+.help { color: #8e9aab; font-size: 12px; line-height: 1.55; }
+.control {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 8px;
+  align-items: center;
+  color: #bdc7d5;
+  font-size: 13px;
+}
+.control input[type="number"] {
+  width: 100%;
+  border: 1px solid #3d4858;
+  border-radius: 6px;
+  padding: 6px 7px;
+  background: #0f141b;
+  color: #e9edf5;
+}
+.list {
+  display: grid;
+  gap: 6px;
+  max-height: 280px;
+  overflow: auto;
+}
+.hotspot-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+}
+.hotspot-item.active {
+  border-color: #67a9ff;
+  background: #174e86;
+  color: #fff;
+}
+.hotspot-item i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.output {
+  min-height: 180px;
+  margin: 0;
+  padding: 12px;
+  overflow: auto;
+  border: 1px solid #303a49;
+  border-radius: 8px;
+  background: #0c1117;
+  color: #9dc8ff;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.fields { display: grid; gap: 8px; }

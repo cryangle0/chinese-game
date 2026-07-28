@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>超级玛丽 · 结算页调参</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      --bg: #11151c;
+      --panel: #171d26;
+      --line: #2d3542;
+      --text: #e9edf5;
+      --muted: #8b97a8;
+      --accent: #2e86ef;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 1120px; min-height: 100vh; background: var(--bg); color: var(--text); overflow: hidden; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .app {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      height: 100vh;
+    }
+    .workspace {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: 44px minmax(0, 1fr);
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+    }
+    .toolbar button, .sidebar button {
+      border: 1px solid #465164;
+      border-radius: 7px;
+      padding: 6px 10px;
+      background: #242c38;
+      color: #dbe2ed;
+    }
+    .sidebar .primary {
+      border: 0;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      padding: 10px 14px;
+    }
+    .cursor { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .frame-shell {
+      align-self: center;
+      justify-self: center;
+      position: relative;
+      width: min(calc(100vw - 410px), calc(177.777vh - 78.22px));
+      aspect-ratio: 16 / 9;
+    }
+    .frame {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #080b10;
+      touch-action: none;
+      user-select: none;
+    }
+    .layer {
+      position: absolute;
+      pointer-events: none;
+    }
+    .layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      display: block;
+    }
+    .layer.character img { object-fit: contain; }
+    .review-panel {
+      background: rgba(250, 250, 250, 0.94);
+      border: 1.5px solid #e7c28c;
+      border-radius: 13px;
+    }
+    .review-text {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      color: #6d4225;
+      font-size: 18px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rank-name, .rank-score {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .rank-name { color: #6d4225; font-size: 20px; }
+    .rank-score { color: #ef6b11; font-size: 22px; }
+    .score-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 30px;
+      font-weight: 900;
+      text-shadow: 0 0 3px #3a170e, 0 1px 0 #3a170e, 1px 0 0 #3a170e, -1px 0 0 #3a170e, 0 -1px 0 #3a170e;
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 28px;
+      font-size: 24px;
+      font-weight: 900;
+      box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 4px 0 rgba(0,0,0,.18);
+    }
+    .btn-replay { background: linear-gradient(#6ee39f, #4ad68a); color: #14452c; border: 3px solid #0e6b45; }
+    .btn-share { background: linear-gradient(#ffd27a, #ffc04a); color: #6b2e0a; border: 3px solid #a85a12; }
+    .btn-next { background: linear-gradient(#7ec0ff, #5aa8f0); color: #123a66; border: 3px solid #1a4f8a; }
+    .star img { opacity: .22; }
+    .star.on img { opacity: 1; }
+    .grid {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(95, 176, 255, .14) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(95, 176, 255, .14) 1px, transparent 1px);
+      background-size: calc(100% / 16) calc(100% / 9);
+    }
+    .hotspot {
+      position: absolute;
+      border: 2px solid;
+      background: transparent;
+      pointer-events: auto;
+      cursor: move;
+    }
+    .hotspot.selected { box-shadow: 0 0 0 2px #fff inset; z-index: 5; }
+    .hotspot-label {
+      position: absolute;
+      left: 4px;
+      top: 2px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .resize {
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      background: #fff;
+      border: 1px solid #333;
+      cursor: nwse-resize;
+    }
+    .sidebar {
+      border-left: 1px solid var(--line);
+      background: var(--panel);
+      padding: 14px;
+      overflow: auto;
+      display: grid;
+      grid-template-rows: auto auto auto minmax(120px, 1fr) auto auto minmax(140px, 1fr);
+      gap: 10px;
+    }
+    .panel-title { font-size: 18px; font-weight: 800; }
+    .help { color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .control {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 8px;
+      align-items: center;
+      margin: 6px 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .control input {
+      width: 100%;
+      border: 1px solid #465164;
+      border-radius: 6px;
+      background: #10151d;
+      color: var(--text);
+      padding: 6px 8px;
+    }
+    .list { overflow: auto; display: grid; gap: 4px; align-content: start; }
+    .hotspot-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      text-align: left;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #1c2430;
+      color: var(--text);
+    }
+    .hotspot-item.active { border-color: var(--accent); background: #203147; }
+    .hotspot-item i {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      flex: 0 0 auto;
+    }
+    .fields { border-top: 1px solid var(--line); padding-top: 8px; }
+    .panel-subtitle { font-weight: 700; margin-bottom: 4px; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .actions .primary { grid-column: 1 / -1; }
+    .output {
+      margin: 0;
+      padding: 10px;
+      border-radius: 8px;
+      background: #0d1117;
+      border: 1px solid #334155;
+      color: #9cdcfe;
+      font-size: 11px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="workspace">
+      <div class="toolbar">
+        <strong>超级玛丽 · 结算页</strong>
+        <button type="button" id="toggleGrid">关闭网格</button>
+        <button type="button" id="toggleBoxes">隐藏框线</button>
+        <span class="cursor" id="cursor">X 0 · Y 0</span>
+      </div>
+      <div class="frame-shell">
+        <div class="frame" id="frame"></div>
+      </div>
+    </section>
+    <aside class="sidebar">
+      <div class="panel-title">结算热区调参</div>
+      <div class="help">
+        坐标来自 <code>ResultThemeLayout.mario</code> + 当前答题回顾统一坐标 + 按钮常量。
+        无排行榜底板。拖色块调完点「保存导出 JSON」。
+      </div>
+      <label class="control"><span>框线透明</span>
+        <input id="boxOpacity" type="range" min="0" max="80" value="28" />
+      </label>
+      <div class="list" id="list"></div>
+      <div class="fields" id="fields"></div>
+      <div class="actions">
+        <button type="button" class="primary" id="save">保存导出 JSON</button>
+        <button type="button" class="primary" id="copy">复制 JSON</button>
+        <button type="button" id="reset">恢复代码默认</button>
+      </div>
+      <pre class="output" id="output"></pre>
+    </aside>
+  </div>
+
+  <script>
+(() => {
+  const DESIGN_W = 1440;
+  const DESIGN_H = 810;
+  const BUNDLE = '../../../assets/theme-bundles';
+  const MEDIA = '../../../build/web-mobile-product-feedback-0728/media';
+  const ASSETS = {
+    bg: `${BUNDLE}/mario/result-background.jpg`,
+    character: `${MEDIA}/mario/result.webp`,
+    rankTitle: `${BUNDLE}/mario/result-rank-title.png`,
+    rank1: `${BUNDLE}/mario/result-rank-1.png`,
+    rank2: `${BUNDLE}/mario/result-rank-2.png`,
+    rank3: `${BUNDLE}/mario/result-rank-3.png`,
+    reviewTitle: `${BUNDLE}/mario/result-review-title.png`,
+    correct: `${BUNDLE}/mario/result-correct.png`,
+    wrong: `${BUNDLE}/mario/result-wrong.png`,
+    star: `${BUNDLE}/mario/result-star-1.png`,
+  };
+
+  // ResultThemeLayout.mario → html; review 用当前 ThemedResultReview 统一坐标
+  const DEFAULTS = [
+    { id: 'character', label: '角色区', left: 116.93, top: 165, width: 320, height: 440, color: '#7ad0ff' },
+    { id: 'score', label: '总分', left: 240, top: 601, width: 100, height: 48, color: '#62d28a' },
+    { id: 'stars', label: '星星组', left: 154.12, top: 672.19, width: 227.57, height: 41.06, color: '#ffd166' },
+    { id: 'rankTitle', label: '积分排行榜标题', left: 522.56, top: 289.69, width: 306.56, height: 77.06, color: '#6ea8ff' },
+    { id: 'rankRow1', label: '排行榜第1行', left: 487.22, top: 397.79, width: 367.69, height: 67.87, color: '#8fd3ff' },
+    { id: 'rankRow2', label: '排行榜第2行', left: 487.22, top: 473.72, width: 367.69, height: 67.87, color: '#8fd3ff' },
+    { id: 'rankRow3', label: '排行榜第3行', left: 487.22, top: 552.19, width: 367.69, height: 67.87, color: '#8fd3ff' },
+    { id: 'rankName1', label: '排行名1', left: 564.12, top: 408.72, width: 170, height: 46, color: '#b8d4ff' },
+    { id: 'rankScore1', label: '排行分1', left: 741.71, top: 408.72, width: 100, height: 46, color: '#ffb07a' },
+    { id: 'rankName2', label: '排行名2', left: 564.12, top: 484.65, width: 170, height: 46, color: '#b8d4ff' },
+    { id: 'rankScore2', label: '排行分2', left: 741.71, top: 484.65, width: 100, height: 46, color: '#ffb07a' },
+    { id: 'rankName3', label: '排行名3', left: 564.12, top: 563.12, width: 170, height: 46, color: '#b8d4ff' },
+    { id: 'rankScore3', label: '排行分3', left: 741.71, top: 563.12, width: 100, height: 46, color: '#ffb07a' },
+    { id: 'reviewTitle', label: '答题回顾标题', left: 987.19, top: 284.34, width: 306.56, height: 77.06, color: '#7dffb2' },
+    { id: 'reviewRow1', label: '答题回顾第1行', left: 931, top: 373, width: 409, height: 46, color: '#66e0a3' },
+    { id: 'reviewRow2', label: '答题回顾第2行', left: 931, top: 429, width: 409, height: 46, color: '#66e0a3' },
+    { id: 'reviewRow3', label: '答题回顾第3行', left: 931, top: 485, width: 409, height: 46, color: '#66e0a3' },
+    { id: 'reviewRow4', label: '答题回顾第4行', left: 931, top: 541, width: 409, height: 46, color: '#66e0a3' },
+    { id: 'reviewRow5', label: '答题回顾第5行', left: 931, top: 597, width: 409, height: 46, color: '#66e0a3' },
+    { id: 'btnReplay', label: '再玩一次', left: 548, top: 657, width: 220, height: 56, color: '#4ad68a' },
+    { id: 'btnShare', label: '分享成绩', left: 796, top: 657, width: 220, height: 56, color: '#ffc04a' },
+    { id: 'btnNext', label: '进入下一关', left: 1044, top: 657, width: 220, height: 56, color: '#5aa8f0' },
+  ];
+
+  const DEMO = {
+    score: 20,
+    stars: 2,
+    ranks: [
+      { name: '小蓉', score: 76 },
+      { name: '我', score: 20 },
+      { name: '华华', score: 19 },
+    ],
+    reviews: [
+      { text: '题目：土地老儿战兢兢跪在路…', correct: true },
+      { text: '题目：下列词语中，哪一个与…', correct: false },
+      { text: '题目：土地老儿战兢兢跪在路…', correct: false },
+      { text: '题目：下列词语中，哪一个与…', correct: false },
+      { text: '题目：土地老儿战兢兢跪在路…', correct: true },
+    ],
+  };
+
+  const STARS = [
+    { left: 154.12, top: 672.19, width: 41.62, height: 40.5 },
+    { left: 204.75, top: 672.31, width: 42.75, height: 41.06 },
+    { left: 257.63, top: 672.31, width: 42.19, height: 41.06 },
+    { left: 309.94, top: 673.43, width: 41.06, height: 39.94 },
+    { left: 361.69, top: 673.43, width: 41.06, height: 39.94 },
+  ];
+  const storageKey = 'reading-settlement-page:mario:v1';
+  const clone = (v) => JSON.parse(JSON.stringify(v));
+  const pct = (n, total) => `${(n / total) * 100}%`;
+  const boxStyle = (b) =>
+    `left:${pct(b.left, DESIGN_W)};top:${pct(b.top, DESIGN_H)};width:${pct(b.width, DESIGN_W)};height:${pct(b.height, DESIGN_H)};`;
+
+  function toCocos(box) {
+    return {
+      x: +(box.left + box.width / 2 - DESIGN_W / 2).toFixed(2),
+      y: +(DESIGN_H / 2 - (box.top + box.height / 2)).toFixed(2),
+      width: +Number(box.width).toFixed(2),
+      height: +Number(box.height).toFixed(2),
+    };
+  }
+
+  function loadHotspots() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+      if (Array.isArray(saved?.hotspots) && saved.hotspots.length) return saved.hotspots;
+    } catch { /* ignore */ }
+    return clone(DEFAULTS);
+  }
+
+  let hotspots = loadHotspots();
+  let selectedId = hotspots[0]?.id || '';
+  let showGrid = true;
+  let showBoxes = true;
+  let boxOpacity = 28;
+  let drag = null;
+
+  const frame = document.getElementById('frame');
+  const list = document.getElementById('list');
+  const fields = document.getElementById('fields');
+  const output = document.getElementById('output');
+  const cursorEl = document.getElementById('cursor');
+
+  function get(id) {
+    return hotspots.find((item) => item.id === id);
+  }
+
+  function exportValue() {
+    const mapped = {};
+    hotspots.forEach((item) => {
+      mapped[item.id] = {
+        label: item.label,
+        html: {
+          left: +Number(item.left).toFixed(2),
+          top: +Number(item.top).toFixed(2),
+          width: +Number(item.width).toFixed(2),
+          height: +Number(item.height).toFixed(2),
+        },
+        cocos: toCocos(item),
+      };
+    });
+    return {
+      scene: 'mario',
+      sceneTitle: '超级玛丽',
+      design: { width: DESIGN_W, height: DESIGN_H },
+      nextLabel: '进入下一关',
+      hotspots: mapped,
+      ordered: hotspots.map((item) => item.id),
+    };
+  }
+
+  function pointInDesign(event) {
+    const rect = frame.getBoundingClientRect();
+    return {
+      x: Math.round((event.clientX - rect.left) * DESIGN_W / rect.width),
+      y: Math.round((event.clientY - rect.top) * DESIGN_H / rect.height),
+    };
+  }
+
+  function contentHtml() {
+    const character = get('character');
+    const score = get('score');
+    const stars = get('stars');
+    const rankTitle = get('rankTitle');
+    const reviewTitle = get('reviewTitle');
+    const btnReplay = get('btnReplay');
+    const btnShare = get('btnShare');
+    const btnNext = get('btnNext');
+
+    let html = `<img class="layer" style="inset:0;width:100%;height:100%" src="${ASSETS.bg}" alt="" />`;
+
+    if (character) {
+      html += `<div class="layer character" style="${boxStyle(character)}"><img src="${ASSETS.character}" alt="" /></div>`;
+    }
+    if (rankTitle) {
+      html += `<div class="layer" style="${boxStyle(rankTitle)}"><img src="${ASSETS.rankTitle}" alt="" /></div>`;
+    }
+    [1, 2, 3].forEach((n) => {
+      const row = get(`rankRow${n}`);
+      if (!row) return;
+      html += `<div class="layer" style="${boxStyle(row)}"><img src="${ASSETS[`rank${n}`]}" alt="" /></div>`;
+      const name = get(`rankName${n}`);
+      const scoreBox = get(`rankScore${n}`);
+      if (name) {
+        html += `<div class="layer rank-name" style="${boxStyle(name)}">${DEMO.ranks[n - 1].name}</div>`;
+      }
+      if (scoreBox) {
+        html += `<div class="layer rank-score" style="${boxStyle(scoreBox)}">${DEMO.ranks[n - 1].score}分</div>`;
+      }
+    });
+    if (reviewTitle) {
+      html += `<div class="layer" style="${boxStyle(reviewTitle)}"><img src="${ASSETS.reviewTitle}" alt="" /></div>`;
+    }
+    [1, 2, 3, 4, 5].forEach((n) => {
+      const row = get(`reviewRow${n}`);
+      if (!row) return;
+      const review = DEMO.reviews[n - 1];
+      const iconLeft = row.left + row.width - 34 - 12;
+      const iconTop = row.top + (row.height - 34) / 2;
+      const textLeft = row.left + 12;
+      const textW = row.width - 12 - 50;
+      html += `<div class="layer review-panel" style="${boxStyle(row)}"></div>`;
+      html += `<div class="layer review-text" style="left:${pct(textLeft, DESIGN_W)};top:${pct(row.top, DESIGN_H)};width:${pct(textW, DESIGN_W)};height:${pct(row.height, DESIGN_H)}">${review.text}</div>`;
+      html += `<div class="layer" style="left:${pct(iconLeft, DESIGN_W)};top:${pct(iconTop, DESIGN_H)};width:${pct(34, DESIGN_W)};height:${pct(34, DESIGN_H)}"><img src="${review.correct ? ASSETS.correct : ASSETS.wrong}" alt="" /></div>`;
+    });
+    if (score) {
+      html += `<div class="layer score-text" style="${boxStyle(score)}">${DEMO.score}分</div>`;
+    }
+    STARS.forEach((star, i) => {
+      const on = i < DEMO.stars ? ' on' : '';
+      const left = (stars?.left ?? STARS[0].left) + (star.left - STARS[0].left);
+      const top = stars?.top ?? star.top;
+      html += `<div class="layer star${on}" style="left:${pct(left, DESIGN_W)};top:${pct(top + (star.top - STARS[0].top), DESIGN_H)};width:${pct(star.width, DESIGN_W)};height:${pct(star.height, DESIGN_H)}"><img src="${ASSETS.star}" alt="" /></div>`;
+    });
+    if (btnReplay) html += `<div class="layer btn btn-replay" style="${boxStyle(btnReplay)}">再玩一次</div>`;
+    if (btnShare) html += `<div class="layer btn btn-share" style="${boxStyle(btnShare)}">分享成绩</div>`;
+    if (btnNext) html += `<div class="layer btn btn-next" style="${boxStyle(btnNext)}">进入下一关</div>`;
+
+    html += `<div class="grid" id="grid" style="display:${showGrid ? 'block' : 'none'}"></div>`;
+    html += '<div id="boxes"></div>';
+    return html;
+  }
+
+  function renderBoxes() {
+    const boxes = document.getElementById('boxes');
+    if (!boxes) return;
+    boxes.innerHTML = hotspots.map((item) => `
+      <div class="hotspot${item.id === selectedId ? ' selected' : ''}"
+        data-id="${item.id}"
+        style="${boxStyle(item)}border-color:${item.color};background:${item.color}${boxOpacity.toString(16).padStart(2, '0')};display:${showBoxes ? 'block' : 'none'}">
+        <span class="hotspot-label">${item.label}</span>
+        <span class="resize" data-resize="1"></span>
+      </div>
+    `).join('');
+  }
+
+  function renderList() {
+    list.innerHTML = hotspots.map((item) => `
+      <button type="button" class="hotspot-item${item.id === selectedId ? ' active' : ''}" data-id="${item.id}">
+        <i style="background:${item.color}"></i>
+        <span>${item.label}</span>
+      </button>
+    `).join('');
+  }
+
+  function renderFields() {
+    const item = hotspots.find((entry) => entry.id === selectedId);
+    if (!item) {
+      fields.innerHTML = '';
+      return;
+    }
+    fields.innerHTML = `
+      <div class="panel-subtitle">${item.label}</div>
+      ${['left', 'top', 'width', 'height'].map((key) => `
+        <label class="control">
+          <span>${key}</span>
+          <input data-key="${key}" type="number" step="0.25" value="${item[key]}" />
+        </label>
+      `).join('')}
+    `;
+  }
+
+  function render() {
+    frame.innerHTML = contentHtml();
+    renderBoxes();
+    renderList();
+    renderFields();
+    output.textContent = JSON.stringify(exportValue(), null, 2);
+    document.getElementById('toggleGrid').textContent = showGrid ? '关闭网格' : '显示网格';
+    document.getElementById('toggleBoxes').textContent = showBoxes ? '隐藏框线' : '显示框线';
+  }
+
+  list.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-id]');
+    if (!button) return;
+    selectedId = button.dataset.id;
+    render();
+  });
+
+  fields.addEventListener('change', (event) => {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement) || !input.dataset.key) return;
+    const item = hotspots.find((entry) => entry.id === selectedId);
+    if (!item) return;
+    item[input.dataset.key] = Number(input.value);
+    render();
+  });
+
+  frame.addEventListener('pointerdown', (event) => {
+    const box = event.target.closest('.hotspot');
+    if (!box) return;
+    selectedId = box.dataset.id;
+    const item = hotspots.find((entry) => entry.id === selectedId);
+    const point = pointInDesign(event);
+    drag = {
+      mode: event.target.dataset.resize ? 'resize' : 'move',
+      id: item.id,
+      start: point,
+      snapshot: { ...item },
+    };
+    box.setPointerCapture(event.pointerId);
+    renderList();
+    renderFields();
+    renderBoxes();
+  });
+
+  frame.addEventListener('pointermove', (event) => {
+    const point = pointInDesign(event);
+    cursorEl.textContent = `X ${point.x} · Y ${point.y}`;
+    if (!drag) return;
+    const item = hotspots.find((entry) => entry.id === drag.id);
+    if (!item) return;
+    const dx = point.x - drag.start.x;
+    const dy = point.y - drag.start.y;
+    if (drag.mode === 'move') {
+      item.left = drag.snapshot.left + dx;
+      item.top = drag.snapshot.top + dy;
+    } else {
+      item.width = Math.max(24, drag.snapshot.width + dx);
+      item.height = Math.max(18, drag.snapshot.height + dy);
+    }
+    render();
+  });
+
+  const endDrag = () => { drag = null; };
+  frame.addEventListener('pointerup', endDrag);
+  frame.addEventListener('pointercancel', endDrag);
+
+  document.getElementById('boxOpacity').addEventListener('input', (event) => {
+    boxOpacity = Number(event.target.value);
+    renderBoxes();
+  });
+  document.getElementById('toggleGrid').addEventListener('click', () => {
+    showGrid = !showGrid;
+    render();
+  });
+  document.getElementById('toggleBoxes').addEventListener('click', () => {
+    showBoxes = !showBoxes;
+    render();
+  });
+  document.getElementById('reset').addEventListener('click', () => {
+    hotspots = clone(DEFAULTS);
+    selectedId = hotspots[0]?.id || '';
+    localStorage.removeItem(storageKey);
+    render();
+  });
+  document.getElementById('copy').addEventListener('click', async () => {
+    await navigator.clipboard.writeText(JSON.stringify(exportValue(), null, 2));
+    const button = document.getElementById('copy');
+    button.textContent = '已复制';
+    window.setTimeout(() => { button.textContent = '复制 JSON'; }, 1000);
+  });
+  document.getElementById('save').addEventListener('click', () => {
+    const payload = exportValue();
+    localStorage.setItem(storageKey, JSON.stringify({ hotspots }));
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'settlement-hotspots-mario.json';
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
+
+  render();
+})();
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "extends": "./temp/tsconfig.cocos.json",
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "experimentalDecorators": true,
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "core/*": ["assets/scripts/core/*"],
+      "games/*": ["assets/scripts/games/*"],
+      "platform/*": ["assets/scripts/platform/*"],
+      "services/*": ["assets/scripts/services/*"],
+      "shared/*": ["assets/scripts/shared/*"],
+      "ui/*": ["assets/scripts/ui/*"]
+    }
+  },
+  "include": ["assets/scripts/**/*.ts"]
+}
+

@@ -1,0 +1,14 @@
+{
+  "appid": "wxb8e4ed2eafd77487",
+  "compileType": "miniprogram",
+  "description": "跳跳乐 H5 web-view shell",
+  "miniprogramRoot": "miniprogram/",
+  "projectname": "zyb-jumper-shell",
+  "setting": {
+    "checkSiteMap": false,
+    "es6": true,
+    "minified": true,
+    "postcss": true,
+    "urlCheck": true
+  }
+}

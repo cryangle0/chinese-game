@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>结算页答题回顾坐标测算</title>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    /* Assumptions:
+       - Coordinates are exported against the game's 1440×810 design space.
+       - The five rows share one geometry and fixed vertical gap.
+       - Background screenshots are references only; the overlay is the measured result. */
+    :root {
+      color-scheme: dark;
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background: #11151c;
+      color: #e9edf5;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 1120px; min-height: 100vh; overflow: hidden; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    #root { height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useMemo, useRef, useState } = React;
+    const DESIGN_W = 1440;
+    const DESIGN_H = 810;
+    const ROWS = [
+      "题目：《野天鹅》中，艾丽莎为了救哥哥……",
+      "题目：下列选项中，哪一个不是……",
+      "题目：《安徒生童话》的作者是……",
+      "题目：《打火匣》中的巫婆让……",
+      "题目：《皇帝的新装》中，小……",
+    ];
+
+    const initialGeometry = {
+      x: 870,
+      y: 301,
+      width: 438,
+      height: 52,
+      gap: 10,
+      fontSize: 20,
+      leftPadding: 20,
+      iconSize: 34,
+      iconRight: 12,
+      radius: 13,
+    };
+
+    function number(value) {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function cocosRow(row, index) {
+      const top = row.y + index * (row.height + row.gap);
+      return {
+        index: index + 1,
+        html: { left: row.x, top, width: row.width, height: row.height },
+        cocos: {
+          x: +(row.x + row.width / 2 - DESIGN_W / 2).toFixed(2),
+          y: +(DESIGN_H / 2 - top - row.height / 2).toFixed(2),
+          width: row.width,
+          height: row.height,
+        },
+      };
+    }
+
+    function Control({ label, value, min, max, step = 1, onChange }) {
+      return (
+        <label style={measureStyles.control}>
+          <span>{label}</span>
+          <input
+            type="number"
+            value={value}
+            min={min}
+            max={max}
+            step={step}
+            onChange={(event) => onChange(number(event.target.value))}
+            style={measureStyles.numberInput}
+          />
+          <input
+            type="range"
+            value={value}
+            min={min}
+            max={max}
+            step={step}
+            onChange={(event) => onChange(number(event.target.value))}
+            style={measureStyles.rangeInput}
+          />
+        </label>
+      );
+    }
+
+    function MeasurementApp() {
+      const [geometry, setGeometry] = useState(() => {
+        try {
+          return { ...initialGeometry, ...JSON.parse(localStorage.getItem("settlement-review-layout") || "{}") };
+        } catch {
+          return initialGeometry;
+        }
+      });
+      const [reference, setReference] = useState("target");
+      const [opacity, setOpacity] = useState(100);
+      const [showGrid, setShowGrid] = useState(true);
+      const [cursor, setCursor] = useState({ x: 0, y: 0 });
+      const [copied, setCopied] = useState(false);
+      const frameRef = useRef(null);
+      const dragRef = useRef(null);
+
+      const update = (key, value) => setGeometry((current) => ({ ...current, [key]: value }));
+      const rows = useMemo(
+        () => Array.from({ length: 5 }, (_, index) => cocosRow(geometry, index)),
+        [geometry],
+      );
+      const exportValue = useMemo(() => ({
+        design: { width: DESIGN_W, height: DESIGN_H },
+        review: {
+          group: geometry,
+          rows,
+          icon: {
+            xFromRowRight: geometry.iconRight,
+            size: geometry.iconSize,
+          },
+        },
+      }), [geometry, rows]);
+
+      const pointInDesign = (event) => {
+        const rect = frameRef.current.getBoundingClientRect();
+        return {
+          x: Math.round((event.clientX - rect.left) * DESIGN_W / rect.width),
+          y: Math.round((event.clientY - rect.top) * DESIGN_H / rect.height),
+        };
+      };
+
+      const startDrag = (event, mode) => {
+        event.currentTarget.setPointerCapture(event.pointerId);
+        dragRef.current = {
+          mode,
+          start: pointInDesign(event),
+          geometry,
+        };
+      };
+
+      const drag = (event) => {
+        setCursor(pointInDesign(event));
+        const state = dragRef.current;
+        if (!state) return;
+        const point = pointInDesign(event);
+        const dx = point.x - state.start.x;
+        const dy = point.y - state.start.y;
+        if (state.mode === "move") {
+          setGeometry({ ...state.geometry, x: state.geometry.x + dx, y: state.geometry.y + dy });
+        } else {
+          setGeometry({
+            ...state.geometry,
+            width: Math.max(240, state.geometry.width + dx),
+            height: Math.max(32, state.geometry.height + dy),
+          });
+        }
+      };
+
+      const endDrag = () => { dragRef.current = null; };
+      const copyJson = async () => {
+        await navigator.clipboard.writeText(JSON.stringify(exportValue, null, 2));
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1200);
+      };
+      const saveJson = () => {
+        localStorage.setItem("settlement-review-layout", JSON.stringify(geometry));
+        const blob = new Blob([JSON.stringify(exportValue, null, 2)], { type: "application/json" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "settlement-review-layout.json";
+        link.click();
+        URL.revokeObjectURL(link.href);
+      };
+
+      const referenceSrc = reference === "target" ? "./settlement-target.png" : "./settlement-current.png";
+
+      return (
+        <main style={measureStyles.app}>
+          <section style={measureStyles.workspace}>
+            <div style={measureStyles.toolbar}>
+              <strong>1440 × 810 坐标测算</strong>
+              <div style={measureStyles.toolbarGroup}>
+                <button
+                  style={reference === "target" ? measureStyles.activeButton : measureStyles.button}
+                  onClick={() => setReference("target")}
+                >目标图2</button>
+                <button
+                  style={reference === "current" ? measureStyles.activeButton : measureStyles.button}
+                  onClick={() => setReference("current")}
+                >当前效果</button>
+                <button style={measureStyles.button} onClick={() => setShowGrid((value) => !value)}>
+                  {showGrid ? "关闭网格" : "显示网格"}
+                </button>
+              </div>
+              <span style={measureStyles.cursor}>X {cursor.x} · Y {cursor.y}</span>
+            </div>
+
+            <div style={measureStyles.frameShell}>
+              <div
+                ref={frameRef}
+                style={measureStyles.frame}
+                onPointerMove={drag}
+                onPointerUp={endDrag}
+                onPointerCancel={endDrag}
+              >
+                <img src={referenceSrc} alt="" style={{ ...measureStyles.reference, opacity: opacity / 100 }} />
+                {showGrid && <div style={measureStyles.grid} />}
+                <div style={measureStyles.crossX} />
+                <div style={measureStyles.crossY} />
+
+                <div
+                  onPointerDown={(event) => startDrag(event, "move")}
+                  style={{
+                    ...measureStyles.group,
+                    left: `${geometry.x / DESIGN_W * 100}%`,
+                    top: `${geometry.y / DESIGN_H * 100}%`,
+                    width: `${geometry.width / DESIGN_W * 100}%`,
+                    height: `${(geometry.height * 5 + geometry.gap * 4) / DESIGN_H * 100}%`,
+                  }}
+                >
+                  {ROWS.map((text, index) => (
+                    <div
+                      key={text}
+                      style={{
+                        ...measureStyles.row,
+                        top: `${index * (geometry.height + geometry.gap) / (geometry.height * 5 + geometry.gap * 4) * 100}%`,
+                        height: `${geometry.height / (geometry.height * 5 + geometry.gap * 4) * 100}%`,
+                        borderRadius: `${geometry.radius}px`,
+                        paddingLeft: `${geometry.leftPadding / geometry.width * 100}%`,
+                        paddingRight: `${(geometry.iconSize + geometry.iconRight + 12) / geometry.width * 100}%`,
+                        fontSize: `${geometry.fontSize / 14.4}cqw`,
+                      }}
+                    >
+                      <span style={measureStyles.rowText}>{text}</span>
+                      <span style={{
+                        ...measureStyles.icon,
+                        width: `${geometry.iconSize / geometry.width * 100}%`,
+                        aspectRatio: "1",
+                        right: `${geometry.iconRight / geometry.width * 100}%`,
+                        background: index < 2 ? "#3caf55" : "#e3413b",
+                      }}>{index < 2 ? "✓" : "×"}</span>
+                    </div>
+                  ))}
+                  <div
+                    onPointerDown={(event) => { event.stopPropagation(); startDrag(event, "resize"); }}
+                    style={measureStyles.resizeHandle}
+                    title="拖动调整宽高"
+                  />
+                  <span style={measureStyles.groupLabel}>
+                    x {geometry.x} · y {geometry.y} · {geometry.width} × {geometry.height} · gap {geometry.gap}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <aside style={measureStyles.sidebar}>
+            <div>
+              <div style={measureStyles.panelTitle}>答题回顾条坐标</div>
+              <div style={measureStyles.help}>拖动蓝框移动整体，拖动右下角缩放。所有值均为 1440×810 设计坐标。</div>
+            </div>
+            <Control label="左 X" value={geometry.x} min={600} max={1050} onChange={(v) => update("x", v)} />
+            <Control label="上 Y" value={geometry.y} min={180} max={420} onChange={(v) => update("y", v)} />
+            <Control label="宽度" value={geometry.width} min={260} max={540} onChange={(v) => update("width", v)} />
+            <Control label="行高" value={geometry.height} min={32} max={72} onChange={(v) => update("height", v)} />
+            <Control label="行距" value={geometry.gap} min={0} max={30} onChange={(v) => update("gap", v)} />
+            <Control label="字号" value={geometry.fontSize} min={14} max={30} onChange={(v) => update("fontSize", v)} />
+            <Control label="左内距" value={geometry.leftPadding} min={8} max={40} onChange={(v) => update("leftPadding", v)} />
+            <Control label="图标大小" value={geometry.iconSize} min={22} max={48} onChange={(v) => update("iconSize", v)} />
+            <Control label="图标右距" value={geometry.iconRight} min={6} max={30} onChange={(v) => update("iconRight", v)} />
+            <Control label="参考图透明度" value={opacity} min={0} max={100} onChange={setOpacity} />
+
+            <div style={measureStyles.actions}>
+              <button style={measureStyles.primaryButton} onClick={saveJson}>保存坐标文件</button>
+              <button style={measureStyles.primaryButton} onClick={copyJson}>
+                {copied ? "已复制 JSON" : "复制坐标 JSON"}
+              </button>
+              <button style={measureStyles.button} onClick={() => setGeometry(initialGeometry)}>恢复目标预设</button>
+            </div>
+
+            <pre style={measureStyles.output}>{JSON.stringify(exportValue, null, 2)}</pre>
+          </aside>
+        </main>
+      );
+    }
+
+    const measureStyles = {
+      app: { display: "grid", gridTemplateColumns: "minmax(0,1fr) 370px", height: "100vh", background: "#11151c" },
+      workspace: { minWidth: 0, display: "grid", gridTemplateRows: "44px minmax(0,1fr)", overflow: "hidden" },
+      toolbar: { display: "flex", alignItems: "center", gap: 16, padding: "0 16px", borderBottom: "1px solid #2d3542", background: "#171d26" },
+      toolbarGroup: { display: "flex", gap: 7 },
+      button: { border: "1px solid #465164", borderRadius: 7, padding: "6px 10px", background: "#242c38", color: "#dbe2ed" },
+      activeButton: { border: "1px solid #67a9ff", borderRadius: 7, padding: "6px 10px", background: "#174e86", color: "#fff" },
+      primaryButton: { border: 0, borderRadius: 8, padding: "10px 14px", background: "#2e86ef", color: "#fff", fontWeight: 700 },
+      cursor: { marginLeft: "auto", color: "#7f8a9b", fontVariantNumeric: "tabular-nums" },
+      frameShell: { alignSelf: "center", justifySelf: "center", position: "relative", width: "min(calc(100vw - 390px), calc(177.777vh - 78.22px))", aspectRatio: "16 / 9" },
+      frame: { position: "absolute", inset: 0, overflow: "hidden", background: "#080b10", touchAction: "none", userSelect: "none", containerType: "inline-size" },
+      reference: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "fill", pointerEvents: "none" },
+      grid: { position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(95,176,255,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(95,176,255,.14) 1px,transparent 1px)", backgroundSize: `${100 / 18}% ${100 / 10.125}%` },
+      crossX: { position: "absolute", left: "50%", top: 0, bottom: 0, borderLeft: "1px dashed rgba(255,221,86,.5)" },
+      crossY: { position: "absolute", top: "50%", left: 0, right: 0, borderTop: "1px dashed rgba(255,221,86,.5)" },
+      group: { position: "absolute", border: "2px solid #55aaff", background: "rgba(31,128,255,.08)", cursor: "move" },
+      row: { position: "absolute", left: 0, width: "100%", display: "flex", alignItems: "center", color: "#4e382b", background: "rgba(255,255,255,.94)", border: "1px solid rgba(127,96,69,.18)", boxShadow: "0 2px 4px rgba(51,29,12,.12)", fontWeight: 700, overflow: "hidden" },
+      rowText: { overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" },
+      icon: { position: "absolute", display: "grid", placeItems: "center", borderRadius: "50%", background: "#3caf55", color: "#fff", fontWeight: 900, lineHeight: 1 },
+      resizeHandle: { position: "absolute", width: 18, height: 18, right: -10, bottom: -10, border: "2px solid #fff", borderRadius: 4, background: "#2e86ef", cursor: "nwse-resize" },
+      groupLabel: { position: "absolute", left: 0, top: -27, padding: "3px 7px", borderRadius: 4, background: "#1764af", color: "#fff", fontSize: 12, whiteSpace: "nowrap" },
+      sidebar: { display: "flex", flexDirection: "column", gap: 10, padding: 16, overflow: "auto", borderLeft: "1px solid #2d3542", background: "#171d26" },
+      panelTitle: { fontSize: 18, fontWeight: 800, color: "#fff" },
+      help: { marginTop: 5, color: "#8e9aab", fontSize: 12, lineHeight: 1.55 },
+      control: { display: "grid", gridTemplateColumns: "72px 76px 1fr", alignItems: "center", gap: 8, color: "#bdc7d5", fontSize: 13 },
+      numberInput: { width: "100%", border: "1px solid #3d4858", borderRadius: 6, padding: "6px 7px", background: "#0f141b", color: "#e9edf5", fontVariantNumeric: "tabular-nums" },
+      rangeInput: { width: "100%", accentColor: "#4d9cff" },
+      actions: { display: "flex", gap: 8, marginTop: 4 },
+      output: { minHeight: 180, margin: 0, padding: 12, overflow: "auto", border: "1px solid #303a49", borderRadius: 8, background: "#0c1117", color: "#9dc8ff", fontSize: 11, lineHeight: 1.5 },
+    };
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<MeasurementApp />);
+  </script>
+</body>
+</html>

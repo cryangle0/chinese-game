@@ -1,0 +1,626 @@
+{
+  "treasure": {
+    "background": {
+      "zipIndex": 64,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/寰呮満鐘舵€佽儗鏅?png",
+      "bytes": 2349064,
+      "resource": "assets/resources/themes/writing/treasure/background.png"
+    },
+    "characterIdle": {
+      "zipIndex": 54,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/寰呮満鐘舵€?png",
+      "bytes": 100813,
+      "resource": "assets/resources/themes/writing/treasure/characterIdle.png"
+    },
+    "characterAction": {
+      "zipIndex": 62,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/鎸栨帢鐘舵€?png",
+      "bytes": 178717,
+      "resource": "assets/resources/themes/writing/treasure/characterAction.png"
+    },
+    "hudTimer": {
+      "zipIndex": 59,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/绉掕〃ui妗?png",
+      "bytes": 52096,
+      "resource": "assets/resources/themes/writing/treasure/hudTimer.png"
+    },
+    "hudScore": {
+      "zipIndex": 60,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/绉垎.png",
+      "bytes": 21787,
+      "resource": "assets/resources/themes/writing/treasure/hudScore.png"
+    },
+    "scoreIcon": {
+      "zipIndex": 67,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/閲戝竵ui妗?png",
+      "bytes": 46079,
+      "resource": "assets/resources/themes/writing/treasure/scoreIcon.png"
+    },
+    "option": {
+      "zipIndex": 65,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/閫夐」鐭冲潡.png",
+      "bytes": 34330,
+      "resource": "assets/resources/themes/writing/treasure/option.png"
+    },
+    "feedbackCorrect": {
+      "zipIndex": 63,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/姝ｅ弽棣?png",
+      "bytes": 280072,
+      "resource": "assets/resources/themes/writing/treasure/feedbackCorrect.png"
+    },
+    "feedbackWrong": {
+      "zipIndex": 61,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/璐熷弽棣?png",
+      "bytes": 115665,
+      "resource": "assets/resources/themes/writing/treasure/feedbackWrong.png"
+    },
+    "choices-1": {
+      "zipIndex": 53,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/绾㈠疂绠?png",
+      "bytes": 61148,
+      "resource": "assets/resources/themes/writing/treasure/choices-1.png"
+    },
+    "choices-2": {
+      "zipIndex": 70,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/绱疂绠?png",
+      "bytes": 63002,
+      "resource": "assets/resources/themes/writing/treasure/choices-2.png"
+    },
+    "choices-3": {
+      "zipIndex": 51,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/缁垮疂绠?png",
+      "bytes": 61578,
+      "resource": "assets/resources/themes/writing/treasure/choices-3.png"
+    },
+    "successState": {
+      "zipIndex": 68,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/姝ｅ弽棣堝疂绠?png",
+      "bytes": 110595,
+      "resource": "assets/resources/themes/writing/treasure/successState.png"
+    },
+    "failState": {
+      "zipIndex": 56,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/閫夐」瑙﹀彂鐣岄潰_閬撳叿/璐熷弽棣堝疂绠?png",
+      "bytes": 120610,
+      "resource": "assets/resources/themes/writing/treasure/failState.png"
+    },
+    "resultBackground": {
+      "zipIndex": 94,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/鑳屾櫙.png",
+      "bytes": 1890729,
+      "resource": "assets/resources/themes/writing/treasure/resultBackground.png"
+    },
+    "resultReference": {
+      "zipIndex": 83,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/缁撶畻-绀烘剰鍥?png",
+      "bytes": 2018817,
+      "resource": "assets/resources/themes/writing/treasure/resultReference.png"
+    },
+    "resultReview": {
+      "zipIndex": 93,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/绛旈鍥為【.png",
+      "bytes": 60868,
+      "resource": "assets/resources/themes/writing/treasure/resultReview.png"
+    },
+    "resultCorrect": {
+      "zipIndex": 95,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/姝ｇ‘.png",
+      "bytes": 5426,
+      "resource": "assets/resources/themes/writing/treasure/resultCorrect.png"
+    },
+    "resultRank": {
+      "zipIndex": 96,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/鎺掕姒?png",
+      "bytes": 50687,
+      "resource": "assets/resources/themes/writing/treasure/resultRank.png"
+    },
+    "resultWrong": {
+      "zipIndex": 97,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/閿欒.png",
+      "bytes": 5484,
+      "resource": "assets/resources/themes/writing/treasure/resultWrong.png"
+    },
+    "resultRankBase": {
+      "zipIndex": 82,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/鎺掕姒滄爣绛句笅搴曡壊.png",
+      "bytes": 2459,
+      "resource": "assets/resources/themes/writing/treasure/resultRankBase.png"
+    },
+    "resultDecoration": {
+      "zipIndex": 84,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/瀹樺皝寮奸┈娓?png",
+      "bytes": 11586,
+      "resource": "assets/resources/themes/writing/treasure/resultDecoration.png"
+    },
+    "resultStars-1": {
+      "zipIndex": 85,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/鏄熸槦1.png",
+      "bytes": 7246,
+      "resource": "assets/resources/themes/writing/treasure/resultStars-1.png"
+    },
+    "resultStars-2": {
+      "zipIndex": 88,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/鏄熸槦2.png",
+      "bytes": 7246,
+      "resource": "assets/resources/themes/writing/treasure/resultStars-2.png"
+    },
+    "resultStars-3": {
+      "zipIndex": 90,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/鏄熸槦3.png",
+      "bytes": 7246,
+      "resource": "assets/resources/themes/writing/treasure/resultStars-3.png"
+    },
+    "resultStars-4": {
+      "zipIndex": 91,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/鏄熸槦4.png",
+      "bytes": 7246,
+      "resource": "assets/resources/themes/writing/treasure/resultStars-4.png"
+    },
+    "resultStars-5": {
+      "zipIndex": 92,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/缁撶畻/鏄熸槦5.png",
+      "bytes": 7246,
+      "resource": "assets/resources/themes/writing/treasure/resultStars-5.png"
+    }
+  },
+  "desert": {
+    "background": {
+      "zipIndex": 220,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/娌欐紶鎺㈤櫓寰呮満+鎸栨帢鑳屾櫙.png",
+      "bytes": 2634363,
+      "resource": "assets/resources/themes/writing/desert/background.png"
+    },
+    "characterIdle": {
+      "zipIndex": 207,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/娌欐紶灏忛箍寰呮満.png",
+      "bytes": 124704,
+      "resource": "assets/resources/themes/writing/desert/characterIdle.png"
+    },
+    "characterAction": {
+      "zipIndex": 217,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/娌欐紶灏忛箍鎸栨帢.png",
+      "bytes": 237983,
+      "resource": "assets/resources/themes/writing/desert/characterAction.png"
+    },
+    "hudTimer": {
+      "zipIndex": 209,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/绉掕〃ui妗?png",
+      "bytes": 52096,
+      "resource": "assets/resources/themes/writing/desert/hudTimer.png"
+    },
+    "hudScore": {
+      "zipIndex": 211,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/绉垎.png",
+      "bytes": 21787,
+      "resource": "assets/resources/themes/writing/desert/hudScore.png"
+    },
+    "scoreIcon": {
+      "zipIndex": 221,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/閲戝竵ui妗?png",
+      "bytes": 46079,
+      "resource": "assets/resources/themes/writing/desert/scoreIcon.png"
+    },
+    "option": {
+      "zipIndex": 218,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/閫夐」鐭冲潡.png",
+      "bytes": 21924,
+      "resource": "assets/resources/themes/writing/desert/option.png"
+    },
+    "feedbackCorrect": {
+      "zipIndex": 204,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/姝ｅ弽棣堥€夐」.png",
+      "bytes": 214270,
+      "resource": "assets/resources/themes/writing/desert/feedbackCorrect.png"
+    },
+    "feedbackWrong": {
+      "zipIndex": 216,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/娌欐紶鎺㈤櫓璐熷弽棣堣儗鏅?png",
+      "bytes": 2641942,
+      "resource": "assets/resources/themes/writing/desert/feedbackWrong.png"
+    },
+    "choices-1": {
+      "zipIndex": 219,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/娉曡€佺煶妫虹孩.png",
+      "bytes": 89330,
+      "resource": "assets/resources/themes/writing/desert/choices-1.png"
+    },
+    "choices-2": {
+      "zipIndex": 210,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/娉曡€佺煶妫虹传.png",
+      "bytes": 95950,
+      "resource": "assets/resources/themes/writing/desert/choices-2.png"
+    },
+    "choices-3": {
+      "zipIndex": 214,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/娉曡€佺煶妫虹豢.png",
+      "bytes": 93915,
+      "resource": "assets/resources/themes/writing/desert/choices-3.png"
+    },
+    "successState": {
+      "zipIndex": 213,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/娌欐紶鎺㈤櫓姝ｅ弽棣堣儗鏅?png",
+      "bytes": 2642559,
+      "resource": "assets/resources/themes/writing/desert/successState.png"
+    },
+    "failState": {
+      "zipIndex": 215,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/娌欐紶鎺㈤櫓-閫夐」瑙﹀彂鐣岄潰鍒囧浘/娌欐紶鎺㈤櫓灏忛箍璐熷弽棣?png",
+      "bytes": 176080,
+      "resource": "assets/resources/themes/writing/desert/failState.png"
+    },
+    "resultBackground": {
+      "zipIndex": 194,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/缁撶畻/缁撶畻鑳屾櫙.png",
+      "bytes": 2344664,
+      "resource": "assets/resources/themes/writing/desert/resultBackground.png"
+    },
+    "resultReference": {
+      "zipIndex": 188,
+      "original": "鍐欎綔瀹濊棌-娌欐紶鎺㈤櫓-鍒囧浘/缁撶畻/缁撶畻-绀烘剰鍥?png",
+      "bytes": 2641452,
+      "resource": "assets/resources/themes/writing/desert/resultReference.png"
+    }
+  },
+  "dinosaur": {
+    "background": {
+      "zipIndex": 122,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/寰呮満+鎸栨帢鐘舵€佽儗鏅?png",
+      "bytes": 2754333,
+      "resource": "assets/resources/themes/writing/dinosaur/background.png"
+    },
+    "characterIdle": {
+      "zipIndex": 121,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/寰呮満鐘舵€?png",
+      "bytes": 119213,
+      "resource": "assets/resources/themes/writing/dinosaur/characterIdle.png"
+    },
+    "characterAction": {
+      "zipIndex": 130,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鎸栨帢鐘舵€?png",
+      "bytes": 266788,
+      "resource": "assets/resources/themes/writing/dinosaur/characterAction.png"
+    },
+    "hudTimer": {
+      "zipIndex": 125,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/绉掕〃ui妗?png",
+      "bytes": 52096,
+      "resource": "assets/resources/themes/writing/dinosaur/hudTimer.png"
+    },
+    "hudScore": {
+      "zipIndex": 126,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/绉垎.png",
+      "bytes": 21787,
+      "resource": "assets/resources/themes/writing/dinosaur/hudScore.png"
+    },
+    "scoreIcon": {
+      "zipIndex": 125,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/绉掕〃ui妗?png",
+      "bytes": 52096,
+      "resource": "assets/resources/themes/writing/dinosaur/scoreIcon.png"
+    },
+    "option": {
+      "zipIndex": 135,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/閫夐」鐭冲潡.png",
+      "bytes": 37219,
+      "resource": "assets/resources/themes/writing/dinosaur/option.png"
+    },
+    "feedbackCorrect": {
+      "zipIndex": 139,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/姝ｅ弽棣堣儗鏅?png",
+      "bytes": 2753270,
+      "resource": "assets/resources/themes/writing/dinosaur/feedbackCorrect.png"
+    },
+    "feedbackWrong": {
+      "zipIndex": 120,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/璐熷弽棣堣儗鏅?png",
+      "bytes": 2822740,
+      "resource": "assets/resources/themes/writing/dinosaur/feedbackWrong.png"
+    },
+    "choices-1": {
+      "zipIndex": 127,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鎭愰緳铔?3.png",
+      "bytes": 68987,
+      "resource": "assets/resources/themes/writing/dinosaur/choices-1.png"
+    },
+    "choices-2": {
+      "zipIndex": 128,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鎭愰緳铔?2.png",
+      "bytes": 76101,
+      "resource": "assets/resources/themes/writing/dinosaur/choices-2.png"
+    },
+    "choices-3": {
+      "zipIndex": 132,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鎭愰緳铔?1.png",
+      "bytes": 78052,
+      "resource": "assets/resources/themes/writing/dinosaur/choices-3.png"
+    },
+    "successState": {
+      "zipIndex": 137,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/姝ｅ弽棣?瑙掕壊.png",
+      "bytes": 218329,
+      "resource": "assets/resources/themes/writing/dinosaur/successState.png"
+    },
+    "failState": {
+      "zipIndex": 134,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/鎭愰緳涓栫晫-閫夐」瑙﹀彂鐣岄潰鍒囧浘/璐熷弽棣?铔嬪３.png",
+      "bytes": 104961,
+      "resource": "assets/resources/themes/writing/dinosaur/failState.png"
+    },
+    "resultBackground": {
+      "zipIndex": 113,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/缁撶畻/鎭愰緳缁撶畻鑳屾櫙.png",
+      "bytes": 7312545,
+      "resource": "assets/resources/themes/writing/dinosaur/resultBackground.png"
+    },
+    "resultReference": {
+      "zipIndex": 103,
+      "original": "鍐欎綔瀹濊棌-鎭愰緳涓栫晫-鍒囧浘/缁撶畻/缁撶畻-绀烘剰鍥?png",
+      "bytes": 7950295,
+      "resource": "assets/resources/themes/writing/dinosaur/resultReference.png"
+    }
+  },
+  "dunhuang": {
+    "background": {
+      "zipIndex": 39,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鏁︾厡澹佺敾寰呮満+鎸栨帢鑳屾櫙.png",
+      "bytes": 3188945,
+      "resource": "assets/resources/themes/writing/dunhuang/background.png"
+    },
+    "characterIdle": {
+      "zipIndex": 31,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鏁︾厡浜虹墿寰呮満鐘舵€?png",
+      "bytes": 457496,
+      "resource": "assets/resources/themes/writing/dunhuang/characterIdle.png"
+    },
+    "characterAction": {
+      "zipIndex": 41,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鏁︾厡浜虹墿鎸栨帢鐘舵€?png",
+      "bytes": 407394,
+      "resource": "assets/resources/themes/writing/dunhuang/characterAction.png"
+    },
+    "hudTimer": {
+      "zipIndex": 25,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/闂归挓UI.png",
+      "bytes": 32699,
+      "resource": "assets/resources/themes/writing/dunhuang/hudTimer.png"
+    },
+    "hudScore": {
+      "zipIndex": 36,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/閲戝竵UI.png",
+      "bytes": 32988,
+      "resource": "assets/resources/themes/writing/dunhuang/hudScore.png"
+    },
+    "scoreIcon": {
+      "zipIndex": 36,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/閲戝竵UI.png",
+      "bytes": 32988,
+      "resource": "assets/resources/themes/writing/dunhuang/scoreIcon.png"
+    },
+    "option": {
+      "zipIndex": 37,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/閫夐」鐭冲潡.png",
+      "bytes": 31187,
+      "resource": "assets/resources/themes/writing/dunhuang/option.png"
+    },
+    "feedbackCorrect": {
+      "zipIndex": 29,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鏁︾厡澹佺敾姝ｅ弽棣堣儗鏅?png",
+      "bytes": 3175182,
+      "resource": "assets/resources/themes/writing/dunhuang/feedbackCorrect.png"
+    },
+    "feedbackWrong": {
+      "zipIndex": 32,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鏁︾厡澹佺敾璐熷弽棣堣儗鏅?png",
+      "bytes": 3180909,
+      "resource": "assets/resources/themes/writing/dunhuang/feedbackWrong.png"
+    },
+    "choices-1": {
+      "zipIndex": 40,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鑾茶姳绾㈣壊.png",
+      "bytes": 74789,
+      "resource": "assets/resources/themes/writing/dunhuang/choices-1.png"
+    },
+    "choices-2": {
+      "zipIndex": 23,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鑾茶姳鐧借壊.png",
+      "bytes": 76244,
+      "resource": "assets/resources/themes/writing/dunhuang/choices-2.png"
+    },
+    "choices-3": {
+      "zipIndex": 42,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鑾茶姳缁胯壊.png",
+      "bytes": 75358,
+      "resource": "assets/resources/themes/writing/dunhuang/choices-3.png"
+    },
+    "successState": {
+      "zipIndex": 38,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鏁︾厡浜虹墿姝ｅ弽棣?png",
+      "bytes": 443174,
+      "resource": "assets/resources/themes/writing/dunhuang/successState.png"
+    },
+    "failState": {
+      "zipIndex": 28,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/鏁︾厡澹佺敾-閫夐」瑙﹀彂鐣岄潰鍒囧浘/鑾茶姳璐熷弽棣?png",
+      "bytes": 92894,
+      "resource": "assets/resources/themes/writing/dunhuang/failState.png"
+    },
+    "resultBackground": {
+      "zipIndex": 13,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/缁撶畻/缁撶畻鑳屾櫙.png",
+      "bytes": 8741261,
+      "resource": "assets/resources/themes/writing/dunhuang/resultBackground.png"
+    },
+    "resultReference": {
+      "zipIndex": 7,
+      "original": "鍐欎綔瀹濊棌-鏁︾厡澹佺敾-鍒囧浘/缁撶畻/缁撶畻-绀烘剰鍥?png",
+      "bytes": 8363300,
+      "resource": "assets/resources/themes/writing/dunhuang/resultReference.png"
+    }
+  },
+  "magic": {
+    "background": {
+      "zipIndex": 153,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/寰呮満+鎸栨帢鐘舵€佽儗鏅?png",
+      "bytes": 2735726,
+      "resource": "assets/resources/themes/writing/magic/background.png"
+    },
+    "characterIdle": {
+      "zipIndex": 150,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/寰呮満鐘舵€?png",
+      "bytes": 152779,
+      "resource": "assets/resources/themes/writing/magic/characterIdle.png"
+    },
+    "characterAction": {
+      "zipIndex": 147,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/灏忛箍鏂芥硶.png",
+      "bytes": 238680,
+      "resource": "assets/resources/themes/writing/magic/characterAction.png"
+    },
+    "hudTimer": {
+      "zipIndex": 159,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/绉掕〃UI妗?png",
+      "bytes": 36393,
+      "resource": "assets/resources/themes/writing/magic/hudTimer.png"
+    },
+    "hudScore": {
+      "zipIndex": 160,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/绉垎.png",
+      "bytes": 21787,
+      "resource": "assets/resources/themes/writing/magic/hudScore.png"
+    },
+    "scoreIcon": {
+      "zipIndex": 168,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/閲戝竵UI妗?png",
+      "bytes": 34448,
+      "resource": "assets/resources/themes/writing/magic/scoreIcon.png"
+    },
+    "option": {
+      "zipIndex": 165,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/閫夐」鐭冲潡.png",
+      "bytes": 34322,
+      "resource": "assets/resources/themes/writing/magic/option.png"
+    },
+    "feedbackCorrect": {
+      "zipIndex": 149,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/榄旀硶璐熸棣堣儗鏅?png",
+      "bytes": 2685065,
+      "resource": "assets/resources/themes/writing/magic/feedbackCorrect.png"
+    },
+    "feedbackWrong": {
+      "zipIndex": 148,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/榄旀硶璐熷弽棣堣儗鏅?png",
+      "bytes": 2735026,
+      "resource": "assets/resources/themes/writing/magic/feedbackWrong.png"
+    },
+    "choices-1": {
+      "zipIndex": 158,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/榄旀硶涔︾孩.png",
+      "bytes": 83211,
+      "resource": "assets/resources/themes/writing/magic/choices-1.png"
+    },
+    "choices-2": {
+      "zipIndex": 166,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/榄旀硶涔︾传.png",
+      "bytes": 91679,
+      "resource": "assets/resources/themes/writing/magic/choices-2.png"
+    },
+    "choices-3": {
+      "zipIndex": 162,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/榄旀硶涔︾豢.png",
+      "bytes": 81429,
+      "resource": "assets/resources/themes/writing/magic/choices-3.png"
+    },
+    "successState": {
+      "zipIndex": 163,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/榄旀硶涔︽鍙嶉.png",
+      "bytes": 174760,
+      "resource": "assets/resources/themes/writing/magic/successState.png"
+    },
+    "failState": {
+      "zipIndex": 154,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/榄旀硶瀛﹂櫌-閫夐」瑙﹀彂鐣岄潰鍒囧浘/涔︽湰璐熷弽棣?png",
+      "bytes": 75396,
+      "resource": "assets/resources/themes/writing/magic/failState.png"
+    },
+    "resultBackground": {
+      "zipIndex": 180,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/缁撶畻/鑳屾櫙鍥?png",
+      "bytes": 2053086,
+      "resource": "assets/resources/themes/writing/magic/resultBackground.png"
+    },
+    "resultReference": {
+      "zipIndex": 172,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/缁撶畻/缁撶畻-绀烘剰鍥?png",
+      "bytes": 2682338,
+      "resource": "assets/resources/themes/writing/magic/resultReference.png"
+    },
+    "resultReview": {
+      "zipIndex": 179,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/缁撶畻/绛旈鍥為【.png",
+      "bytes": 60868,
+      "resource": "assets/resources/themes/writing/magic/resultReview.png"
+    },
+    "resultCorrect": {
+      "zipIndex": 181,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/缁撶畻/姝ｇ‘.png",
+      "bytes": 5426,
+      "resource": "assets/resources/themes/writing/magic/resultCorrect.png"
+    },
+    "resultRank": {
+      "zipIndex": 182,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/缁撶畻/鎺掕姒?png",
+      "bytes": 50687,
+      "resource": "assets/resources/themes/writing/magic/resultRank.png"
+    },
+    "resultWrong": {
+      "zipIndex": 183,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/缁撶畻/閿欒.png",
+      "bytes": 5484,
+      "resource": "assets/resources/themes/writing/magic/resultWrong.png"
+    },
+    "resultRankBase": {
+      "zipIndex": 170,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/缁撶畻/鎺掕姒滄爣绛句笅搴曡壊.png",
+      "bytes": 207359,
+      "resource": "assets/resources/themes/writing/magic/resultRankBase.png"
+    },
+    "resultStars-1": {
+      "zipIndex": 178,
+      "original": "鍐欎綔瀹濊棌-榄旀硶瀛﹂櫌-鍒囧浘/缁撶畻/鏄熸槦.png",
+      "bytes": 6330,
+      "resource": "assets/resources/themes/writing/magic/resultStars-1.png"
+    }
+  },
+  "intro": {
+    "background": {
+      "zipIndex": 79,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/灏侀潰_棰樼洰寰呮満鐣岄潰/鑳屾櫙.png",
+      "bytes": 2054414,
+      "resource": "assets/resources/themes/writing/intro/background.png"
+    },
+    "title": {
+      "zipIndex": 76,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/灏侀潰_棰樼洰寰呮満鐣岄潰/鍐欎綔瀹濊棌鏍囬.png",
+      "bytes": 1052653,
+      "resource": "assets/resources/themes/writing/intro/title.png"
+    },
+    "guide": {
+      "zipIndex": 77,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/灏侀潰_棰樼洰寰呮満鐣岄潰/鎻愮ず鏂囧瓧.png",
+      "bytes": 70905,
+      "resource": "assets/resources/themes/writing/intro/guide.png"
+    },
+    "start": {
+      "zipIndex": 78,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/灏侀潰_棰樼洰寰呮満鐣岄潰/寮€濮嬫父鎴忔寜閽?png",
+      "bytes": 128200,
+      "resource": "assets/resources/themes/writing/intro/start.png"
+    },
+    "deer": {
+      "zipIndex": 81,
+      "original": "鍐欎綔瀹濊棌-鍩虹鐗?鍒囧浘/灏侀潰_棰樼洰寰呮満鐣岄潰/浜虹墿.png",
+      "bytes": 545850,
+      "resource": "assets/resources/themes/writing/intro/deer.png"
+    }
+  }
+}

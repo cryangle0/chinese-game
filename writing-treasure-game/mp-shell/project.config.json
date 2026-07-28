@@ -1,0 +1,14 @@
+{
+  "appid": "wx526f880bdbcd1af0",
+  "compileType": "miniprogram",
+  "description": "挖宝 H5 web-view shell",
+  "miniprogramRoot": "miniprogram/",
+  "projectname": "zyb-treasure-shell",
+  "setting": {
+    "checkSiteMap": false,
+    "es6": true,
+    "minified": true,
+    "postcss": true,
+    "urlCheck": true
+  }
+}

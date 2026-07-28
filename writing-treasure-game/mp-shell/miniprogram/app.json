@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "pages/game/index",
+    "pages/share/index"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "pageOrientation": "landscape"
+  },
+  "networkTimeout": {
+    "request": 10000
+  },
+  "sitemapLocation": "sitemap.json"
+}

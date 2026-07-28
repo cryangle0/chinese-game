@@ -1,0 +1,16 @@
+export const AppConfig = {
+  designWidth: 1440,
+  designHeight: 810,
+  backdropWidth: 2560,
+  roundSeconds: 180,
+  maxQuestions: 5,
+  startingLives: 3,
+  scoreCorrect: 20,
+  comboBonus: 0,
+  maxComboBonus: 0,
+  scoreWrong: 0,
+  transitionSeconds: 2.0,
+  campaignStages: 5,
+  analyticsFlushSeconds: 5,
+  analyticsBatchSize: 20,
+} as const;

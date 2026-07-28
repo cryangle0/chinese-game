@@ -1,0 +1,11 @@
+{
+  "pose": {
+    "movementSensitivity": 1,
+    "moveDebounceMs": 150,
+    "jumpCooldownMs": 700,
+    "enterThreshold": 0.1,
+    "returnThreshold": 0.04,
+    "smoothingAlpha": 0.35,
+    "jumpThreshold": 0.045
+  }
+}

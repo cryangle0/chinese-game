@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>写作宝藏结算页 HTML 像素基准</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+    body { display: grid; place-items: center; }
+    .stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      transform-origin: center;
+      background: url("./assets/treasure-bg.png") center / 100% 100% no-repeat;
+      color: #6d4225;
+    }
+    img { display: block; }
+    .rank-title, .review-title, .rank-row, .star {
+      position: absolute;
+      object-fit: contain;
+    }
+    .rank-title { left: 700px; top: 295px; width: 350px; height: 104px; }
+    .review-title { left: 1275px; top: 299px; width: 396px; height: 97px; }
+    .achievement {
+      position: absolute;
+      left: 1333px;
+      top: 397px;
+      width: 307px;
+      height: 43px;
+    }
+    .rank-list {
+      position: absolute;
+      left: 640px;
+      top: 405px;
+      width: 452px;
+      height: 447px;
+      border-radius: 22px;
+      background: rgba(255, 249, 238, 0.88);
+      overflow: hidden;
+    }
+    .rank-row { left: 15px; width: 419px; }
+    .rank-row.one { top: 30px; height: 133px; }
+    .rank-row.two { top: 165px; height: 107px; }
+    .rank-row.three { top: 275px; height: 104px; }
+    .rank-name, .rank-score {
+      position: absolute;
+      z-index: 2;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      font-size: 29px;
+      font-weight: 800;
+    }
+    .rank-name { left: 160px; width: 130px; }
+    .rank-score { right: 25px; width: 105px; color: #ef6b11; }
+    .rank-name.one, .rank-score.one { top: 77px; }
+    .rank-name.two, .rank-score.two { top: 189px; }
+    .rank-name.three, .rank-score.three { top: 298px; }
+    .review-list {
+      position: absolute;
+      left: 1136px;
+      top: 449px;
+      width: 670px;
+      display: grid;
+      gap: 10px;
+    }
+    .review-row {
+      position: relative;
+      height: 79px;
+      border: 2px solid #e7c28c;
+      border-radius: 19px;
+      background: rgba(250, 250, 250, 0.94);
+      display: flex;
+      align-items: center;
+      padding: 0 74px 0 30px;
+      font-size: 29px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .answer { color: #f06409; }
+    .state-icon {
+      position: absolute;
+      right: 18px;
+      top: 13px;
+      width: 52px;
+      height: 52px;
+    }
+    .score {
+      position: absolute;
+      left: 148px;
+      top: 875px;
+      width: 315px;
+      height: 73px;
+      border-radius: 20px;
+      background: linear-gradient(#328fe4, #1970c5);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      font-size: 35px;
+      font-weight: 900;
+      text-shadow: 0 3px 0 #15569a;
+    }
+    .score strong { color: #ffe142; font-size: 54px; text-shadow: 0 3px 0 #9a6b00; }
+    .stars {
+      position: absolute;
+      left: 106px;
+      top: 950px;
+      width: 400px;
+      height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .star { position: static; width: 64px; height: 62px; }
+    .result-title {
+      position: absolute;
+      left: 760px;
+      top: 25px;
+      width: 400px;
+      text-align: center;
+      color: #fff;
+      font-size: 42px;
+      font-weight: 900;
+      text-shadow: 0 3px 0 rgba(0, 73, 134, 0.7);
+    }
+    .actions {
+      position: absolute;
+      left: 615px;
+      bottom: 28px;
+      display: flex;
+      gap: 28px;
+    }
+    .actions button {
+      width: 210px;
+      height: 72px;
+      border: 0;
+      border-radius: 10px;
+      box-shadow: 0 5px 0 rgba(93, 48, 13, 0.35);
+      color: #fff;
+      font: 800 29px "Microsoft YaHei", sans-serif;
+      cursor: pointer;
+    }
+    .replay { background: #18965f; }
+    .share { background: #cf7a19; }
+    .home { background: #3474b6; }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="写作宝藏结算页">
+    <h1 class="result-title">时间到</h1>
+
+    <img class="rank-title" src="./assets/rank-title.png" alt="排行榜">
+    <section class="rank-list" aria-label="排行榜">
+      <img class="rank-row one" src="./assets/rank-1.png" alt="">
+      <img class="rank-row two" src="./assets/rank-2.png" alt="">
+      <img class="rank-row three" src="./assets/rank-3.png" alt="">
+      <span class="rank-name one">宋宋</span><span class="rank-score one">100分</span>
+      <span class="rank-name two">我</span><span class="rank-score two">80分</span>
+      <span class="rank-name three">佳佳</span><span class="rank-score three">40分</span>
+    </section>
+
+    <img class="review-title" src="./assets/review-title.png" alt="答题回顾">
+    <img class="achievement" src="./assets/achievement.png" alt="官封弼马温">
+    <section class="review-list" aria-label="答题回顾">
+      <div class="review-row">四大天王设定最早源自<span class="answer">印度</span>。<img class="state-icon" src="./assets/correct.png" alt="正确"></div>
+      <div class="review-row">“安静”的近义词是<span class="answer">宁静</span>。<img class="state-icon" src="./assets/correct.png" alt="正确"></div>
+      <div class="review-row">“春风”的“春”读音是<span class="answer">chūn</span>。<img class="state-icon" src="./assets/correct.png" alt="正确"></div>
+      <div class="review-row">下列词语书写正确的是<span class="answer">已经</span>。<img class="state-icon" src="./assets/correct.png" alt="正确"></div>
+      <div class="review-row">芙丽莎悲伤时会<span class="answer">流泪</span>。<img class="state-icon" src="./assets/wrong.png" alt="错误"></div>
+    </section>
+
+    <div class="score"><span>总分</span><strong>80</strong></div>
+    <div class="stars" aria-label="四星">
+      <img class="star" src="./assets/star-1.png" alt="">
+      <img class="star" src="./assets/star-2.png" alt="">
+      <img class="star" src="./assets/star-3.png" alt="">
+      <img class="star" src="./assets/star-4.png" alt="">
+    </div>
+
+    <nav class="actions" aria-label="结算操作">
+      <button class="replay" type="button">再玩一次</button>
+      <button class="share" type="button">分享成绩</button>
+      <button class="home" type="button">返回首页</button>
+    </nav>
+  </main>
+  <script>
+    const stage = document.querySelector('.stage');
+    function fit() {
+      stage.style.transform = `scale(${Math.min(innerWidth / 1920, innerHeight / 1080)})`;
+    }
+    addEventListener('resize', fit);
+    fit();
+  </script>
+</body>
+</html>

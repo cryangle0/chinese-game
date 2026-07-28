@@ -1,0 +1,30 @@
+# 根目录仅托管两个游戏工程，其它资料不入库
+*
+!README.md
+!.gitignore
+!reading-jumper-game/
+!reading-jumper-game/**
+!writing-treasure-game/
+!writing-treasure-game/**
+
+# 各游戏内构建产物与依赖
+**/node_modules/
+**/library/
+**/temp/
+**/build/
+**/build-corrupt-*/
+**/local/
+**/profiles/default/
+**/data/analytics/
+**/test-results/
+**/coverage/
+**/release/
+**/web-mobile-feedback-*/
+**/test-evidence/
+**/tmp-intro-verify/
+**/customer-media/
+**/runtime-media/
+**/*.log
+**/mp-shell/private.*.key
+.DS_Store
+Thumbs.db

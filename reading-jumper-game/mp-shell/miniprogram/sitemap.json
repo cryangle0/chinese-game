@@ -1,0 +1,9 @@
+{
+  "desc": "The game entry is launched from campaign links.",
+  "rules": [
+    {
+      "action": "disallow",
+      "page": "*"
+    }
+  ]
+}

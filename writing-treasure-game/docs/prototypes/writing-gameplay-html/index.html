@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>写作宝藏答题页像素基准</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    body { display: grid; place-items: center; }
+    .viewport {
+      position: relative; width: 1920px; height: 1080px;
+      transform: scale(min(100vw / 1920, 100vh / 1080));
+      transform-origin: center;
+      overflow: hidden;
+      background: url("./assets/background.png") 0 0 / 1920px 1080px no-repeat;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+    img { position: absolute; display: block; }
+    .timer { left: 31px; top: 42px; width: 410px; height: 128px; }
+    .score { left: 31px; top: 180px; width: 410px; height: 128px; }
+    .timer-text, .score-text {
+      position: absolute; left: 135px; width: 270px; color: #fff;
+      font-size: 38px; font-weight: 700; text-align: center;
+      text-shadow: 0 2px 2px #8f4a10;
+    }
+    .timer-text { top: 82px; }
+    .score-text { top: 220px; }
+    .question-board { left: 650px; top: 140px; width: 1068px; height: 145px; }
+    .question {
+      position: absolute; left: 650px; top: 180px; width: 1068px; height: 90px;
+      display: grid; place-items: center; color: #fff; text-align: center;
+      font-size: 42px; font-weight: 700; line-height: 1.3;
+      text-shadow: 0 3px 0 #002f59, 0 0 4px #002f59;
+    }
+    .character { left: 875px; top: 335px; width: 300px; height: 390px; }
+    .option {
+      position: absolute; width: 302px; height: 93px;
+      background: url("./assets/option.png") 0 0 / 302px 93px no-repeat;
+      display: grid; place-items: center; padding-bottom: 4px;
+      color: #4d180e; font-size: 34px; font-weight: 700;
+      text-shadow: 0 2px #fff;
+    }
+    .option.a { left: 302px; top: 710px; }
+    .option.b { left: 878px; top: 710px; }
+    .option.c { left: 1453px; top: 710px; }
+    .chest { width: 212px; height: 180px; }
+    .chest.a { left: 335px; top: 825px; }
+    .chest.b { left: 912px; top: 825px; width: 206px; }
+    .chest.c { left: 1490px; top: 825px; width: 208px; height: 179px; }
+    .voice { left: 620px; top: 1005px; width: 840px; height: 75px; }
+    .voice-text {
+      position: absolute; left: 650px; top: 1020px; width: 800px;
+      color: #6b310e; font-size: 32px; font-weight: 700; text-align: center;
+      text-shadow: 0 3px 0 #7c360e;
+    }
+  </style>
+</head>
+<body>
+  <main class="viewport" aria-label="写作宝藏基础版答题页面">
+    <img class="timer" src="./assets/timer.png" alt="">
+    <div class="timer-text">倒计时：30秒</div>
+    <img class="score" src="./assets/score.png" alt="">
+    <div class="score-text">积分：50</div>
+    <img class="question-board" src="./assets/question.png" alt="">
+    <div class="question">四大天王的设定最早源自于?</div>
+    <img class="character" src="./assets/character.png" alt="">
+    <div class="option a">A、古中国</div>
+    <div class="option b">B、古印度</div>
+    <div class="option c">C、古罗马</div>
+    <img class="chest a" src="./assets/chest-red.png" alt="">
+    <img class="chest b" src="./assets/chest-purple.png" alt="">
+    <img class="chest c" src="./assets/chest-green.png" alt="">
+    <img class="voice" src="./assets/voice.png" alt="">
+    <div class="voice-text">按住说话</div>
+  </main>
+</body>
+</html>
