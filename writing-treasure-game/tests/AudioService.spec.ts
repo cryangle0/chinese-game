@@ -69,15 +69,43 @@ class FakeAudioContext {
 
 describe('AudioService', () => {
   const OriginalAudioContext = global.AudioContext;
+  const OriginalAudio = global.Audio;
   let context: FakeAudioContext;
+
+  class FakeAudio {
+    static latest: FakeAudio | null = null;
+    currentTime = 0;
+    ended = false;
+    loop = false;
+    paused = true;
+    preload = '';
+    volume = 1;
+    src = '';
+
+    constructor() {
+      FakeAudio.latest = this;
+    }
+
+    load(): void {}
+    pause(): void { this.paused = true; }
+    play(): Promise<void> {
+      this.paused = false;
+      return Promise.resolve();
+    }
+    addEventListener(): void {}
+    removeAttribute(): void {}
+  }
 
   beforeEach(() => {
     context = new FakeAudioContext();
     global.AudioContext = jest.fn(() => context) as unknown as typeof AudioContext;
+    global.Audio = FakeAudio as unknown as typeof Audio;
   });
 
   afterEach(() => {
     global.AudioContext = OriginalAudioContext;
+    global.Audio = OriginalAudio;
+    jest.useRealTimers();
   });
 
   it('deduplicates resume requests and disconnects completed tone nodes', async () => {
@@ -119,6 +147,28 @@ describe('AudioService', () => {
     context.finishSuspend();
     await Promise.resolve();
     expect(context.resume).toHaveBeenCalledTimes(1);
+    audio.dispose();
+  });
+
+  it('ducks BGM during voice capture and restores it without restarting', async () => {
+    jest.useFakeTimers();
+    const audio = new AudioService({
+      ...catalog,
+      bgm: { url: '/bgm.mp3', volume: 0.2 },
+    });
+    audio.playMusic();
+    await Promise.resolve();
+    const bgm = FakeAudio.latest;
+
+    audio.setVoiceCaptureActive(true);
+    expect(bgm?.volume).toBeCloseTo(0.016);
+
+    audio.setVoiceCaptureActive(false);
+    jest.advanceTimersByTime(279);
+    expect(bgm?.volume).toBeCloseTo(0.016);
+    jest.advanceTimersByTime(1);
+    expect(bgm?.volume).toBeCloseTo(0.2);
+    expect(bgm?.currentTime).toBe(0);
     audio.dispose();
   });
 });

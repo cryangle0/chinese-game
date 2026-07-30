@@ -15,6 +15,7 @@ class FakeMediaRecorder {
   ondataavailable: ((event: BlobEvent) => void) | null = null;
   onerror: ((event: Event) => void) | null = null;
   onstop: (() => void) | null = null;
+  requestDataCalls = 0;
 
   constructor(_stream: MediaStream, options?: MediaRecorderOptions) {
     this.mimeType = options?.mimeType ?? '';
@@ -22,6 +23,10 @@ class FakeMediaRecorder {
   }
 
   start(_timeslice?: number): void { this.state = 'recording'; }
+  requestData(): void {
+    this.requestDataCalls += 1;
+    this.emitData();
+  }
   stop(): void {
     this.state = 'inactive';
     this.onstop?.();
@@ -209,6 +214,31 @@ describe('SpeechSelectionService', () => {
     expect(tracks[0].stop).toHaveBeenCalledTimes(1);
   });
 
+  it('switches to processing immediately on release and flushes the final audio chunk', async () => {
+    const fetchMock = jest.fn(async () =>
+      new Response(JSON.stringify({ transcript: '第二个' }), { status: 200 }));
+    installBrowser(fetchMock);
+    const captureStates: boolean[] = [];
+    const states: string[] = [];
+    const service = new SpeechSelectionService(
+      undefined,
+      undefined,
+      (active) => captureStates.push(active),
+    );
+
+    service.listen(options, jest.fn(), (state) => states.push(state));
+    await flushAsync();
+    const recorder = FakeMediaRecorder.latest;
+    service.finish();
+
+    expect(states.slice(0, 2)).toEqual(['listening', 'processing']);
+    expect(recorder?.requestDataCalls).toBe(1);
+    expect(captureStates[0]).toBe(true);
+    await flushAsync();
+    expect(captureStates).toEqual([true, false]);
+    service.dispose();
+  });
+
   it('delivers a valid match even when the game callback immediately stops listening', async () => {
     const fetchMock = jest.fn(async () =>
       new Response(JSON.stringify({ transcript: '第二个' }), { status: 200 }));
@@ -381,6 +411,86 @@ describe('SpeechSelectionService', () => {
       }),
     ]));
     expect(JSON.stringify(diagnostics)).not.toContain('provider secret');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('retries one transient ASR failure and accepts the successful response', async () => {
+    const fetchMock = jest.fn()
+      .mockResolvedValueOnce(new Response('{}', { status: 503 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        transcript: '第二个',
+        requestId: 'request-retry-success',
+      }), { status: 200 }));
+    installBrowser(fetchMock);
+    const states: string[] = [];
+    const matches: number[] = [];
+    const service = new SpeechSelectionService();
+
+    service.listen(options, (index) => matches.push(index), (state) => states.push(state));
+    await flushAsync();
+    FakeMediaRecorder.latest?.emitData();
+    FakeMediaRecorder.latest?.stop();
+    await flushAsync();
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(matches).toEqual([1]);
+    expect(states).toEqual(['listening', 'processing', 'idle']);
+  });
+
+  it('retries one transient network failure and accepts the successful response', async () => {
+    const fetchMock = jest.fn()
+      .mockRejectedValueOnce(new TypeError('network disconnected'))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ transcript: '第二个' }), {
+        status: 200,
+      }));
+    installBrowser(fetchMock);
+    const matches: number[] = [];
+    const service = new SpeechSelectionService();
+
+    service.listen(options, (index) => matches.push(index), jest.fn());
+    await flushAsync();
+    FakeMediaRecorder.latest?.emitData();
+    FakeMediaRecorder.latest?.stop();
+    await flushAsync();
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(matches).toEqual([1]);
+  });
+
+  it('retries an empty ASR result once before accepting a match', async () => {
+    const fetchMock = jest.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ transcript: '' }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ transcript: '第二个' }), {
+        status: 200,
+      }));
+    installBrowser(fetchMock);
+    const matches: number[] = [];
+    const service = new SpeechSelectionService();
+
+    service.listen(options, (index) => matches.push(index), jest.fn());
+    await flushAsync();
+    FakeMediaRecorder.latest?.emitData();
+    FakeMediaRecorder.latest?.stop();
+    await flushAsync();
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(matches).toEqual([1]);
+  });
+
+  it('does not retry a permanent ASR client error', async () => {
+    const fetchMock = jest.fn(async () => new Response('{}', { status: 400 }));
+    installBrowser(fetchMock);
+    const states: string[] = [];
+    const service = new SpeechSelectionService();
+
+    service.listen(options, jest.fn(), (state) => states.push(state));
+    await flushAsync();
+    FakeMediaRecorder.latest?.emitData();
+    FakeMediaRecorder.latest?.stop();
+    await flushAsync();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(states).toEqual(['listening', 'processing', 'error']);
   });
 
   it('refuses conflicting recognition alternatives instead of guessing', async () => {

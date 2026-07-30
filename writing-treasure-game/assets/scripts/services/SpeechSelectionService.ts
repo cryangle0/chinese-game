@@ -17,9 +17,13 @@ export class SpeechSelectionService {
   private disposed = false;
   private generation = 0;
   private finishRequested = false;
+  private stateListener: ((state: SpeechState) => void) | null = null;
+  private lastState: SpeechState | null = null;
+  private captureActive = false;
   constructor(
     private readonly onDiagnostic?: VoiceDiagnosticSink,
     streams?: SpeechStreamPool,
+    private readonly onCaptureActive?: (active: boolean) => void,
   ) {
     this.streams = streams ?? new SpeechStreamPool();
     this.ownsStreams = !streams;
@@ -40,17 +44,22 @@ export class SpeechSelectionService {
     const generation = ++this.generation;
     this.active = true;
     this.finishRequested = false;
-    onState('listening');
+    this.stateListener = onState;
+    this.lastState = null;
+    this.setCaptureActive(true);
+    this.emitState('listening', generation);
     // Start getUserMedia in the same gesture turn (iOS WKWebView requirement).
     const gum = this.streams.acquire();
     void this.recordAndRecognize(
-      gum, [...options], onMatch, onState, generation, diagnostic,
+      gum, [...options], onMatch, generation, diagnostic,
     );
   }
   finish(): void {
+    if (!this.active) return;
     this.finishRequested = true;
     this.clearRecordTimer();
-    this.stopRecorder();
+    this.emitState('processing', this.generation);
+    this.stopRecorder(true);
   }
   stop(): void {
     this.generation += 1;
@@ -62,6 +71,9 @@ export class SpeechSelectionService {
     this.stopRecorder();
     this.recorder = null;
     this.streams.park();
+    this.setCaptureActive(false);
+    this.stateListener = null;
+    this.lastState = null;
   }
   dispose(): void {
     if (this.disposed) return;
@@ -69,16 +81,19 @@ export class SpeechSelectionService {
     this.disposed = true;
     if (this.ownsStreams) this.streams.close();
   }
-  private stopRecorder(): void {
+  private stopRecorder(flush = false): void {
     const recorder = this.recorder;
     if (recorder?.state === 'recording') {
+      if (flush && typeof recorder.requestData === 'function') {
+        try { recorder.requestData(); } catch { /* recorder is already stopping */ }
+      }
       try { recorder.stop(); } catch { /* already stopping */ }
     }
   }
   private async recordAndRecognize(
     gum: Promise<MediaStream>, options: readonly string[],
     onMatch: (index: number, attemptId: string) => void,
-    onState: (state: SpeechState) => void, generation: number,
+    generation: number,
     diagnostic: VoiceAttemptDiagnostics,
   ): Promise<void> {
     let stream: MediaStream | null = null;
@@ -94,14 +109,14 @@ export class SpeechSelectionService {
       if (!this.isCurrent(generation)) return;
       if (!audio) {
         diagnostic.emit('capture_empty', { audioBytes: 0 });
-        onState('no-match');
+        this.emitState('no-match', generation);
         return;
       }
       diagnostic.emit('capture_ready', {
         audioBytes: audio.size,
         mimeType: audio.type,
       });
-      onState('processing');
+      this.emitState('processing', generation);
       const abort = new AbortController();
       this.requestAbort = abort;
       const matchedIndex = await recognizeSpeechAudio(audio, options, abort, diagnostic)
@@ -110,10 +125,10 @@ export class SpeechSelectionService {
         });
       if (!this.isCurrent(generation)) return;
       if (matchedIndex === null) {
-        onState('no-match');
+        this.emitState('no-match', generation);
         return;
       }
-      onState('idle');
+      this.emitState('idle', generation);
       try { onMatch(matchedIndex, diagnostic.attemptId); }
       catch (error) { console.error('[SpeechSelectionService] match callback failed', error); }
     } catch (error) {
@@ -123,12 +138,18 @@ export class SpeechSelectionService {
           httpStatus: speechHttpStatus(error),
         });
         console.warn('[SpeechSelectionService] recognition failed', error);
-        onState('error');
+        this.emitState('error', generation);
       }
     } finally {
       this.clearRecordTimer();
       if (!this.active) this.streams.park(stream);
-      if (this.generation === generation) { this.active = false; this.recorder = null; }
+      if (this.generation === generation) {
+        this.active = false;
+        this.recorder = null;
+        this.setCaptureActive(false);
+        this.stateListener = null;
+        this.lastState = null;
+      }
     }
   }
   private async captureAudio(stream: MediaStream): Promise<Blob | null> {
@@ -143,7 +164,7 @@ export class SpeechSelectionService {
       recorder.onerror = () => reject(new Error('media recorder failed'));
     });
     recorder.start(250);
-    if (this.finishRequested && recorder.state === 'recording') recorder.stop();
+    if (this.finishRequested && recorder.state === 'recording') this.stopRecorder(true);
     this.recordTimer = setTimeout(() => {
       if (recorder.state === 'recording') recorder.stop();
     }, maxRecordingMs);
@@ -151,6 +172,7 @@ export class SpeechSelectionService {
     finally {
       this.clearRecordTimer();
       this.streams.park(stream);
+      this.setCaptureActive(false);
     }
     if (this.recorder === recorder) this.recorder = null;
     const type = recorder.mimeType || mimeType || chunks[0]?.type || 'audio/webm';
@@ -163,5 +185,16 @@ export class SpeechSelectionService {
   private clearRecordTimer(): void {
     if (this.recordTimer !== null) clearTimeout(this.recordTimer);
     this.recordTimer = null;
+  }
+  private emitState(state: SpeechState, generation: number): void {
+    if (this.generation !== generation || this.lastState === state) return;
+    this.lastState = state;
+    this.stateListener?.(state);
+  }
+  private setCaptureActive(active: boolean): void {
+    if (this.captureActive === active) return;
+    this.captureActive = active;
+    try { this.onCaptureActive?.(active); }
+    catch { /* audio handling must never block voice input */ }
   }
 }

@@ -83,6 +83,18 @@ describe('MediaAudioPlayer', () => {
     player.dispose();
   });
 
+  it('updates an active media element volume without restarting playback', async () => {
+    const player = new MediaAudioPlayer();
+    await player.play('/bgm.mp3', 0.2, true);
+    const bgm = FakeAudio.instances.get('/bgm.mp3');
+
+    player.setVolume('/bgm.mp3', 0.016);
+
+    expect(bgm?.volume).toBeCloseTo(0.016);
+    expect(FakeAudio.playCalls).toBe(1);
+    player.dispose();
+  });
+
   it('resumes a paused loop from its previous position', async () => {
     const player = new MediaAudioPlayer();
     player.retain(['/bgm.mp3']);

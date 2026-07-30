@@ -70,6 +70,11 @@ export class MediaAudioPlayer {
     }
   }
 
+  setVolume(url: string, volume: number): void {
+    const audio = this.elements.get(url);
+    if (audio) audio.volume = Math.max(0, Math.min(1, volume));
+  }
+
   stop(url?: string): void {
     this.elements.forEach((audio, key) => {
       if (url && key !== url) return;

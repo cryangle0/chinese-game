@@ -5,6 +5,8 @@ import { MediaAudioPlayer } from './MediaAudioPlayer';
 import { playTone } from './TonePlayer';
 export type { SoundName } from './AudioCatalog';
 const musicNames: readonly MusicName[] = ['bgm', 'ambient'];
+const voiceCaptureMusicMultiplier = 0.08;
+const voiceCaptureRestoreDelayMs = 280;
 export class AudioService {
   private context: AudioContext | null = null;
   private readonly media = new MediaAudioPlayer();
@@ -17,6 +19,8 @@ export class AudioService {
   private mediaUnlocked = false;
   private disposed = false;
   private theme: AudioTheme = {}; private musicRequested = false;
+  private voiceCaptureActive = false;
+  private voiceCaptureRestoreTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private readonly catalog: AudioCatalog = defaultAudioCatalog) {
     this.bindUnlockGesture();
@@ -64,8 +68,25 @@ export class AudioService {
     if (this.disposed || !this.enabled || this.paused) return;
     for (const name of musicNames) {
       const music = this.definition(name);
-      if (music.url) void this.media.play(music.url, music.volume ?? 0.25, true);
+      if (music.url) void this.media.play(music.url, this.musicVolume(name), true);
     }
+  }
+
+  setVoiceCaptureActive(active: boolean): void {
+    if (this.disposed) return;
+    this.clearVoiceCaptureRestoreTimer();
+    if (active) {
+      this.voiceCaptureActive = true;
+      this.applyMusicVolumes();
+      return;
+    }
+    if (!this.voiceCaptureActive) return;
+    this.voiceCaptureRestoreTimer = setTimeout(() => {
+      this.voiceCaptureRestoreTimer = null;
+      if (this.disposed) return;
+      this.voiceCaptureActive = false;
+      this.applyMusicVolumes();
+    }, voiceCaptureRestoreDelayMs);
   }
 
   setTheme(theme: AudioTheme = {}): void {
@@ -86,6 +107,7 @@ export class AudioService {
     );
     this.preload(theme);
     if (changed && this.musicRequested) this.playMusic();
+    else this.applyMusicVolumes();
   }
 
   preload(theme: AudioTheme): void {
@@ -129,6 +151,7 @@ export class AudioService {
     if (this.disposed) return;
     this.disposed = true;
     this.pending = null;
+    this.clearVoiceCaptureRestoreTimer();
     this.unbindUnlockGesture();
     this.media.dispose();
     const context = this.context;
@@ -157,6 +180,22 @@ export class AudioService {
 
   private definition(name: SoundName | MusicName): AudioDefinition {
     return this.theme[name] ?? this.catalog[name];
+  }
+  private musicVolume(name: MusicName): number {
+    const volume = this.definition(name).volume ?? 0.25;
+    return this.voiceCaptureActive ? volume * voiceCaptureMusicMultiplier : volume;
+  }
+  private applyMusicVolumes(): void {
+    for (const name of musicNames) {
+      const music = this.definition(name);
+      if (music.url) this.media.setVolume(music.url, this.musicVolume(name));
+    }
+  }
+  private clearVoiceCaptureRestoreTimer(): void {
+    if (this.voiceCaptureRestoreTimer !== null) {
+      clearTimeout(this.voiceCaptureRestoreTimer);
+    }
+    this.voiceCaptureRestoreTimer = null;
   }
   private bindUnlockGesture(): void {
     if (typeof document === 'undefined') return;

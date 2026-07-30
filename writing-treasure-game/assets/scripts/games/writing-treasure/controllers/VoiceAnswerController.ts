@@ -24,6 +24,7 @@ export class VoiceAnswerController {
         trackVoiceDiagnostic(this.services.analytics, record);
       },
       this.services.speechStreams,
+      (active) => this.services.audio.setVoiceCaptureActive(active),
     );
   }
 
