@@ -1,19 +1,18 @@
 import { Node, Vec3 } from 'cc';
 import { DomMotionSprite } from '../core/media/DomMotionSprite';
-import { applyStretchXBackdrop } from '../core/ui/ResponsiveRoot';
+import type { MotionPlaybackCallbacks } from '../core/media/DomMotionSprite';
 import { createUiNode } from '../core/ui/UiFactory';
 
 const STAGE_WIDTH = 1440;
 const STAGE_HEIGHT = 810;
 
-/** Transparent feedback animation aligned exactly to the Cocos design stage. */
+/** Transparent chase animation covering the real device viewport without stretching. */
 export class FeedbackStageMotionView {
   private readonly root: Node;
   private readonly motion: DomMotionSprite;
   private readonly syncLayout = (): void => {
-    const scaleX = applyStretchXBackdrop(this.root);
     if (typeof document !== 'undefined') {
-      document.body.dataset.feedbackStageScaleX = scaleX.toFixed(6);
+      document.body.dataset.feedbackStageFit = 'cover';
     }
   };
 
@@ -31,16 +30,27 @@ export class FeedbackStageMotionView {
       null,
       STAGE_WIDTH,
       STAGE_HEIGHT,
-      { fit: 'fill', zIndex: 8, suppressFallback: true },
+      {
+        fit: 'cover',
+        objectPosition: 'center',
+        fullscreen: true,
+        fullscreenAnchorY: 418,
+        zIndex: 8,
+        suppressFallback: true,
+      },
     );
     this.syncLayout();
     if (typeof window !== 'undefined') window.addEventListener('resize', this.syncLayout);
   }
 
-  show(path: string, selectedIndex: number): void {
+  show(
+    path: string,
+    selectedIndex: number,
+    callbacks?: MotionPlaybackCallbacks,
+  ): void {
     this.syncLayout();
     this.root.active = true;
-    this.motion.show(path, true);
+    this.motion.show(path, true, true, callbacks);
     if (typeof document !== 'undefined') {
       document.body.dataset.feedbackStageMotion = path;
       document.body.dataset.feedbackStageSelected = String(selectedIndex);

@@ -55,7 +55,7 @@ export function addCustomerScore(
   if (layout.scoreAsSummary) {
     const withCaption = theme.id === 'magic' || theme.id === 'treasure';
     const label = withCaption ? `总分 ${result.score}` : String(result.score);
-    const fontSize = theme.id === 'treasure' ? 34 : theme.id === 'magic' ? 28 : 30;
+    const fontSize = theme.id === 'treasure' ? 30 : theme.id === 'magic' ? 26 : 30;
     const color = theme.id === 'treasure' ? '#FFE142' : '#FFFFFF';
     const summary = createLabel(scoreRoot, label, {
       size: fontSize, color, width: scoreBox.width, height: scoreBox.height, bold: true,

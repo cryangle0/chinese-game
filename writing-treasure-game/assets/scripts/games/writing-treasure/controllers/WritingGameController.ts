@@ -69,6 +69,7 @@ export class WritingGameController implements GameController {
       this.root, this.scope, this.campaign,
       this.view, this.voice, this.round,
       this.timer, this.services, this.stages,
+      !options.skipIntro,
     );
     this.completion = new WritingCompletionController(
       this.root, this.scope, this.voice, this.round,

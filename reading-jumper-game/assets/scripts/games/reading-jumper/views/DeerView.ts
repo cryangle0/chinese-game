@@ -19,6 +19,7 @@ export class DeerView {
   private motionAssets?: MotionAssets;
   private columnX: readonly [number, number, number] = [-400, 0, 400];
   private baseY = -250;
+  private jumpHeight = 48;
   private idleSeconds = 0;
   private acting = false;
 
@@ -96,7 +97,8 @@ export class DeerView {
           this.root,
           x,
           this.baseY,
-          Math.max(0.05, duration - 0.46),
+          this.jumpHeight,
+          Math.max(0.05, duration - 0.53),
           onApex,
           () => this.finishAction(done),
         );
@@ -105,7 +107,13 @@ export class DeerView {
       spriteLoader.apply(this.visual, this.actionAsset, 'contain');
       // No scale pulse — avoids size pop with DomMotionSprite (#11).
       jumpDeerAt(
-        this.root, x, this.baseY, 0.12, onApex, () => this.finishAction(done),
+        this.root,
+        x,
+        this.baseY,
+        this.jumpHeight,
+        0.12,
+        onApex,
+        () => this.finishAction(done),
       );
     };
 
@@ -145,9 +153,14 @@ export class DeerView {
     this.showIdle();
   }
 
-  setLayout(layout: ReadingRect, columns: readonly [number, number, number]): void {
+  setLayout(
+    layout: ReadingRect,
+    columns: readonly [number, number, number],
+    jumpHeight: number,
+  ): void {
     this.baseY = layout.y;
     this.columnX = columns;
+    this.jumpHeight = jumpHeight;
     this.root.setPosition(layout.x, layout.y);
     this.root.getComponent(UITransform)?.setContentSize(layout.width, layout.height);
     this.visual.getComponent(UITransform)?.setContentSize(layout.width, layout.height);
@@ -155,6 +168,7 @@ export class DeerView {
     if (typeof document !== 'undefined') {
       document.body.dataset.deerBox = `${layout.width}x${layout.height}`;
       document.body.dataset.deerY = String(layout.y);
+      document.body.dataset.deerJumpHeight = String(jumpHeight);
     }
   }
 

@@ -45,7 +45,7 @@ const layouts: Readonly<Record<string, ResultThemeLayout>> = {
       reviewCorrect: '#FFFFFF', reviewWrong: '#FFD3D8', scoreOutline: '#075A91',
     },
     summary: {
-      x: -420, captionY: 275, scoreY: 225,
+      x: -420, captionY: 263, scoreY: 225,
       captionColor: '#FFFFFF', scoreColor: '#FFE447',
     },
     headingSize: { width: 330, height: 60 },
@@ -64,8 +64,9 @@ const layouts: Readonly<Record<string, ResultThemeLayout>> = {
     },
     // 贴合深海背景右侧水晶框：收窄 + 上移，避免左侧溢出到排行榜
     review: {
-      x: 458, titleY: 195, subtitleY: 142,
-      textX: 440, iconX: 575, iconSize: 34,
+      // Measured crystal frame center: design x=1161, Cocos x=441.
+      x: 441, titleY: 195, subtitleY: 142,
+      textX: 440, iconX: 558, iconSize: 34,
       rows: [105, 45, -15, -75, -135],
       width: 286, textHeight: 44,
     },
@@ -91,14 +92,18 @@ const layouts: Readonly<Record<string, ResultThemeLayout>> = {
     ],
     // 背景已画金/银/铜奖牌（x≈587–633）；白条只盖文字区，勿盖住奖牌
     rank: {
-      titleX: 54, x: 70.5, titleY: 195,
+      // Measured title slot: x=643..883, y=197..253.
+      titleX: 43, x: 70.5, titleY: 180,
+      titleSize: { width: 240, height: 56 },
       rows: [84, -14.5, -113],
       width: 299, rowHeight: 50,
       nameX: -42, scoreX: 98,
     },
     // 右框内区 ≈ html left1032–1367
     review: {
-      x: 480, titleY: 195, subtitleY: 130,
+      // Measured title slot: x=1079..1319, y=197..253.
+      x: 479, titleY: 180, subtitleY: 130,
+      titleSize: { width: 240, height: 56 },
       textX: 458, iconX: 612, iconSize: 34,
       rows: [84, 28, -28, -84, -140],
       width: 336, textHeight: 44,
@@ -116,6 +121,8 @@ const layouts: Readonly<Record<string, ResultThemeLayout>> = {
       captionColor: '#7A3A2A', scoreColor: '#FFE6A8',
     },
     headingSize: { width: 340, height: 56 },
+    // The new 1440x810 artwork leaves a dedicated counter below the panels.
+    actionsY: -340,
     stars: [
       { x: -543.93, y: -264.94, w: 57.38, h: 54 },
       { x: -479.81, y: -264.94, w: 57.38, h: 54 },
@@ -124,18 +131,20 @@ const layouts: Readonly<Record<string, ResultThemeLayout>> = {
       { x: -287.43, y: -263.25, w: 57.38, h: 54 },
     ],
     rank: {
-      titleX: -5, x: -18, titleY: 100,
+      // Measured inner panel: x=526..868, center=697 in the 1440px design space.
+      titleX: -23, x: -23, titleY: 100,
       titleSize: { width: 340, height: 48 },
       rows: [-8, -96, -184],
       width: 308.25, rowHeight: 81.56,
       nameX: -18.49, scoreX: 101.71,
     },
     review: {
-      x: 410, titleY: 100, subtitleY: 40,
+      // Measured inner panel: x=904..1344. Rows have balanced vertical padding.
+      x: 404, titleY: 100, subtitleY: 40,
       titleSize: { width: 246, height: 48 },
-      textX: 392, iconX: 558, iconSize: 34,
-      rows: [22, -34, -90, -146, -202],
-      width: 352, textHeight: 44,
+      textX: 386, iconX: 570, iconSize: 34,
+      rows: [10, -46, -102, -158, -214],
+      width: 384, textHeight: 44,
     },
   },
   poetry: {
@@ -146,7 +155,7 @@ const layouts: Readonly<Record<string, ResultThemeLayout>> = {
       reviewCorrect: '#55331F', reviewWrong: '#B42318', scoreOutline: '#315E43',
     },
     // 木牌已有「总分…分」；数字居中卡槽（总分↔分 间隙中心，略下作光学对齐）
-    score: { x: -330, y: -238, suffix: '' },
+    score: { x: -319, y: -238, suffix: '' },
     headingSize: { width: 189.56, height: 44.44 },
     stars: [
       { x: -473.06, y: -290.25, w: 56.25, h: 58.5 },

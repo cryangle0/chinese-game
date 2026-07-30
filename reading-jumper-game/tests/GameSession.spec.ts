@@ -36,6 +36,36 @@ describe('GameSession', () => {
     });
   });
 
+  it.each([
+    [0, 0, 0],
+    [4, 80, 0],
+    [5, 100, 1],
+    [9, 180, 1],
+    [10, 200, 2],
+    [14, 280, 2],
+    [15, 300, 3],
+    [19, 380, 3],
+    [20, 400, 4],
+    [24, 480, 4],
+    [25, 500, 5],
+  ])(
+    'awards all five campaign stars by completed 100-point bands: %i correct',
+    (correctAnswers, score, stars) => {
+      const session = new GameSession('reading-jumper');
+      const question = sampleQuestions[0];
+      const wrongIndex = (question.correctIndex + 1) % question.options.length;
+      for (let index = 0; index < 25; index += 1) {
+        session.beginQuestion(index * 100);
+        session.answer(
+          question,
+          index < correctAnswers ? question.correctIndex : wrongIndex,
+          index * 100 + 50,
+        );
+      }
+      expect(session.result()).toMatchObject({ score, stars });
+    },
+  );
+
   it('preserves the controller finish reason in the result', () => {
     const session = new GameSession('reading-jumper');
     expect(session.result('timeout').reason).toBe('timeout');

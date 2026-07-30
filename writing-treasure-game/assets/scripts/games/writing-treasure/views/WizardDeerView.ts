@@ -5,6 +5,11 @@ import { createUiNode } from '../../../core/ui/UiFactory';
 import { sceneCharacter } from '../../../shared/config/WritingSceneCharacter';
 import { MotionAssets } from '../../../shared/types/Theme';
 
+const InitialEntry = {
+  startPadding: 24,
+  durationSeconds: 1.18,
+} as const;
+
 export class WizardDeerView {
   readonly root: Node;
   private readonly visual: Node;
@@ -80,15 +85,42 @@ export class WizardDeerView {
     Tween.stopAllByTarget(this.root);
     const idle = sceneCharacter(this.sceneId).idle;
     const x = preserveColumn ? this.root.position.x : idle.position.x;
+    this.applyIdle(x);
+  }
+
+  enterFromLeft(): Promise<void> {
+    Tween.stopAllByTarget(this.root);
+    const idle = sceneCharacter(this.sceneId).idle;
+    const startX = -720 - idle.size[0] / 2 - InitialEntry.startPadding;
     this.motion.setFit('contain');
     this.motion.setPinFeet(true);
     this.applyFrame(idle.size[0], idle.size[1]);
     this.root.active = true;
-    this.root.setPosition(x, idle.position.y, 0);
+    this.root.setPosition(startX, idle.position.y, 0);
     this.root.setScale(Vec3.ONE);
     this.root.angle = 0;
     spriteLoader.apply(this.visual, this.idleAsset, 'contain');
-    this.motion.show(this.motionAssets?.idle);
+    this.motion.show(this.motionAssets?.runRight ?? this.motionAssets?.idle, true);
+    if (typeof document !== 'undefined') {
+      document.body.dataset.stageEntryActive = 'true';
+      document.body.dataset.stageEntryStartX = String(startX);
+      document.body.dataset.stageEntryTargetX = String(idle.position.x);
+    }
+    return new Promise((resolve) => {
+      tween(this.root)
+        .to(InitialEntry.durationSeconds, {
+          position: idle.position.clone(),
+        }, { easing: 'quadOut' })
+        .call(() => {
+          this.applyIdle(idle.position.x);
+          if (typeof document !== 'undefined') {
+            delete document.body.dataset.stageEntryActive;
+            document.body.dataset.stageEntryCompleted = 'true';
+          }
+          resolve();
+        })
+        .start();
+    });
   }
 
   hide(): void {
@@ -135,5 +167,18 @@ export class WizardDeerView {
     this.root.getComponent(UITransform)?.setContentSize(width, height);
     this.visual.getComponent(UITransform)?.setContentSize(width, height);
     this.motion.resize(width, height);
+  }
+
+  private applyIdle(x: number): void {
+    const idle = sceneCharacter(this.sceneId).idle;
+    this.motion.setFit('contain');
+    this.motion.setPinFeet(true);
+    this.applyFrame(idle.size[0], idle.size[1]);
+    this.root.active = true;
+    this.root.setPosition(x, idle.position.y, 0);
+    this.root.setScale(Vec3.ONE);
+    this.root.angle = 0;
+    spriteLoader.apply(this.visual, this.idleAsset, 'contain');
+    this.motion.show(this.motionAssets?.idle);
   }
 }

@@ -20,6 +20,7 @@ export function buildThemedResultRanking(
   result: GameResult,
   theme: GameTheme,
   layout: ResultThemeLayout,
+  rankingMaxScore = 100,
 ): void {
   // 无 result-rank-title 切图时回退文字（深海/太空等）
   addResultHeading(
@@ -33,7 +34,7 @@ export function buildThemedResultRanking(
     layout.text.headingOutline,
     layout.rank.titleSize ?? layout.headingSize,
   );
-  const rows = buildRankRows(result.score).map((row) => ({
+  const rows = buildRankRows(result.score, rankingMaxScore).map((row) => ({
     name: row.name,
     score: `${row.score}分`,
   }));
@@ -62,6 +63,8 @@ export function buildThemedResultRanking(
   });
   if (typeof document !== 'undefined') {
     document.body.dataset.rankStyle = usePanel ? 'panel' : 'sprite';
+    document.body.dataset.rankMaxScore = String(rankingMaxScore);
+    document.body.dataset.rankScores = rows.map((row) => row.score).join('|');
   }
 }
 

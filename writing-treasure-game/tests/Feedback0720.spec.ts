@@ -45,4 +45,22 @@ describe('RankNamePool feedback 0720', () => {
     );
     expect(signatures.size).toBeGreaterThan(3);
   });
+
+  it.each([
+    [0, [500, 100, 0], 3],
+    [20, [500, 20, 0], 2],
+    [455, [500, 455, 435], 2],
+    [460, [500, 460, 440], 2],
+    [500, [500, 400, 300], 1],
+  ])('builds the 500-point campaign ladder for player score %i', (
+    playerScore,
+    scores,
+    rank,
+  ) => {
+    const rows = buildRankRows(playerScore, 500);
+    expect(rows.map((row) => row.score)).toEqual(scores);
+    expect(rows.find((row) => row.isPlayer)).toMatchObject({
+      rank, name: '我', score: playerScore,
+    });
+  });
 });

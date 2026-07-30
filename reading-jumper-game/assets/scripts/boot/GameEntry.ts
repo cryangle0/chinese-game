@@ -197,6 +197,11 @@ export class GameEntry extends Component {
           url: typeof location === 'undefined' ? undefined : location.href,
         });
       },
+      {
+        rankingMaxScore: AppConfig.scoreCorrect
+          * AppConfig.maxQuestions
+          * AppConfig.campaignStages,
+      },
     );
   }
   private disposeGame(): void { this.game?.dispose(); this.game = null; }

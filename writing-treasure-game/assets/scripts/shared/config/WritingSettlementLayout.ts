@@ -2,6 +2,9 @@ import { Vec3 } from 'cc';
 import { box } from './WritingPlayLayout';
 import {
   DUNHUANG_REVIEW_SHIFT_X,
+  MAGIC_SCORE_SHIFT_Y,
+  TREASURE_RANK_SCORE_WIDTH,
+  TREASURE_RANK_TEXT_ROW_OFFSET_Y,
   WRITING_RANK_TEXT_OFFSET_Y,
 } from './WritingSettlementTuning';
 import type { SettlementBox, SettlementLayout } from './WritingSettlementTypes';
@@ -66,6 +69,7 @@ function scene(
     scoreAsSummary: boolean;
     characterSoleLift?: number;
     rankTextOffsetY?: number;
+    rankTextRowOffsetY?: readonly [number, number, number];
   },
 ): SettlementLayout {
   return {
@@ -96,13 +100,21 @@ export const WritingSettlementLayout: Readonly<Record<string, SettlementLayout>>
       fromHtml(489.25, 487, 314.25, 78),
     ],
     ['599,293.5,97.5,40.5', '599,399.5,97.5,40.5', '598,504.25,97.5,40.5'],
-    ['720.5,293.5,78.75,40.5', '720.5,399.5,78.75,40.5', '719.5,504.25,78.75,40.5'],
+    [
+      `697,293.5,${TREASURE_RANK_SCORE_WIDTH},40.5`,
+      `697,399.5,${TREASURE_RANK_SCORE_WIDTH},40.5`,
+      `696,504.25,${TREASURE_RANK_SCORE_WIDTH},40.5`,
+    ],
     fromHtml(966.25, 142.25, 297, 72.75),
     fromHtml(999.75, 297.75, 230.25, 32.25),
     [858.6, 247.75, 502.5, 59.25, 78.5, 18, 1304, 10.125],
     fromHtml(111, 656.25, 236.25, 54.75),
     { left: 79.5, top: 712.5, width: 48, height: 46.5, gap: 9 },
-    { useReviewPanel: false, scoreAsSummary: true },
+    {
+      useReviewPanel: false,
+      scoreAsSummary: true,
+      rankTextRowOffsetY: TREASURE_RANK_TEXT_ROW_OFFSET_Y,
+    },
   ),
   // Applied from settlement-hotspots-desert(1).json; rankBase not drawn (all scenes).
   desert: scene(
@@ -194,7 +206,7 @@ export const WritingSettlementLayout: Readonly<Record<string, SettlementLayout>>
     fromHtml(968.25, 177.75, 297, 72.75),
     fromHtml(1000.5, 253.5, 230.25, 32.25),
     [879, 293.25, 458.25, 60, 64.5, 18, 1290.25, 10.5],
-    fromHtml(138.75, 613.5, 168.75, 51),
+    fromHtml(138.75, 613.5 + MAGIC_SCORE_SHIFT_Y, 168.75, 51),
     { left: 91.5, top: 674.25, width: 45.75, height: 44.25, gap: 5.25 },
     {
       useReviewPanel: true,

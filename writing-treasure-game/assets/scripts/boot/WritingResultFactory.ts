@@ -3,6 +3,7 @@ import { retainThemes } from '../core/assets/ThemePreloader';
 import { writingThemes } from '../games/writing-treasure/config/WritingTheme';
 import { hostAdapter, HostMessenger } from '../platform/HostAdapter';
 import { GameServices } from '../services/GameServices';
+import { AppConfig } from '../shared/config/AppConfig';
 import { GameResult } from '../shared/types/GameTypes';
 import { ResultView } from '../ui/ResultView';
 
@@ -33,6 +34,11 @@ export function createWritingResultView(options: WritingResultOptions): ResultVi
   return new ResultView(
     appRoot, result, replay, home, theme,
     () => shareWritingResult(services, result),
+    {
+      rankingMaxScore: AppConfig.scoreCorrect
+        * AppConfig.maxQuestions
+        * AppConfig.campaignStages,
+    },
   );
 }
 

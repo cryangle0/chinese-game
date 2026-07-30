@@ -63,7 +63,12 @@ export class ResultView {
       new Vec3(hasThemedBackground ? 200 : 115, 0),
     );
     if (hasThemedBackground) {
-      new ThemedResultContent(this.artwork, result, theme);
+      new ThemedResultContent(
+        this.artwork,
+        result,
+        theme,
+        options.rankingMaxScore,
+      );
       this.addFailureTitle(this.artwork, result);
     } else {
       this.addLegacyContent(panel, result, theme, options);
@@ -97,19 +102,21 @@ export class ResultView {
   }
 
   private applyForegroundPositionScale(sx: number): void {
-    const visit = (parent: Node): void => {
-      parent.children.forEach((child) => {
-        if (child === this.background) return;
-        let base = this.foregroundPositions.get(child);
-        if (!base) {
-          base = child.position.clone();
-          this.foregroundPositions.set(child, base);
-        }
-        child.setPosition(base.x * sx, base.y, base.z);
-        visit(child);
-      });
+    const scalePosition = (node: Node): void => {
+      let base = this.foregroundPositions.get(node);
+      if (!base) {
+        base = node.position.clone();
+        this.foregroundPositions.set(node, base);
+      }
+      node.setPosition(base.x * sx, base.y, base.z);
     };
-    visit(this.root);
+    this.root.children.forEach((child) => {
+      if (child === this.background) return;
+      scalePosition(child);
+      // Artwork children are positioned against the stretched background.
+      // Their nested labels remain local to their own material bounds.
+      if (child === this.artwork) child.children.forEach(scalePosition);
+    });
   }
 
   private addResultMotion(theme: GameTheme, parent: Node): DomMotionSprite | null {

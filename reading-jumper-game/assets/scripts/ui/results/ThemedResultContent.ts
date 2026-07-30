@@ -7,10 +7,15 @@ import { buildThemedResultReview } from './ThemedResultReview';
 import { buildThemedResultScore } from './ThemedResultScore';
 
 export class ThemedResultContent {
-  constructor(parent: Node, result: GameResult, theme: GameTheme) {
+  constructor(
+    parent: Node,
+    result: GameResult,
+    theme: GameTheme,
+    rankingMaxScore = 100,
+  ) {
     const layout = resultThemeLayout(theme.id);
     buildThemedResultScore(parent, result, theme, layout);
-    buildThemedResultRanking(parent, result, theme, layout);
+    buildThemedResultRanking(parent, result, theme, layout, rankingMaxScore);
     buildThemedResultReview(parent, result, theme, layout);
   }
 }

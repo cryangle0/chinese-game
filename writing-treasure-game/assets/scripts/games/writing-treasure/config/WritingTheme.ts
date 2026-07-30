@@ -91,13 +91,33 @@ function clientAssets(id: string, _index: number): ThemeAssets {
     voiceListening: 'themes/writing/intro/voiceListening',
     choices: [`${base}/choices-1`, `${base}/choices-2`, `${base}/choices-3`],
     successState: choiceStates?.success ? `${base}/successState` : undefined,
+    successStates: ['treasure', 'desert', 'dunhuang'].includes(id)
+      ? [
+        `${base}/successState-red`,
+        `${base}/successState`,
+        `${base}/successState-green`,
+      ]
+      : undefined,
     failState: choiceStates?.fail ? `${base}/failState` : undefined,
+    failStates: id === 'treasure'
+      ? [
+        `${base}/failState`,
+        `${base}/failState-purple`,
+        `${base}/failState-green`,
+      ]
+      : id === 'dunhuang'
+        ? [
+          `${base}/failState`,
+          `${base}/failState-white`,
+          `${base}/failState-green`,
+        ]
+        : undefined,
     resultBackground: `${base}/resultBackground`,
     motion: {
       idle: `${media}/idle.webp`,
       action: `${media}/action.webp`,
       runLeft: `${media}/run-left.webp`,
-      runRight: `${media}/run-right.webp`,
+      runRight: `${media}/run-right.webp${id === 'treasure' ? '?v=hq-entry-1' : ''}`,
       correct: `${media}/correct.webp`,
       wrong: `${media}/wrong.webp`,
       result: `${media}/result.webp`,

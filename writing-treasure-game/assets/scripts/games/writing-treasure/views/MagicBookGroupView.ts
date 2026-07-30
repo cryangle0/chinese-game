@@ -12,6 +12,14 @@ import {
 import {
   applyMagicBookLayout, BookItem, createMagicBookItem,
 } from './MagicBookLayout';
+
+function waitForVisualCommit(): Promise<void> {
+  if (typeof requestAnimationFrame !== 'function') return Promise.resolve();
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => resolve());
+  });
+}
+
 export class MagicBookGroupView {
   private readonly items: BookItem[];
   private assets?: ThemeAssets;
@@ -89,7 +97,7 @@ export class MagicBookGroupView {
     this.applyLayout();
   }
 
-  reveal(
+  async reveal(
     index: number,
     correct: boolean,
     successAsset?: string,
@@ -97,7 +105,9 @@ export class MagicBookGroupView {
     _hideSelectedChest = false,
     choiceAssets?: readonly string[],
     sceneId = '',
-  ): void {
+    successAssets?: readonly string[],
+    failAssets?: readonly string[],
+  ): Promise<void> {
     this.setVisible(true);
     this.items.forEach((item, itemIndex) => {
       if (itemIndex === index) return;
@@ -110,21 +120,37 @@ export class MagicBookGroupView {
     if (hideChoiceDuringFeedback(sceneId, correct)) {
       item.chest.active = false;
       item.option.active = false;
+      if (typeof document !== 'undefined') {
+        document.body.dataset.choiceRevealReady = 'hidden';
+      }
       return;
     }
     item.chest.active = true;
     const stateAsset = correct ? successAsset : failAsset;
+    const stateAssets = correct ? successAssets : failAssets;
     const selectedAsset = revealChoiceAsset(
-      sceneId, index, stateAsset, choiceAssets ?? this.assets?.choices,
+      sceneId, index, stateAsset, choiceAssets ?? this.assets?.choices, stateAssets,
     );
     const geometry = revealChoiceGeometry(sceneId, correct);
-    if (stateAsset && geometry) {
+    if (selectedAsset && geometry && (stateAsset || stateAssets?.[index])) {
       item.chest.getComponent(UITransform)?.setContentSize(geometry.width, geometry.height);
       item.chest.setPosition(0, geometry.localY);
     } else {
       this.resetChoiceFrame(item);
     }
-    if (selectedAsset) spriteLoader.apply(item.chest, selectedAsset, 'contain');
+    const applied = selectedAsset
+      ? await spriteLoader.applyReady(item.chest, selectedAsset, 'contain')
+      : false;
+    await waitForVisualCommit();
+    if (typeof document !== 'undefined') {
+      document.body.dataset.choiceRevealAsset = selectedAsset ?? '';
+      document.body.dataset.choiceRevealIndex = String(index);
+      document.body.dataset.choiceRevealScene = sceneId;
+      document.body.dataset.choiceRevealReady = applied ? 'true' : 'fallback';
+      document.body.dataset.choiceRevealReadyAt = (
+        typeof performance !== 'undefined' ? performance.now() : Date.now()
+      ).toFixed(3);
+    }
     setLabelColor(item.label, correct ? '#176B3B' : '#9B2135');
     item.label.node.setSiblingIndex(Math.max(0, item.option.children.length - 1));
     item.root.setScale(L.choiceSelectedScale, L.choiceSelectedScale, 1);

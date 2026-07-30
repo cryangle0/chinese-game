@@ -115,12 +115,12 @@ export class GameSession {
     reason: FinishReason,
   ): GameResult {
     const correct = records.filter((record) => record.correct).length;
-    const ratio = records.length ? correct / records.length : 0;
+    const pointsPerCampaignStar = AppConfig.scoreCorrect * AppConfig.maxQuestions;
     const stars = Math.max(0, Math.min(
       AppConfig.maxQuestions,
       records.length <= AppConfig.maxQuestions
         ? correct
-        : Math.round(ratio * AppConfig.maxQuestions),
+        : Math.floor(score / pointsPerCampaignStar),
     )) as GameResult['stars'];
     return {
       game: this.game,

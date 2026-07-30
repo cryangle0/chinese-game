@@ -21,31 +21,36 @@ export interface RankRow {
 }
 
 /** Build three distinct legal score tiers; only NPC names remain random. */
-export function buildRankRows(playerScore: number): readonly RankRow[] {
+export function buildRankRows(
+  playerScore: number,
+  maxScore = 100,
+): readonly RankRow[] {
   const pool = RANK_NAME_POOL;
   const pick = (): string => pool[Math.floor(Math.random() * pool.length)] ?? '同学';
   const nameA = pick();
   let nameB = pick();
   while (nameB === nameA) nameB = pick();
-  const score = Math.max(0, Math.min(100, Math.round(playerScore / 20) * 20));
+  const limit = Math.max(20, Math.round(maxScore / 20) * 20);
+  const score = Math.max(0, Math.min(limit, Math.round(playerScore)));
+  const lowerTier = Math.max(0, score - 20);
   const player = { rank: 1, name: '我', score, isPlayer: true };
-  if (score === 100) {
+  if (score === limit) {
     return [
       player,
-      { rank: 2, name: nameA, score: 80, isPlayer: false },
-      { rank: 3, name: nameB, score: 60, isPlayer: false },
+      { rank: 2, name: nameA, score: Math.round(limit * 0.8), isPlayer: false },
+      { rank: 3, name: nameB, score: Math.round(limit * 0.6), isPlayer: false },
     ];
   }
   if (score === 0) {
     return [
-      { rank: 1, name: nameA, score: 100, isPlayer: false },
-      { rank: 2, name: nameB, score: 20, isPlayer: false },
+      { rank: 1, name: nameA, score: limit, isPlayer: false },
+      { rank: 2, name: nameB, score: Math.round(limit * 0.2), isPlayer: false },
       { ...player, rank: 3 },
     ];
   }
   return [
-    { rank: 1, name: nameA, score: 100, isPlayer: false },
+    { rank: 1, name: nameA, score: limit, isPlayer: false },
     { ...player, rank: 2 },
-    { rank: 3, name: nameB, score: score - 20, isPlayer: false },
+    { rank: 3, name: nameB, score: lowerTier, isPlayer: false },
   ];
 }

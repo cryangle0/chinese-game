@@ -30,6 +30,11 @@ export interface ReadingSceneLayout {
   /** Positive/negative feedback motion box — HTML prototype coords, feet on ground. */
   readonly feedback: ReadingRect;
   readonly deer: ReadingRect;
+  /**
+   * Per-scene correction for the action sprite's visible head.
+   * Positive raises a short pose; negative lowers a pose taller than its layout box.
+   */
+  readonly jumpVisibleHeadInset?: number;
   readonly timer: ReadingRect;
   readonly timerText: ReadingRect & { readonly fontSize: number; readonly lineHeight: number };
   readonly score: ReadingRect;
@@ -39,6 +44,19 @@ export interface ReadingSceneLayout {
     readonly optionOutline: string;
     readonly hudOutline: string;
   };
+}
+
+export const READING_BRICK_IMPACT_LIFT = 14;
+
+/**
+ * Height from the grounded pose to first contact with the option underside.
+ * The character then follows the brick through READING_BRICK_IMPACT_LIFT so
+ * the visible head remains connected while the selected brick bumps upward.
+ */
+export function readingJumpHeight(layout: ReadingSceneLayout): number {
+  const deerTop = layout.deer.y + layout.deer.height / 2;
+  const optionBottom = layout.option.y - layout.option.height / 2;
+  return Math.max(0, optionBottom - deerTop + (layout.jumpVisibleHeadInset ?? 0));
 }
 
 /** HTML `feedback-motion` box → cocos center (x filled by answered column at runtime). */
@@ -107,6 +125,8 @@ const layouts: Readonly<Record<string, ReadingSceneLayout>> = {
     // Visible deer is further zoomed via DomMotionSprite.fillOpaque (webp has ~50% pad).
     feedback: feedbackImpactFromHtml(163.81, 401.81, 353.59, 424.31),
     deer: { width: 136, height: 236, x: 5, y: -226 },
+    // Screenshot crop: the action WebP's visible hat starts 14px below its layout box.
+    jumpVisibleHeadInset: 14,
     timer: { width: 264, height: 79, x: -563, y: 350 },
     timerText: { width: 191, height: 39, x: 21, y: -3, fontSize: 25, lineHeight: 31 },
     score: { width: 263, height: 64, x: -562, y: 278 },
@@ -120,6 +140,8 @@ const layouts: Readonly<Record<string, ReadingSceneLayout>> = {
     option: { width: 410, height: 124, y: -18, columns: [-450, 0, 450], padX: 50 },
     feedback: feedbackImpactFromHtml(134.03, 218.36, 402.59, 483.11),
     deer: { width: 163, height: 231, x: 0, y: -236 },
+    // Action WebP's visible crown sits below the layout top at impact.
+    jumpVisibleHeadInset: 40,
     timer: { width: 273, height: 77, x: -559, y: 338 },
     timerText: { width: 177, height: 38, x: 19, y: -8, fontSize: 24, lineHeight: 30 },
     score: { width: 267, height: 62, x: -558, y: 258 },
@@ -134,6 +156,8 @@ const layouts: Readonly<Record<string, ReadingSceneLayout>> = {
     option: { width: 450, height: 126, y: -24, columns: [-495, 0, 495], padX: 110 },
     feedback: feedbackImpactFromHtml(134.14, 314.15, 429, 514.8),
     deer: { width: 165, height: 226, x: 0, y: -219 },
+    // The astronaut action pose is shorter than its grounded layout box.
+    jumpVisibleHeadInset: 54,
     // 加宽容纳「倒计时：xxx秒」；整体略下移；文字避开左侧机甲头
     timer: { width: 292, height: 86, x: -546, y: 326 },
     timerText: { width: 172, height: 37, x: 42, y: -7, fontSize: 24, lineHeight: 30 },
@@ -150,6 +174,8 @@ const layouts: Readonly<Record<string, ReadingSceneLayout>> = {
     // HTML food box was the smallest (~307×368); push harder for impact.
     feedback: feedbackImpactFromHtml(170.19, 432.81, 306.78, 368.14, 1.48),
     deer: { width: 118, height: 224, x: 0, y: -225 },
+    // Customer review: raise the chef jump while preserving contact with the biscuit.
+    jumpVisibleHeadInset: 23,
     timer: { width: 263, height: 78, x: -565, y: 345 },
     timerText: { width: 175, height: 38, x: 31, y: -7, fontSize: 24, lineHeight: 30 },
     score: { width: 256, height: 64, x: -565, y: 270 },
@@ -162,6 +188,9 @@ const layouts: Readonly<Record<string, ReadingSceneLayout>> = {
     option: { width: 360, height: 128, y: -14, columns: [-400, 0, 400], padX: 42 },
     feedback: feedbackImpactFromHtml(221.59, 471.96, 318.23, 381.88, 1.45),
     deer: { width: 136, height: 214, x: 0, y: -254 },
+    // The scholar action pose is taller than its measured layout box.
+    // Customer review: keep a visible contact without returning to the earlier over-jump.
+    jumpVisibleHeadInset: -5,
     timer: { width: 253, height: 63, x: -570, y: 340 },
     timerText: { width: 167, height: 39, x: 34, y: -1, fontSize: 23, lineHeight: 29 },
     score: { width: 256, height: 64, x: -570, y: 275 },

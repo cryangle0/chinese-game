@@ -27,6 +27,12 @@ export interface AnchoredFeedbackLayerPlacement {
   readonly width: number;
 }
 
+export interface WritingFeedbackMotionLayout {
+  readonly scale: number;
+  readonly offsetX?: number;
+  readonly offsetY?: number;
+}
+
 const actionTiming: Readonly<Record<string, WritingActionTiming>> = {
   treasure: { holdMs: 1500, impactAtMs: [280, 880, 1320] },
   desert: { holdMs: 1200, impactAtMs: [280, 720, 1080] },
@@ -55,8 +61,43 @@ Record<string, { readonly correct?: ChoiceFeedbackGeometry; readonly wrong?: Cho
   },
 };
 
+const feedbackMotionLayout: Readonly<Record<string, {
+  readonly correct: WritingFeedbackMotionLayout;
+  readonly wrong: WritingFeedbackMotionLayout;
+}>> = {
+  treasure: {
+    correct: { scale: 1.32 },
+    wrong: { scale: 1.34 },
+  },
+  desert: {
+    // Keep the complete 960px customer frame readable, including the outer amulets.
+    correct: { scale: 1.32 },
+    wrong: { scale: 1.2 },
+  },
+  dinosaur: {
+    correct: { scale: 1.25 },
+    wrong: { scale: 1 },
+  },
+  dunhuang: {
+    correct: { scale: 1.16 },
+    wrong: { scale: 1.16 },
+  },
+  magic: {
+    correct: { scale: 1.26 },
+    wrong: { scale: 1.25 },
+  },
+};
+
 export function writingActionTiming(sceneId: string): WritingActionTiming {
   return actionTiming[sceneId] ?? actionTiming.treasure;
+}
+
+export function writingFeedbackMotionLayout(
+  sceneId: string,
+  correct: boolean,
+): WritingFeedbackMotionLayout {
+  const pair = feedbackMotionLayout[sceneId] ?? feedbackMotionLayout.treasure;
+  return correct ? pair.correct : pair.wrong;
 }
 
 export function anchoredFeedbackLayerPlacement(
@@ -127,8 +168,9 @@ export function revealChoiceAsset(
   selectedIndex: number,
   stateAsset: string | undefined,
   choiceAssets: readonly string[] | undefined,
+  stateAssets?: readonly string[],
 ): string | undefined {
-  return stateAsset ?? choiceAssets?.[selectedIndex];
+  return stateAssets?.[selectedIndex] ?? stateAsset ?? choiceAssets?.[selectedIndex];
 }
 
 export function revealChoiceGeometry(

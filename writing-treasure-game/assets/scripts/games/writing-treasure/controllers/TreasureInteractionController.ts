@@ -49,6 +49,12 @@ export class TreasureInteractionController {
       delete document.body.dataset.digEffectActive;
       delete document.body.dataset.digEffectDurationMs;
       delete document.body.dataset.digEffectScene;
+      delete document.body.dataset.choiceRevealAsset;
+      delete document.body.dataset.choiceRevealIndex;
+      delete document.body.dataset.choiceRevealScene;
+      delete document.body.dataset.choiceRevealReady;
+      delete document.body.dataset.choiceRevealReadyAt;
+      delete document.body.dataset.scoreCoinTriggerAt;
     }
     this.view.prompt.hide();
     this.view.books.setVisible(true);
@@ -87,7 +93,9 @@ export class TreasureInteractionController {
     this.scheduleActionImpacts(actionTiming.impactAtMs);
     this.view.deer.castAt(
       this.view.books.columnX(index),
-      this.scope.guard(() => this.openChestThenFeedback()),
+      this.scope.guard(() => {
+        void this.openChestThenFeedback();
+      }),
       actionTiming.holdMs / 1000,
     );
   }
@@ -104,12 +112,13 @@ export class TreasureInteractionController {
     sequence.start();
   }
 
-  private openChestThenFeedback(): void {
+  private async openChestThenFeedback(): Promise<void> {
     const theme = this.theme();
+    const selected = this.selected;
     if (typeof document !== 'undefined') {
       document.body.dataset.digEffectActive = 'opened';
     }
-    this.view.books.reveal(
+    await this.view.books.reveal(
       this.selected,
       this.correct,
       theme.assets.successState,
@@ -117,7 +126,10 @@ export class TreasureInteractionController {
       false,
       theme.assets.choices,
       theme.id,
+      theme.assets.successStates,
+      theme.assets.failStates,
     );
+    if (!this.scope.isActive() || selected !== this.selected) return;
     if (theme.id === 'magic') this.services.audio.play('reveal');
     else if (this.correct) this.services.audio.play('unlock');
     this.view.books.pulse(this.selected, 1.12);
@@ -138,13 +150,16 @@ export class TreasureInteractionController {
     if (this.scoreAwarded > 0) {
       this.services.audio.play('coin');
       const score = this.session.score();
+      if (typeof document !== 'undefined') {
+        document.body.dataset.scoreCoinTriggerPhase = 'chest-open';
+        document.body.dataset.scoreCoinFeedbackGate = 'arrival-and-chest-open';
+        document.body.dataset.scoreCoinTriggerAt = (
+          typeof performance !== 'undefined' ? performance.now() : Date.now()
+        ).toFixed(3);
+      }
       if (!source) {
         this.view.hud.showScoreReward(score);
       } else {
-        if (typeof document !== 'undefined') {
-          document.body.dataset.scoreCoinTriggerPhase = 'chest-open';
-          document.body.dataset.scoreCoinFeedbackGate = 'arrival-and-chest-open';
-        }
         this.view.scoreCoins.play({
           source,
           target: { node: this.view.hud.scoreRewardTarget() },
@@ -182,7 +197,6 @@ export class TreasureInteractionController {
     this.round.completeAction();
     this.view.prompt.hide();
     this.view.books.setEnabled(false);
-    this.view.deer.hide();
     this.services.audio.play(this.correct ? 'correct' : 'wrong');
     const motionPath = this.correct
       ? theme.assets.motion?.correct
@@ -206,6 +220,20 @@ export class TreasureInteractionController {
       this.selected,
       sequencePlan,
       useStageMotion,
+      theme.id,
+      {
+        onReady: this.scope.guard(() => {
+          this.view.deer.hide();
+          if (typeof document !== 'undefined') {
+            document.body.dataset.feedbackActorHandoff = 'feedback-ready';
+          }
+        }),
+        onError: () => {
+          if (typeof document !== 'undefined') {
+            document.body.dataset.feedbackActorHandoff = 'retained-on-error';
+          }
+        },
+      },
     );
     const holdSec = feedbackHoldMs(theme.id, this.correct) / 1000;
     tween(this.root).delay(holdSec).call(this.scope.guard(this.complete)).start();

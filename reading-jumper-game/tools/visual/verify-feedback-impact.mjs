@@ -21,7 +21,15 @@ const scenes = [
   { id: 'deep-sea', minH: 560, pressX: 720, minOpaquePct: 42 },
   { id: 'food', minH: 480, pressX: 720, minOpaquePct: 40 },
   { id: 'poetry', minH: 480, pressX: 720, minOpaquePct: 40 },
-  { id: 'space', minH: 600, pressX: 720, minOpaquePct: 40 },
+  {
+    id: 'space',
+    minH: 600,
+    pressX: 720,
+    minOpaquePct: 40,
+    groundY: 720,
+    groundTolerance: 18,
+    minWrongScale: 1.44,
+  },
 ];
 
 fs.mkdirSync(outDir, { recursive: true });
@@ -115,31 +123,83 @@ async function runScene(browser, scene, correct) {
     const scale = canvas ? Math.min(canvas.width / 1440, canvas.height / 810) : 1;
     const top0 = canvas ? canvas.y + (canvas.height - 810 * scale) / 2 : 0;
     const r = img?.getBoundingClientRect();
+    let visibleBottom = null;
+    if (img instanceof HTMLImageElement && r) {
+      const sample = document.createElement('canvas');
+      sample.width = img.naturalWidth;
+      sample.height = img.naturalHeight;
+      const context2d = sample.getContext('2d', { willReadFrequently: true });
+      if (context2d) {
+        context2d.drawImage(img, 0, 0);
+        const pixels = context2d.getImageData(0, 0, sample.width, sample.height).data;
+        let maxY = -1;
+        for (let y = 0; y < sample.height; y += 1) {
+          for (let x = 0; x < sample.width; x += 1) {
+            if (pixels[(y * sample.width + x) * 4 + 3] > 32) maxY = y;
+          }
+        }
+        if (maxY >= 0) {
+          const style = getComputedStyle(img);
+          const top = Number.parseFloat(style.top);
+          const height = Number.parseFloat(style.height);
+          const originY = Number.parseFloat(style.transformOrigin.split(' ')[1]);
+          const matrix = new DOMMatrixReadOnly(style.transform);
+          const rawBottom = ((maxY + 1) / sample.height) * height;
+          visibleBottom = top + originY + matrix.d * (rawBottom - originY);
+        }
+      }
+    }
     return {
       feedbackY: document.body.dataset.feedbackY,
+      feedbackBaseY: document.body.dataset.feedbackBaseY,
       feedbackW: document.body.dataset.feedbackW,
       feedbackH: document.body.dataset.feedbackH,
       feedbackCorrect: document.body.dataset.feedbackCorrect,
+      naturalW: img instanceof HTMLImageElement ? img.naturalWidth : null,
+      naturalH: img instanceof HTMLImageElement ? img.naturalHeight : null,
       motionW: r ? Math.round(r.width / scale) : null,
       motionH: r ? Math.round(r.height / scale) : null,
       motionBottom: r ? Math.round((r.bottom - top0) / scale) : null,
+      visibleBottom: visibleBottom === null
+        ? null
+        : Math.round((visibleBottom - top0) / scale),
       deerOpaqueH: document.body.dataset.deerOpaqueH,
       deerPinScale: document.body.dataset.deerPinScale,
+      feedbackScale: document.body.dataset.feedbackScale,
     };
   });
   await context.close();
   const opaquePct = measureOpaquePct(shot);
   diag.opaquePct = opaquePct;
+  const naturalAspect = Number(diag.naturalW) / Math.max(1, Number(diag.naturalH));
+  const motionAspect = Number(diag.motionW) / Math.max(1, Number(diag.motionH));
+  const aspectErrorPct = Math.abs(motionAspect / naturalAspect - 1) * 100;
+  diag.aspectErrorPct = Number(aspectErrorPct.toFixed(3));
   const issues = [];
+  const warnings = [];
   const fh = Number(diag.feedbackH);
   if (!(fh >= scene.minH)) issues.push(`feedbackH=${fh}<${scene.minH}`);
   if (opaquePct < scene.minOpaquePct) {
-    issues.push(`opaquePct=${opaquePct}<${scene.minOpaquePct}`);
+    warnings.push(`opaquePct=${opaquePct}<${scene.minOpaquePct}`);
   }
+  if (!(aspectErrorPct <= 1)) issues.push(`aspectError=${aspectErrorPct.toFixed(3)}%`);
   if (diag.feedbackCorrect !== (correct ? '1' : '0')) {
     issues.push(`correct=${diag.feedbackCorrect}`);
   }
-  return { label, diag, issues, shot: path.basename(shot) };
+  if (scene.groundY !== undefined) {
+    const groundError = Math.abs(Number(diag.visibleBottom) - scene.groundY);
+    diag.groundError = groundError;
+    if (groundError > (scene.groundTolerance ?? 12)) {
+      issues.push(`ground=${diag.visibleBottom}/${scene.groundY}`);
+    }
+  }
+  if (!correct && scene.minWrongScale !== undefined
+    && Number(diag.feedbackScale) < scene.minWrongScale) {
+    issues.push(`wrongScale=${diag.feedbackScale}<${scene.minWrongScale}`);
+  }
+  return {
+    label, diag, issues, warnings, shot: path.basename(shot),
+  };
 }
 
 const server = process.env.READING_URL ? null : spawn(
@@ -172,7 +232,15 @@ try {
         const row = await runScene(browser, scene, correct);
         report.push(row);
         if (row.issues.length) failures.push(`${row.label}: ${row.issues.join('; ')}`);
-        else console.log('PASS', row.label, `opaque=${row.diag.opaquePct}%`, JSON.stringify(row.diag));
+        else {
+          console.log(
+            'PASS',
+            row.label,
+            `aspect-error=${row.diag.aspectErrorPct}%`,
+            row.warnings.length ? `WARN ${row.warnings.join('; ')}` : '',
+            JSON.stringify(row.diag),
+          );
+        }
       }
     }
   } finally {

@@ -14,8 +14,12 @@ const chrome = process.env.CHROME_PATH
 const cases = [
   { scene: 'mario', width: 1440, height: 810 },
   { scene: 'deep-sea', width: 1536, height: 864 },
+  { scene: 'deep-sea', width: 792, height: 372, mobile: true },
   { scene: 'space', width: 2560, height: 1080 },
+  { scene: 'space', width: 810, height: 374, mobile: true },
+  { scene: 'food', width: 1440, height: 810 },
   { scene: 'food', width: 915, height: 407, mobile: true },
+  { scene: 'food', width: 2271, height: 960 },
   { scene: 'poetry', width: 844, height: 390, mobile: true },
 ];
 

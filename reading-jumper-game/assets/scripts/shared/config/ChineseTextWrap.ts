@@ -2,6 +2,8 @@ const FORBIDDEN_LINE_START = /^[，。！？；：、）》】」』”’…⋯
 const FORBIDDEN_LINE_END = /[（《【「『“‘([{]$/u;
 /** 单独成行无意义的引号/括号等 */
 const ALONE_LINE = /^[“”‘’「」『』（）()《》【】\[\]]+$/u;
+/** 末行不能只剩右标点；需把上一行最后一个正文字符一起移下来。 */
+const PUNCTUATION_ONLY_LINE = /^[，。！？；：、）》】」』”’…⋯,.!?;:)\]}]+$/u;
 
 /**
  * Measured advance widths (em) in the web fallback face. CJK glyphs and fullwidth
@@ -73,6 +75,9 @@ export function wrapChineseText(value: string, emPerLine: number): string[] {
     }
     // Closing punctuation that did not fit travels down with the glyph it follows.
     if (line.length > 1 && FORBIDDEN_LINE_START.test(remaining[0] ?? '')) {
+      remaining.unshift(line.pop()!);
+    }
+    if (line.length > 1 && PUNCTUATION_ONLY_LINE.test(remaining.join(''))) {
       remaining.unshift(line.pop()!);
     }
     while (line.length > 1 && FORBIDDEN_LINE_END.test(line[line.length - 1] ?? '')) {

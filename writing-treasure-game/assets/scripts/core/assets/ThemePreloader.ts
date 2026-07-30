@@ -29,7 +29,9 @@ function deferredThemeAssetPaths(theme: GameTheme): Set<string | undefined> {
     theme.assets.voiceIdle,
     theme.assets.voiceListening,
     theme.assets.successState,
+    ...(theme.assets.successStates ?? []),
     theme.assets.failState,
+    ...(theme.assets.failStates ?? []),
     ...resultAssetPaths(theme),
   ]);
 }

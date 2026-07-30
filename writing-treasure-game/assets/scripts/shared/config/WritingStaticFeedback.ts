@@ -12,6 +12,10 @@ export interface StaticFeedbackLayer {
   readonly selectedAnchor?: 0 | 1 | 2;
   /** Stretch scene-colored crop layers with the horizontally filled backdrop. */
   readonly stretchWithBackdrop?: boolean;
+  /** Uniform visual enlargement while keeping the configured bottom edge fixed. */
+  readonly scale?: number;
+  readonly offsetX?: number;
+  readonly offsetY?: number;
 }
 
 export interface StaticFeedbackVariant {
@@ -79,6 +83,7 @@ export const WritingStaticFeedback: Readonly<Record<string, StaticFeedbackPair>>
         height: 222,
         selectedAnchor: 0,
         stretchWithBackdrop: true,
+        scale: 1.18,
       }],
     },
   },
@@ -93,6 +98,7 @@ export const WritingStaticFeedback: Readonly<Record<string, StaticFeedbackPair>>
         width: 360,
         height: 340,
         selectedAnchor: 1,
+        scale: 1.2,
       }],
     },
     wrong: {
@@ -105,6 +111,7 @@ export const WritingStaticFeedback: Readonly<Record<string, StaticFeedbackPair>>
         width: 280,
         height: 160,
         selectedAnchor: 0,
+        scale: 1.05,
       }],
     },
   },

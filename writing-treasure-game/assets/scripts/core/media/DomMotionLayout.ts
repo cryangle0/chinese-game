@@ -32,16 +32,40 @@ export function resolveMotionStageFrame(canvas: HTMLCanvasElement): MotionStageF
 export function applyFullscreenMotion(
   image: HTMLImageElement,
   canvas: HTMLCanvasElement,
+  objectPosition = 'center',
+  anchorY?: number,
 ): void {
   const host = document.getElementById('GameDiv') ?? canvas;
   const rect = host.getBoundingClientRect();
+  if (anchorY !== undefined && image.naturalWidth > 1 && image.naturalHeight > 1) {
+    const stage = resolveMotionStageFrame(canvas);
+    const scale = Math.max(
+      rect.width / image.naturalWidth,
+      rect.height / image.naturalHeight,
+    );
+    const width = image.naturalWidth * scale;
+    const height = image.naturalHeight * scale;
+    const left = rect.left + (rect.width - width) / 2;
+    const top = stage.top + anchorY * stage.scale - anchorY * scale;
+    Object.assign(image.style, {
+      left: `${left}px`,
+      top: `${top}px`,
+      width: `${width}px`,
+      height: `${height}px`,
+      objectFit: 'cover',
+      objectPosition: 'center',
+      transform: 'none',
+      transformOrigin: 'center',
+    });
+    return;
+  }
   Object.assign(image.style, {
     left: `${rect.left + rect.width / 2}px`,
     top: `${rect.top + rect.height / 2}px`,
     width: `${rect.width + 8}px`,
     height: `${rect.height + 8}px`,
     objectFit: 'cover',
-    objectPosition: 'center',
+    objectPosition,
     transform: 'translate(-50%, -50%)',
     transformOrigin: 'center',
   });
@@ -51,6 +75,7 @@ export function applyStageMotion(input: StageLayoutInput): void {
   const {
     image, transform, scale, left, top, width, height,
   } = input;
+  const bottomAligned = input.objectPosition.includes('bottom');
   Object.assign(image.style, {
     objectFit: input.fit,
     objectPosition: input.objectPosition,
@@ -58,7 +83,7 @@ export function applyStageMotion(input: StageLayoutInput): void {
     top: `${top + (AppConfig.designHeight / 2 - transform.y) * scale}px`,
     width: `${width * scale * Math.abs(transform.scaleX)}px`,
     height: `${height * scale * Math.abs(transform.scaleY)}px`,
-    transformOrigin: 'center',
+    transformOrigin: bottomAligned ? '50% 100%' : '50% 50%',
     transform: [
       'translate(-50%, -50%)',
       `rotate(${-input.angle}deg)`,

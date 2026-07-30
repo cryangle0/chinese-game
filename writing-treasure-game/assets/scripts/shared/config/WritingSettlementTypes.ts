@@ -17,6 +17,8 @@ export interface SettlementLayout {
   ];
   /** Cocos Y offset used to optically center rank text inside illustrated rows. */
   readonly rankTextOffsetY?: number;
+  /** Per-row optical offsets for rank strips with different crown/medal heights. */
+  readonly rankTextRowOffsetY?: readonly [number, number, number];
   readonly reviewTitle: SettlementBox;
   readonly achievement: SettlementBox;
   readonly reviewRows: readonly SettlementBox[];

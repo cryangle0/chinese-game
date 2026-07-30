@@ -42,7 +42,7 @@ function addScore(root: Node, result: GameResult, assets: ThemeAssets): Node {
   // BG score plate already present — "总分 N" text only, no blue drawPanel.
   const label = `总分 ${result.score}`;
   const value = createLabel(scoreRoot, label, {
-    size: 34,
+    size: 30,
     color: '#FFE142',
     width: scoreBox.width,
     height: scoreBox.height,
@@ -152,7 +152,13 @@ export function buildTreasureResult(
     resultTitle.node.setPosition(0, 365);
   }
 
-  addTreasureResultContent(artworkRoot, result, assets, artworkRoot);
+  addTreasureResultContent(
+    artworkRoot,
+    result,
+    assets,
+    artworkRoot,
+    options.rankingMaxScore,
+  );
   const scoreArtwork = addScore(artworkRoot, result, assets);
   addActions(actionRoot, replay, home, share, options);
   return scoreArtwork;

@@ -23,6 +23,8 @@ export interface ResultViewOptions {
   readonly primaryLabel?: string;
   readonly homeLabel?: string;
   readonly primaryOnly?: boolean;
+  /** Stage settlement uses 100; the five-scene campaign result uses 500. */
+  readonly rankingMaxScore?: number;
 }
 
 export class ResultView {
@@ -84,7 +86,13 @@ export class ResultView {
       && Boolean(WritingSettlementLayout[theme.id]);
     if (!useCustomerResult) return false;
     this.addFailureTitle(this.artwork, result);
-    buildCustomerResult(this.artwork, result, theme, this.root);
+    buildCustomerResult(
+      this.artwork,
+      result,
+      theme,
+      this.root,
+      options.rankingMaxScore,
+    );
     addCustomerActions(this.artwork, replay, home, share, options);
     this.applyBackdropTransform();
     return true;

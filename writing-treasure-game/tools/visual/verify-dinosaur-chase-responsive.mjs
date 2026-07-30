@@ -8,6 +8,14 @@ const chrome = process.env.CHROME_PATH
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const output = path.resolve('test-results', 'dinosaur-chase-responsive');
 const baseColumns = [-355, -1, 342];
+const personExitFrames = [
+  { edge: 54, gone: 55 },
+  { edge: 52, gone: 53 },
+  { edge: 48, gone: 49 },
+];
+const questionBank = JSON.parse(
+  await fs.readFile(path.resolve('config', 'question-bank.json'), 'utf8'),
+);
 const cases = [
   { name: 'desktop-a', viewport: { width: 1440, height: 810 }, selected: 0 },
   { name: 'desktop-b', viewport: { width: 1440, height: 810 }, selected: 1 },
@@ -25,11 +33,16 @@ try {
     const context = await browser.newContext({ viewport: testCase.viewport });
     const page = await context.newPage();
     await page.route('**/question-bank.json', async (route) => {
-      const response = await route.fetch();
-      const pack = await response.json();
       const correctIndex = (testCase.selected + 1) % 3;
-      pack.questions = pack.questions.map((question) => ({ ...question, correctIndex }));
-      await route.fulfill({ response, json: pack });
+      await route.fulfill({
+        json: {
+          ...questionBank,
+          questions: questionBank.questions.map((question) => ({
+            ...question,
+            correctIndex,
+          })),
+        },
+      });
     });
     await page.goto(`${baseUrl}/?scene=dinosaur&skipIntro=1`, {
       waitUntil: 'domcontentloaded',
@@ -87,13 +100,15 @@ try {
         selected,
         source: image.currentSrc || image.src,
         rect: { left: rect.left, right: rect.right, width: rect.width },
-        scaleX: document.body.dataset.feedbackStageScaleX,
+        fit: getComputedStyle(image).objectFit,
+        objectPosition: getComputedStyle(image).objectPosition,
+        top: rect.top,
         alpha: maxX >= minX
           ? { minX, maxX, minY, maxY, centerX: (minX + maxX) / 2 }
           : null,
       };
     }, { selected: testCase.selected, targetX: 720 + baseColumns[testCase.selected] });
-    const encoded = await page.evaluate(async ({ source, exitFrame }) => {
+    const encoded = await page.evaluate(async ({ source, exitFrames }) => {
       const data = await (await fetch(source, { cache: 'no-store' })).arrayBuffer();
       const decoder = new ImageDecoder({ data, type: 'image/webp' });
       await decoder.tracks.ready;
@@ -115,15 +130,40 @@ try {
         image.close();
         return maxX;
       };
+      const personRightEdgePixels = async (frameIndex) => {
+        const { image } = await decoder.decode({ frameIndex });
+        const canvas = document.createElement('canvas');
+        canvas.width = image.displayWidth;
+        canvas.height = image.displayHeight;
+        const context2d = canvas.getContext('2d', { willReadFrequently: true });
+        if (!context2d) throw new Error('2d context missing');
+        context2d.drawImage(image, 0, 0);
+        const pixels = context2d.getImageData(0, 0, canvas.width, canvas.height).data;
+        let count = 0;
+        let maxX = -1;
+        // The person leads the chase in this upper-right region. Once the
+        // person exits, the following dinosaur remains left of this crop.
+        for (let y = 0; y < 270; y += 1) {
+          for (let x = 1200; x < canvas.width; x += 1) {
+            if (pixels[(y * canvas.width + x) * 4 + 3] <= 16) continue;
+            count += 1;
+            maxX = Math.max(maxX, x);
+          }
+        }
+        image.close();
+        return { count, maxX };
+      };
       return {
         frameCount: decoder.tracks.selectedTrack?.frameCount ?? 0,
-        personExitFrame: exitFrame,
-        personExitMaxX: await alphaMaxX(exitFrame),
+        personEdgeFrame: exitFrames.edge,
+        personEdge: await personRightEdgePixels(exitFrames.edge),
+        personGoneFrame: exitFrames.gone,
+        personGone: await personRightEdgePixels(exitFrames.gone),
         finalMaxX: await alphaMaxX(71),
       };
     }, {
       source: start.source,
-      exitFrame: [50, 50, 40][testCase.selected],
+      exitFrames: personExitFrames[testCase.selected],
     });
     await page.screenshot({
       path: path.join(output, `${testCase.name}-start.png`),
@@ -138,17 +178,30 @@ try {
     const issues = [];
     const expectedSuffix = `/wrong-${testCase.selected + 1}.webp`;
     if (!start.source.includes(expectedSuffix)) issues.push(`source=${start.source}`);
-    if (Math.abs(start.rect.left) > 1.5) issues.push(`left=${start.rect.left}`);
-    if (Math.abs(start.rect.right - testCase.viewport.width) > 1.5) {
+    if (start.rect.left > 0.5) issues.push(`left=${start.rect.left}`);
+    if (start.rect.right < testCase.viewport.width - 0.5) {
       issues.push(`right=${start.rect.right}/${testCase.viewport.width}`);
+    }
+    if (start.fit !== 'cover') issues.push(`fit=${start.fit}`);
+    if (start.objectPosition !== '50% 50%') {
+      issues.push(`objectPosition=${start.objectPosition}`);
+    }
+    const expectedGroundY = stageTop + 418 * scale;
+    const coverScale = start.rect.width / 1440;
+    const actualGroundY = start.top + 418 * coverScale;
+    if (Math.abs(actualGroundY - expectedGroundY) > 1.5) {
+      issues.push(`ground=${actualGroundY}/${expectedGroundY}`);
     }
     const expectedCenter = 720 + baseColumns[testCase.selected];
     if (!start.alpha || Math.abs(start.alpha.centerX - expectedCenter) > 25) {
       issues.push(`startCenter=${start.alpha?.centerX ?? 'missing'} expected=${expectedCenter}`);
     }
     if (encoded.frameCount !== 72) issues.push(`frames=${encoded.frameCount}`);
-    if (encoded.personExitMaxX < 1438) {
-      issues.push(`personExitMaxX=${encoded.personExitMaxX}`);
+    if (encoded.personEdge.maxX < 1438 || encoded.personEdge.count < 1) {
+      issues.push(`personEdge=${JSON.stringify(encoded.personEdge)}`);
+    }
+    if (encoded.personGone.count !== 0) {
+      issues.push(`personGone=${JSON.stringify(encoded.personGone)}`);
     }
     if (encoded.finalMaxX < 1438) issues.push(`finalMaxX=${encoded.finalMaxX}`);
     report.push({ ...testCase, start, encoded, issues });

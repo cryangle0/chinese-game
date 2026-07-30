@@ -34,6 +34,7 @@ export interface ResultThemeLayout {
     readonly h: number;
   }[];
   readonly headingSize: { readonly width: number; readonly height: number };
+  readonly actionsY?: number;
   readonly rank: {
     readonly titleX: number;
     readonly x: number;

@@ -61,4 +61,12 @@ describe('reading question stem wrapping', () => {
       expect(lineWidthPx(line, fontSize)).toBeLessThanOrEqual(usable);
     });
   });
+
+  it('moves the previous glyph down when the final line would contain punctuation only', () => {
+    const foodBudget = (860 - 172 * 2 - 4) / fontSize;
+    expect(wrapChineseText('下列哪一神话生物出自《大荒东经》？', foodBudget)).toEqual([
+      '下列哪一神话生物出自《大荒东',
+      '经》？',
+    ]);
+  });
 });

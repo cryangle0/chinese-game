@@ -5,55 +5,83 @@ export interface DomMotionImageOptions {
 }
 
 export class DomMotionImage {
-  readonly element: HTMLImageElement;
+  private image: HTMLImageElement;
   private sourceValue = '';
+  private playbackSource = '';
   private loadedSource = '';
+  private replayCount = 0;
 
   constructor(
-    options: DomMotionImageOptions,
-    onReady: () => void,
-    onError: () => void,
+    private readonly options: DomMotionImageOptions,
+    private readonly onReady: () => void,
+    private readonly onError: () => void,
   ) {
-    const image = document.createElement('img');
-    image.alt = '';
-    Object.assign(image.style, {
-      position: 'fixed',
-      display: 'none',
-      pointerEvents: 'none',
-      userSelect: 'none',
-      objectFit: options.fit ?? 'contain',
-      objectPosition: options.objectPosition ?? 'center',
-      zIndex: String(options.zIndex ?? 6),
-      maxWidth: 'none',
-      maxHeight: 'none',
-      transformOrigin: 'center',
-    });
-    image.addEventListener('load', () => {
-      if (!this.matchesCurrentSource()) return;
-      this.loadedSource = this.sourceValue;
-      onReady();
-    });
-    image.addEventListener('error', () => {
-      this.loadedSource = '';
-      onError();
-    });
-    document.body.appendChild(image);
-    this.element = image;
+    this.image = this.createElement();
+    document.body.appendChild(this.image);
   }
 
-  show(source: string, restart: boolean): { changed: boolean; hadMotion: boolean } {
+  get element(): HTMLImageElement {
+    return this.image;
+  }
+
+  private createElement(template?: HTMLImageElement): HTMLImageElement {
+    const image = document.createElement('img');
+    image.alt = '';
+    if (template) {
+      image.className = template.className;
+      image.dataset.customerMotion = template.dataset.customerMotion ?? '';
+      image.style.cssText = template.style.cssText;
+    } else {
+      Object.assign(image.style, {
+        position: 'fixed',
+        display: 'none',
+        pointerEvents: 'none',
+        userSelect: 'none',
+        objectFit: this.options.fit ?? 'contain',
+        objectPosition: this.options.objectPosition ?? 'center',
+        zIndex: String(this.options.zIndex ?? 6),
+        maxWidth: 'none',
+        maxHeight: 'none',
+        transformOrigin: 'center',
+        imageRendering: 'auto',
+      });
+    }
+    image.addEventListener('load', () => {
+      if (image !== this.image || !this.matchesCurrentSource()) return;
+      this.loadedSource = this.sourceValue;
+      this.onReady();
+    });
+    image.addEventListener('error', () => {
+      if (image !== this.image) return;
+      this.loadedSource = '';
+      this.onError();
+    });
+    return image;
+  }
+
+  show(
+    source: string,
+    restart: boolean,
+    isolateTimeline = false,
+  ): { changed: boolean; hadMotion: boolean } {
     const changed = source !== this.sourceValue;
-    const hadMotion = Boolean(this.loadedSource) && this.element.style.display !== 'none';
+    const hadMotion = Boolean(this.loadedSource) && this.image.style.display !== 'none';
     if (changed || restart) {
       this.sourceValue = source;
       this.loadedSource = '';
-      if (restart && !changed) {
-        this.element.removeAttribute('src');
-        void this.element.offsetWidth;
+      if (restart) {
+        const previous = this.image;
+        this.image = this.createElement(previous);
+        previous.replaceWith(this.image);
+        this.replayCount += 1;
       }
-      this.element.src = source;
+      this.image.dataset.motionReplay = String(this.replayCount);
+      this.playbackSource = isolateTimeline
+        ? isolatedPlaybackSource(source, this.replayCount)
+        : source;
+      this.image.src = this.playbackSource;
     }
-    if (this.element.complete && this.element.naturalWidth > 1 && this.matchesCurrentSource()) {
+    if (this.image.complete && this.image.naturalWidth > 1 && this.matchesCurrentSource()) {
       this.loadedSource = this.sourceValue;
     }
     return { changed, hadMotion };
@@ -68,22 +96,30 @@ export class DomMotionImage {
   }
 
   setVisible(visible: boolean): void {
-    this.element.style.display = visible ? 'block' : 'none';
+    this.image.style.display = visible ? 'block' : 'none';
   }
 
   dispose(): void {
-    this.element.remove();
+    this.image.remove();
   }
 
   private matchesCurrentSource(): boolean {
-    if (!this.sourceValue) return false;
-    if (this.element.getAttribute('src') === this.sourceValue) return true;
+    if (!this.playbackSource) return false;
+    if (this.image.getAttribute('src') === this.playbackSource) return true;
     if (typeof location === 'undefined') return false;
     try {
-      const absolute = new URL(this.sourceValue, location.href).href;
-      return this.element.currentSrc === absolute || this.element.src === absolute;
+      const absolute = new URL(this.playbackSource, location.href).href;
+      return this.image.currentSrc === absolute || this.image.src === absolute;
     } catch {
       return false;
     }
   }
+}
+
+function isolatedPlaybackSource(source: string, replayCount: number): string {
+  const hashAt = source.indexOf('#');
+  const base = hashAt >= 0 ? source.slice(0, hashAt) : source;
+  const hash = hashAt >= 0 ? source.slice(hashAt) : '';
+  const separator = base.includes('?') ? '&' : '?';
+  return `${base}${separator}motionReplay=${replayCount}${hash}`;
 }

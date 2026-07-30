@@ -1,9 +1,10 @@
 import { Node, tween, Tween, UIOpacity, UITransform, Vec3 } from 'cc';
 import { spriteLoader } from '../core/assets/SpriteLoader';
 import { DomMotionSprite } from '../core/media/DomMotionSprite';
+import type { MotionPlaybackCallbacks } from '../core/media/DomMotionSprite';
 import { createUiNode } from '../core/ui/UiFactory';
 import {
-  feedbackStageMotionPath, FeedbackSequencePlan,
+  feedbackStageMotionPath, FeedbackSequencePlan, writingFeedbackMotionLayout,
 } from '../shared/config/WritingFeedbackPolicy';
 import { WritingPlayLayout } from '../shared/config/WritingPlayLayout';
 import { StaticFeedbackVariant } from '../shared/config/WritingStaticFeedback';
@@ -56,6 +57,8 @@ export class FeedbackView {
     selectedIndex = 1,
     sequencePlan?: FeedbackSequencePlan,
     useStageMotion = false,
+    sceneId = 'treasure',
+    callbacks: MotionPlaybackCallbacks = {},
   ): void {
     Tween.stopAllByTarget(this.root);
     this.root.active = true;
@@ -71,15 +74,23 @@ export class FeedbackView {
       this.fallbackMotion.hide();
       this.fallbackImage.active = false;
       this.layers.hide();
-      this.stageMotion.show(feedbackStageMotionPath(motionPath, selectedIndex), selectedIndex);
-      if (staticFeedback) this.showStatic(staticFeedback, selectedIndex, undefined, true);
+      this.stageMotion.show(
+        feedbackStageMotionPath(motionPath, selectedIndex),
+        selectedIndex,
+        callbacks,
+      );
+      if (staticFeedback) {
+        this.showStatic(staticFeedback, selectedIndex, undefined, true);
+      }
       return;
     }
 
     if (staticFeedback && motionPath && sequencePlan) {
       this.usingStatic = true;
       this.applyFeedbackBackground(staticFeedback);
-      this.showMotion(assetPath, motionPath, selectedIndex);
+      this.showMotion(
+        assetPath, motionPath, selectedIndex, sceneId, _correct, callbacks,
+      );
       tween(this.root)
         .delay(sequencePlan.revealAfterMs / 1000)
         .call(() => this.showStatic(
@@ -92,17 +103,22 @@ export class FeedbackView {
     if (staticFeedback) {
       this.usingStatic = true;
       this.showStatic(staticFeedback, selectedIndex);
+      callbacks.onReady?.();
       return;
     }
 
     if (motionPath) {
       this.usingStatic = false;
-      this.showMotion(assetPath, motionPath, selectedIndex);
+      this.showMotion(
+        assetPath, motionPath, selectedIndex, sceneId, _correct, callbacks,
+      );
       return;
     }
 
     this.usingStatic = false;
-    this.showMotion(assetPath, undefined, selectedIndex);
+    this.showMotion(
+      assetPath, undefined, selectedIndex, sceneId, _correct, callbacks,
+    );
   }
 
   hide(): void {
@@ -117,6 +133,9 @@ export class FeedbackView {
     }
     this.usingStatic = false;
     this.root.active = false;
+    if (typeof document !== 'undefined') {
+      delete document.body.dataset.feedbackMotionReady;
+    }
   }
 
   setChoiceColumns(
@@ -138,6 +157,9 @@ export class FeedbackView {
     assetPath: string,
     motionPath: string | undefined,
     selectedIndex: number,
+    sceneId: string,
+    correct: boolean,
+    callbacks: MotionPlaybackCallbacks,
   ): void {
     this.layers.hide();
     this.stageMotion.hide();
@@ -145,23 +167,50 @@ export class FeedbackView {
     const col = Math.max(0, Math.min(columns.length - 1, selectedIndex));
     const x = columns[col] ?? 0;
     const [fw, fh] = WritingPlayLayout.feedbackMotion.size;
-    const y = WritingPlayLayout.feedbackMotion.position.y;
+    const layout = writingFeedbackMotionLayout(sceneId, correct);
+    const y = WritingPlayLayout.feedbackMotion.position.y + (layout.offsetY ?? 0);
     this.fallbackImage.getComponent(UITransform)?.setContentSize(fw, fh);
     this.fallbackSprite.getComponent(UITransform)?.setContentSize(fw, fh);
     this.fallbackMotion.resize(fw, fh);
-    this.fallbackImage.setPosition(x, y);
+    this.fallbackImage.setPosition(x + (layout.offsetX ?? 0), y);
     this.fallbackImage.active = true;
     if (motionPath) {
       // Do not flash static sticker under webp (瞬间失真).
       this.fallbackSprite.active = false;
-      this.fallbackMotion.show(motionPath, true);
+      this.fallbackMotion.show(motionPath, true, true, {
+        onReady: () => {
+          if (typeof document !== 'undefined') {
+            document.body.dataset.feedbackMotionReady = 'true';
+          }
+          callbacks.onReady?.();
+        },
+        onError: () => {
+          this.fallbackSprite.active = true;
+          spriteLoader.apply(this.fallbackSprite, assetPath, 'contain');
+          if (typeof document !== 'undefined') {
+            document.body.dataset.feedbackMotionReady = 'error';
+          }
+          callbacks.onError?.();
+        },
+      });
     } else {
       this.fallbackSprite.active = true;
       spriteLoader.apply(this.fallbackSprite, assetPath, 'contain');
       this.fallbackMotion.hide();
+      callbacks.onReady?.();
     }
-    this.fallbackImage.setScale(0.88, 0.88, 1);
-    tween(this.fallbackImage).to(0.18, { scale: Vec3.ONE }, { easing: 'backOut' }).start();
+    const targetScale = layout.scale;
+    this.fallbackImage.setScale(targetScale * 0.88, targetScale * 0.88, 1);
+    tween(this.fallbackImage)
+      .to(
+        0.18,
+        { scale: new Vec3(targetScale, targetScale, 1) },
+        { easing: 'backOut' },
+      )
+      .start();
+    if (typeof document !== 'undefined') {
+      document.body.dataset.feedbackMotionScale = targetScale.toFixed(3);
+    }
   }
 
   private showStatic(

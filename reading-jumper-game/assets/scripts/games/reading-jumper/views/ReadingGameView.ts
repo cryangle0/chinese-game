@@ -11,7 +11,7 @@ import { ScoreCoinEffectView } from '../../../ui/ScoreCoinEffectView';
 import type { ScoreCoinSnapshot } from '../../../ui/ScoreCoinEffectView';
 import { BrickGroupView } from './BrickGroupView';
 import { DeerView } from './DeerView';
-import { readingLayout } from '../config/ReadingLayout';
+import { readingJumpHeight, readingLayout } from '../config/ReadingLayout';
 import { ReadingTransitionView } from './ReadingTransitionView';
 
 export class ReadingGameView {
@@ -96,8 +96,12 @@ export class ReadingGameView {
     this.bricks.setLayout(layout.option);
     this.bricks.setTheme(theme.assets.option, theme.assets.optionWrong);
     this.bricks.setTextStyle(layout.text.optionOutline);
-    this.feedback.setLayout(layout.feedback);
-    this.deer.setLayout(layout.deer, layout.option.columns);
+    this.feedback.setLayout(layout.feedback, theme.id);
+    this.deer.setLayout(
+      layout.deer,
+      layout.option.columns,
+      readingJumpHeight(layout),
+    );
     this.deer.setTheme(
       theme.assets.characterIdle,
       theme.assets.characterAction,
@@ -114,6 +118,9 @@ export class ReadingGameView {
   setFeedbackVisible(visible: boolean): void {
     this.deer.root.active = !visible;
     if (!visible) this.feedback.hide();
+    if (typeof document !== 'undefined') {
+      document.body.dataset.feedbackActorHandoff = visible ? 'feedback-ready' : 'actor-visible';
+    }
   }
 
   captureScoreRewardOrigin(index: number): ScoreCoinSnapshot | null {

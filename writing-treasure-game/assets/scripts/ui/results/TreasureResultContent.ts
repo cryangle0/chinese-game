@@ -28,16 +28,24 @@ function addImage(
   return node;
 }
 
-function addRank(root: Node, result: GameResult, assets: ThemeAssets): void {
+function addRank(
+  root: Node,
+  result: GameResult,
+  assets: ThemeAssets,
+  rankingMaxScore = 100,
+): void {
   const layout = WritingSettlementLayout.treasure;
   addImage(root, 'TreasureRankTitle', assets.resultRank, layout.rankTitle);
   layout.rankRows.forEach((row, index) => {
     addImage(root, `TreasureRankRow${index + 1}`, assets.resultRankLabels?.[index], row);
   });
 
-  const rows = buildRankRows(result.score);
+  const rows = buildRankRows(result.score, rankingMaxScore);
   rows.forEach((row, index) => {
     const text = layout.rankText[index];
+    const rowOffsetY = layout.rankTextRowOffsetY?.[index]
+      ?? layout.rankTextOffsetY
+      ?? 0;
     const nameBox = settlementBoxNode(text.name);
     const name = createLabel(root, row.name, {
       size: 20, color: '#6D4225', width: nameBox.width, height: nameBox.height, bold: true,
@@ -45,14 +53,26 @@ function addRank(root: Node, result: GameResult, assets: ThemeAssets): void {
     name.node.name = `TreasureRankName${index + 1}`;
     name.horizontalAlign = HorizontalTextAlignment.CENTER;
     name.overflow = Label.Overflow.SHRINK;
-    name.node.setPosition(nameBox.position);
+    name.node.setPosition(
+      nameBox.position.x,
+      nameBox.position.y + rowOffsetY,
+      nameBox.position.z,
+    );
     const scoreBox = settlementBoxNode(text.score);
     const score = createLabel(root, `${row.score}分`, {
       size: 22, color: '#EF6B11', width: scoreBox.width, height: scoreBox.height, bold: true,
     });
     score.node.name = `TreasureRankScore${index + 1}`;
-    score.node.setPosition(scoreBox.position);
+    score.node.setPosition(
+      scoreBox.position.x,
+      scoreBox.position.y + rowOffsetY,
+      scoreBox.position.z,
+    );
   });
+  if (typeof document !== 'undefined') {
+    document.body.dataset.rankMaxScore = String(rankingMaxScore);
+    document.body.dataset.rankScores = rows.map((row) => `${row.score}分`).join('|');
+  }
 }
 
 function drawReviewRow(node: Node): void {
@@ -114,7 +134,8 @@ export function addTreasureResultContent(
   result: GameResult,
   assets: ThemeAssets,
   contentRoot: Node = root,
+  rankingMaxScore = 100,
 ): void {
-  addRank(root, result, assets);
+  addRank(root, result, assets, rankingMaxScore);
   addReview(root, result, assets, contentRoot);
 }

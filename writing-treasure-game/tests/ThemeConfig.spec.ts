@@ -29,6 +29,19 @@ describe('writing campaign themes', () => {
       expect(Boolean(theme.assets.successState)).toBe(expected.success);
       expect(Boolean(theme.assets.failState)).toBe(expected.fail);
     });
+    expect(writingThemes
+      .filter((theme) => ['treasure', 'desert', 'dunhuang'].includes(theme.id))
+      .every((theme) => theme.assets.successStates?.length === 3)).toBe(true);
+    expect(writingThemes.find((theme) => theme.id === 'treasure')?.assets.failStates).toEqual([
+      'themes/writing/treasure/failState',
+      'themes/writing/treasure/failState-purple',
+      'themes/writing/treasure/failState-green',
+    ]);
+    expect(writingThemes.find((theme) => theme.id === 'dunhuang')?.assets.failStates).toEqual([
+      'themes/writing/dunhuang/failState',
+      'themes/writing/dunhuang/failState-white',
+      'themes/writing/dunhuang/failState-green',
+    ]);
   });
 
   it('wires the packaged feedback effect for every scene', () => {

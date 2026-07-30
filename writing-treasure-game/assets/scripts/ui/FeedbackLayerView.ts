@@ -23,7 +23,8 @@ export class FeedbackLayerView {
       node.active = false;
       this.nodes.push(node);
       this.motions.push(new DomMotionSprite(node, null, 100, 100, {
-        fit: 'fill',
+        fit: 'contain',
+        objectPosition: 'center bottom',
         zIndex: 8 + index,
       }));
     }
@@ -52,13 +53,25 @@ export class FeedbackLayerView {
         backdropScaleX,
         layer.stretchWithBackdrop,
       );
-      node.getComponent(UITransform)?.setContentSize(placement.width, height);
-      node.setPosition(placement.x, placed.position.y);
+      const visualScale = layer.scale ?? 1;
+      const scaledWidth = placement.width * visualScale;
+      const scaledHeight = height * visualScale;
+      const bottomPinnedY = placed.position.y + (scaledHeight - height) / 2;
+      node.getComponent(UITransform)?.setContentSize(scaledWidth, scaledHeight);
+      node.setPosition(
+        placement.x + (layer.offsetX ?? 0),
+        bottomPinnedY + (layer.offsetY ?? 0),
+      );
       node.active = true;
-      motion.resize(placement.width, height);
+      motion.resize(scaledWidth, scaledHeight);
       motion.show(resolveFeedbackLayerPath(layer, selectedIndex), true);
       if (index === 0 && chase) {
-        this.playChase(node, placement.x, placed.position.y, chase);
+        this.playChase(
+          node,
+          placement.x + (layer.offsetX ?? 0),
+          bottomPinnedY + (layer.offsetY ?? 0),
+          chase,
+        );
       }
     });
   }

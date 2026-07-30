@@ -1,11 +1,13 @@
-import { readingLayout, readingLayoutIds } from '../assets/scripts/games/reading-jumper/config/ReadingLayout';
+import {
+  readingJumpHeight, readingLayout, readingLayoutIds,
+} from '../assets/scripts/games/reading-jumper/config/ReadingLayout';
 import {
   READING_TEXT,
   estimateReadingOptionTextWidth,
   labelInsideParent,
-  readingOptionFontSize,
   readingOptionFits,
   readingOptionLabelBox,
+  readingOptionTextLayout,
   readingQuestionLabelBox,
   readingStemFits,
 } from '../assets/scripts/shared/config/ReadingTextLayout';
@@ -19,7 +21,7 @@ describe('Reading play text size + bounds', () => {
     expect(READING_TEXT.questionFontSize).toBeLessThanOrEqual(36);
     expect(READING_TEXT.optionFontSize).toBeGreaterThanOrEqual(28);
     expect(READING_TEXT.optionFontSize).toBeLessThanOrEqual(32);
-    expect(READING_TEXT.optionMaxLines).toBe(1);
+    expect(READING_TEXT.optionMaxLines).toBe(2);
   });
 
   it('stem pads leave room for side bricks and bevel', () => {
@@ -78,6 +80,35 @@ describe('Reading play text size + bounds', () => {
     expect(Math.abs(r) + half).toBeLessThanOrEqual(720);
   });
 
+  it.each(readingLayoutIds())('%s: jump height includes its visible-head correction', (id) => {
+    const layout = readingLayout(id);
+    const deerTop = layout.deer.y + layout.deer.height / 2;
+    const optionBottom = layout.option.y - layout.option.height / 2;
+    expect(readingJumpHeight(layout)).toBeGreaterThan(0);
+    expect(readingJumpHeight(layout)).toBeCloseTo(
+      optionBottom - deerTop + (layout.jumpVisibleHeadInset ?? 0),
+      5,
+    );
+  });
+
+  it('uses the measured mario contact height before the synchronized brick lift', () => {
+    expect(readingLayout('mario').jumpVisibleHeadInset).toBe(14);
+    expect(readingJumpHeight(readingLayout('mario'))).toBe(51);
+  });
+
+  it.each([
+    ['deep-sea', 40, 80.5],
+    ['space', 54, 73],
+    ['food', 23, 44],
+    ['poetry', -5, 64],
+  ])(
+    '%s: uses the measured action-frame correction for a visible brick contact',
+    (id, inset, jumpHeight) => {
+      expect(readingLayout(id).jumpVisibleHeadInset ?? 0).toBe(inset);
+      expect(readingJumpHeight(readingLayout(id))).toBe(jumpHeight);
+    },
+  );
+
   it('space option pad keeps text inside chrome bars', () => {
     expect(readingLayout('space').option.padX ?? 0).toBeGreaterThanOrEqual(108);
   });
@@ -94,14 +125,32 @@ describe('Reading play text size + bounds', () => {
     });
   });
 
-  it('shrinks long space options while keeping short options at full size', () => {
+  it('wraps long space options before reducing their font size', () => {
     const layout = readingLayout('space');
     const box = readingOptionLabelBox(layout.option, layout.option.padX);
-    const longText = 'A.花容月貌的女子';
-    const fitted = readingOptionFontSize(longText, box.width);
-    expect(fitted).toBeLessThan(READING_TEXT.optionFontSize);
-    expect(estimateReadingOptionTextWidth(longText, fitted)).toBeLessThanOrEqual(box.width);
-    expect(readingOptionFontSize('B.老妇人', box.width)).toBe(READING_TEXT.optionFontSize);
+    const wrapped = readingOptionTextLayout('B.要理性地面对生活', box.width, box.height);
+    expect(wrapped.lines).toEqual(['B.要理性地', '面对生活']);
+    expect(wrapped.fontSize).toBe(READING_TEXT.optionFontSize);
+    expect(wrapped.lineHeight * wrapped.lines.length).toBeLessThanOrEqual(box.height);
+    wrapped.lines.forEach((line) => {
+      expect(estimateReadingOptionTextWidth(line, wrapped.fontSize)).toBeLessThanOrEqual(box.width);
+    });
+
+    const short = readingOptionTextLayout('A.不要轻信他人', box.width, box.height);
+    expect(short.lines).toHaveLength(1);
+    expect(short.fontSize).toBe(READING_TEXT.optionFontSize);
+
+    const veryLong = readingOptionTextLayout(
+      `C.${'很长的选项文字'.repeat(3)}`,
+      box.width,
+      box.height,
+    );
+    expect(veryLong.lines).toHaveLength(2);
+    expect(veryLong.fontSize).toBeLessThan(READING_TEXT.optionFontSize);
+    veryLong.lines.forEach((line) => {
+      expect(estimateReadingOptionTextWidth(line, veryLong.fontSize))
+        .toBeLessThanOrEqual(box.width);
+    });
   });
 
   it('uses 180 seconds and five settlement stars in every scene', () => {
@@ -118,6 +167,25 @@ describe('Reading play text size + bounds', () => {
     expect(layout.review.titleSize).toEqual({ width: 246, height: 48 });
   });
 
+  it('centers the deep-sea review group on the measured crystal frame', () => {
+    expect(resultThemeLayout('deep-sea').summary?.captionY).toBe(263);
+    const review = resultThemeLayout('deep-sea').review;
+    expect(review.x + 720).toBe(1161);
+    expect(review.textX + 720).toBe(1160);
+    expect(review.iconX + review.iconSize / 2)
+      .toBeLessThanOrEqual(review.x + review.width / 2);
+  });
+
+  it('centers both space headings inside their measured title slots', () => {
+    const layout = resultThemeLayout('space');
+    expect(layout.rank.titleX + 720).toBe(763);
+    expect(layout.review.x + 720).toBe(1199);
+    expect(layout.rank.titleY).toBe(180);
+    expect(layout.review.titleY).toBe(180);
+    expect(layout.rank.titleSize).toEqual({ width: 240, height: 56 });
+    expect(layout.review.titleSize).toEqual({ width: 240, height: 56 });
+  });
+
   it('keeps poetry review rows separated with state icons inside each row', () => {
     const review = resultThemeLayout('poetry').review;
     expect(review.x).toBe(461);
@@ -131,6 +199,10 @@ describe('Reading play text size + bounds', () => {
     });
     expect(review.iconX + review.iconSize / 2)
       .toBeLessThanOrEqual(review.x + review.width / 2);
+  });
+
+  it('centers the poetry score in the plaque gap between 总分 and 分', () => {
+    expect(resultThemeLayout('poetry').score?.x).toBe(-319);
   });
 
   it.each([

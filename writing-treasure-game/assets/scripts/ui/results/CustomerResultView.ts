@@ -28,7 +28,12 @@ function image(
   return node;
 }
 
-function addRank(root: Node, result: GameResult, theme: GameTheme): void {
+function addRank(
+  root: Node,
+  result: GameResult,
+  theme: GameTheme,
+  rankingMaxScore = 100,
+): void {
   const layout = WritingSettlementLayout[theme.id];
   if (!layout) return;
   const assets = theme.assets;
@@ -38,8 +43,10 @@ function addRank(root: Node, result: GameResult, theme: GameTheme): void {
   layout.rankRows.forEach((row, index) => {
     image(root, `CustomerRankLabel${index + 1}`, assets.resultRankLabels?.[index], row);
   });
-  buildRankRows(result.score).forEach((row, index) => {
+  const rows = buildRankRows(result.score, rankingMaxScore);
+  rows.forEach((row, index) => {
     const text = layout.rankText[index];
+    const rowOffsetY = layout.rankTextRowOffsetY?.[index] ?? rankTextOffsetY;
     const nameBox = settlementBoxNode(text.name);
     const name = createLabel(root, row.name, {
       size: 20, color: '#6D4225', width: nameBox.width, height: nameBox.height, bold: true,
@@ -49,7 +56,7 @@ function addRank(root: Node, result: GameResult, theme: GameTheme): void {
     name.node.name = `CustomerRankName${index + 1}`;
     name.node.setPosition(
       nameBox.position.x,
-      nameBox.position.y + rankTextOffsetY,
+      nameBox.position.y + rowOffsetY,
       nameBox.position.z,
     );
     const scoreBox = settlementBoxNode(text.score);
@@ -59,10 +66,14 @@ function addRank(root: Node, result: GameResult, theme: GameTheme): void {
     score.node.name = `CustomerRankScore${index + 1}`;
     score.node.setPosition(
       scoreBox.position.x,
-      scoreBox.position.y + rankTextOffsetY,
+      scoreBox.position.y + rowOffsetY,
       scoreBox.position.z,
     );
   });
+  if (typeof document !== 'undefined') {
+    document.body.dataset.rankMaxScore = String(rankingMaxScore);
+    document.body.dataset.rankScores = rows.map((row) => `${row.score}分`).join('|');
+  }
 }
 
 function addReview(
@@ -112,12 +123,16 @@ function addReview(
 }
 
 export function buildCustomerResult(
-  root: Node, result: GameResult, theme: GameTheme, contentRoot?: Node,
+  root: Node,
+  result: GameResult,
+  theme: GameTheme,
+  contentRoot?: Node,
+  rankingMaxScore = 100,
 ): Node {
   if (!WritingSettlementLayout[theme.id]) {
     throw new Error(`settlement layout unavailable: ${theme.id}`);
   }
-  addRank(root, result, theme);
+  addRank(root, result, theme, rankingMaxScore);
   addReview(root, result, theme, contentRoot);
   return addCustomerScore(root, result, theme, contentRoot);
 }

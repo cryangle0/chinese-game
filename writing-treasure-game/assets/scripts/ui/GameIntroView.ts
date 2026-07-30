@@ -1,5 +1,6 @@
 import { Button, Node, Tween, tween, Vec3 } from 'cc';
 import { spriteLoader } from '../core/assets/SpriteLoader';
+import { DomMotionSprite } from '../core/media/DomMotionSprite';
 import { createUiNode } from '../core/ui/UiFactory';
 import { applyStretchXBackdrop } from '../core/ui/ResponsiveRoot';
 import { AppConfig } from '../shared/config/AppConfig';
@@ -16,8 +17,16 @@ const Intro = {
   start: box(720, 406, 435, 120),
 } as const;
 
+const IntroRun = {
+  frame: { width: 600, height: 670 },
+  endX: 940,
+  durationSeconds: 1.45,
+} as const;
+
 export interface GameIntroStartOptions {
   initialBook?: string;
+  runMotion?: string;
+  onRunStart?: (book: string) => void;
 }
 
 export class GameIntroView {
@@ -54,6 +63,38 @@ export class GameIntroView {
       Intro.character.position,
     );
     spriteLoader.apply(character, theme.character, 'contain');
+    const runnerY = Intro.character.position.y
+      - Intro.character.size[1] / 2
+      + IntroRun.frame.height / 2;
+    const runner = createUiNode(
+      this.root,
+      'IntroRunner',
+      IntroRun.frame.width,
+      IntroRun.frame.height,
+      new Vec3(Intro.character.position.x, runnerY, 0),
+    );
+    const runnerFallback = createUiNode(
+      runner,
+      'IntroRunnerFallback',
+      Intro.character.size[0],
+      Intro.character.size[1],
+      new Vec3(0, -IntroRun.frame.height / 2 + Intro.character.size[1] / 2, 0),
+    );
+    spriteLoader.apply(runnerFallback, theme.character, 'contain');
+    const runnerMotion = new DomMotionSprite(
+      runner,
+      runnerFallback,
+      IntroRun.frame.width,
+      IntroRun.frame.height,
+      {
+        fit: 'contain',
+        objectPosition: 'center bottom',
+        pinFeet: true,
+        zIndex: 9,
+      },
+    );
+    runner.active = false;
+    this.root.once(Node.EventType.NODE_DESTROYED, () => runnerMotion.dispose());
     const guide = createUiNode(
       this.root, 'Guide', Intro.guide.size[0], Intro.guide.size[1], Intro.guide.position,
     );
@@ -94,7 +135,38 @@ export class GameIntroView {
       this.bookPicker.close();
       Tween.stopAllByTarget(character);
       Tween.stopAllByTarget(this.bookPicker.root);
-      start(this.bookPicker.selectedBook());
+      const selectedBook = this.bookPicker.selectedBook();
+      options.onRunStart?.(selectedBook);
+      if (!options.runMotion) {
+        start(selectedBook);
+        return;
+      }
+      title.active = false;
+      guide.active = false;
+      button.active = false;
+      this.bookPicker.root.active = false;
+      character.active = false;
+      runner.active = true;
+      runner.setPosition(Intro.character.position.x, runnerY, 0);
+      runnerMotion.show(options.runMotion, true);
+      if (typeof document !== 'undefined') {
+        document.body.dataset.introRunActive = 'true';
+        document.body.dataset.introRunMotion = options.runMotion;
+      }
+      tween(runner)
+        .to(IntroRun.durationSeconds, {
+          position: new Vec3(IntroRun.endX, runnerY, 0),
+        })
+        .call(() => {
+          runnerMotion.hide();
+          runner.active = false;
+          if (typeof document !== 'undefined') {
+            delete document.body.dataset.introRunActive;
+            document.body.dataset.introRunCompleted = 'true';
+          }
+          start(selectedBook);
+        })
+        .start();
     };
     button.on(Button.EventType.CLICK, startOnce);
     tween(character)

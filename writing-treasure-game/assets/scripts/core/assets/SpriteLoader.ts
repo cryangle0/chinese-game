@@ -24,6 +24,15 @@ export class SpriteLoader {
     });
   }
 
+  applyReady(node: Node, path: string, mode: FitMode = 'contain'): Promise<boolean> {
+    if (!path) return Promise.resolve(false);
+    return new Promise((resolve) => {
+      this.request(node, path, mode, (done) => {
+        this.themeBundles.loadTexture(path, done);
+      }, resolve);
+    });
+  }
+
   applyRemote(node: Node, url: string, mode: FitMode = 'contain'): void {
     if (!url) return;
     const key = `remote:${url}`;
@@ -95,12 +104,20 @@ export class SpriteLoader {
     return { cached: this.frames.size, pending: this.pending.size };
   }
 
-  private request(node: Node, key: string, mode: FitMode, source: (done: LoadResult) => void): void {
+  private request(
+    node: Node,
+    key: string,
+    mode: FitMode,
+    source: (done: LoadResult) => void,
+    complete?: (applied: boolean) => void,
+  ): void {
     this.requestedPaths.set(node, key);
     this.load(key, source, (cached) => {
-      if (cached && node.isValid && this.requestedPaths.get(node) === key) {
+      const applied = Boolean(cached && node.isValid && this.requestedPaths.get(node) === key);
+      if (cached && applied) {
         this.assign(node, key, cached, mode);
       }
+      complete?.(applied);
     });
   }
 

@@ -690,11 +690,11 @@
       "stemType": "text",
       "stem": "猫国王照镜子告诉了我们什么道理？",
       "options": [
-        "要认清自己",
+        "不要照镜子",
         "外表最重要",
-        "不要照镜子"
+        "要认清自己"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explain": "正确答案是“要认清自己”。",
       "correctFeedback": "答对了，继续向下一关前进！",
       "wrongFeedback": "别着急，看看正确答案再继续。",
@@ -748,11 +748,11 @@
       "stemType": "text",
       "stem": "胖胖最后吃掉了苹果吗？",
       "options": [
-        "吃掉了",
         "没吃到",
+        "吃掉了",
         "不确定"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explain": "正确答案是“吃掉了”。",
       "correctFeedback": "答对了，继续向下一关前进！",
       "wrongFeedback": "别着急，看看正确答案再继续。",
@@ -35984,7 +35984,7 @@
       "stem": "英琼·乔杀死医生后，把罪行嫁祸给了谁？",
       "options": [
         "莫夫·波特",
-        "英琼·乔",
+        "哈克贝利",
         "席德"
       ],
       "correctIndex": 0,

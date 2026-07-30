@@ -21,12 +21,19 @@ export interface MotionSpriteOptions {
   readonly suppressFallback?: boolean;
 }
 
+export interface MotionPlaybackCallbacks {
+  readonly onReady?: () => void;
+  readonly onError?: () => void;
+}
+
 export class DomMotionSprite {
   private readonly image: DomMotionImage | null;
   private readonly opaqueLayout: DomMotionOpaqueLayout | null;
   private frame = 0;
   private requestedVisible = false;
   private disposed = false;
+  private playbackCallbacks: MotionPlaybackCallbacks | undefined;
+  private playbackSettled = false;
 
   constructor(
     private readonly node: Node,
@@ -45,26 +52,37 @@ export class DomMotionSprite {
     this.opaqueLayout = new DomMotionOpaqueLayout();
   }
 
-  show(source: string | undefined, restart = false): void {
+  show(
+    source: string | undefined,
+    restart = false,
+    isolateTimeline = false,
+    callbacks?: MotionPlaybackCallbacks,
+  ): void {
     if (!source) {
       this.hide();
       return;
     }
     this.requestedVisible = true;
+    this.playbackCallbacks = callbacks;
+    this.playbackSettled = false;
     if (!this.image) {
       if (this.fallback?.isValid) this.fallback.active = true;
+      this.notifyReady();
       return;
     }
-    const state = this.image.show(source, restart);
+    const state = this.image.show(source, restart, isolateTimeline);
     if (state.changed || restart) this.opaqueLayout?.reset();
     const showFallback = !this.options.suppressFallback && !state.hadMotion;
     if (this.fallback?.isValid) this.fallback.active = showFallback && !this.image.ready();
     this.updateElement();
     this.ensureTicking();
+    if (this.image.ready()) this.notifyReady();
   }
 
   hide(): void {
     this.requestedVisible = false;
+    this.playbackCallbacks = undefined;
+    this.playbackSettled = false;
     this.stopTicking();
     this.updateElement();
   }
@@ -87,12 +105,28 @@ export class DomMotionSprite {
     if (this.fallback?.isValid) this.fallback.active = false;
     this.updateElement();
     this.ensureTicking();
+    this.notifyReady();
   }
 
   private onImageError(): void {
     if (this.fallback?.isValid && !this.options.suppressFallback) this.fallback.active = true;
     this.updateElement();
     this.stopTicking();
+    this.notifyError();
+  }
+
+  private notifyReady(): void {
+    if (this.playbackSettled) return;
+    this.playbackSettled = true;
+    this.playbackCallbacks?.onReady?.();
+    this.playbackCallbacks = undefined;
+  }
+
+  private notifyError(): void {
+    if (this.playbackSettled) return;
+    this.playbackSettled = true;
+    this.playbackCallbacks?.onError?.();
+    this.playbackCallbacks = undefined;
   }
 
   private ensureTicking(): void {

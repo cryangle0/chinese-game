@@ -49,9 +49,9 @@ try {
         pack.questions = pack.questions.map((question) => ({
           ...question,
           options: [
-            '\u82b1\u5bb9\u6708\u8c8c\u7684\u5973\u5b50',
-            '\u8001\u5987\u4eba',
-            '\u8001\u516c\u516c',
+            '\u4e0d\u8981\u8f7b\u4fe1\u4ed6\u4eba',
+            '\u8981\u7406\u6027\u5730\u9762\u5bf9\u751f\u6d3b',
+            '\u8981\u65f6\u5e38\u5fe7\u8651',
           ],
         }));
         await route.fulfill({
@@ -76,6 +76,8 @@ try {
       optionPadX: document.body.dataset.optionPadX,
       optionAlign: document.body.dataset.optionAlign,
       optionLineMode: document.body.dataset.optionLineMode,
+      optionLineCounts: document.body.dataset.optionLineCounts,
+      renderedLabels: document.body.dataset.optionRenderedLabels,
       labels: document.body.dataset.optionLabels,
     }));
     const box = await page.locator('#GameCanvas').boundingBox();
@@ -102,19 +104,25 @@ try {
     if (meta.optionAlign !== 'center') {
       throw new Error(`${scene}: option text is not centered (${meta.optionAlign})`);
     }
-    if (meta.optionLineMode !== 'single-line-shrink') {
-      throw new Error(`${scene}: option text is not single-line shrink (${meta.optionLineMode})`);
+    if (meta.optionLineMode !== 'wrap-first-max-2') {
+      throw new Error(`${scene}: option text is not wrap-first (${meta.optionLineMode})`);
     }
     if (scene === 'space') {
       const [contentWidth] = String(meta.optionContentBox || '0x0').split('x').map(Number);
       const effectiveFonts = String(meta.optionEffectiveFontSizes || '')
         .split(',')
         .map(Number);
+      const lineCounts = String(meta.optionLineCounts || '')
+        .split(',')
+        .map(Number);
       if (!(contentWidth <= 230)) {
         throw new Error(`space: unsafe option content width ${meta.optionContentBox}`);
       }
-      if (!(effectiveFonts[0] < font && effectiveFonts[1] === font && effectiveFonts[2] === font)) {
-        throw new Error(`space: options did not adapt fonts (${meta.optionEffectiveFontSizes})`);
+      if (!effectiveFonts.every((value) => value === font)) {
+        throw new Error(`space: wrapped options changed font (${meta.optionEffectiveFontSizes})`);
+      }
+      if (!(lineCounts[0] === 1 && lineCounts[1] === 2 && lineCounts[2] === 1)) {
+        throw new Error(`space: wrong line counts (${meta.optionLineCounts})`);
       }
     }
     report.push({ scene, ...meta, shot });

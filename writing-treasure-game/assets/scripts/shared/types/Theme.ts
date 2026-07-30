@@ -36,7 +36,9 @@ export interface ThemeAssets {
   voiceListening?: string;
   choices?: readonly [string, string, string];
   successState?: string;
+  successStates?: readonly [string, string, string];
   failState?: string;
+  failStates?: readonly [string, string, string];
   resultBackground?: string;
   resultRank?: string;
   resultRankBase?: string;

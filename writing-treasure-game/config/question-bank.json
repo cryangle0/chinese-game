@@ -197,11 +197,11 @@
       "stemType": "text",
       "stem": "“风婆婆热情地牵着小树叶的手走了”运用了什么修辞手法？",
       "options": [
-        "拟人",
         "比喻",
-        "排比"
+        "排比",
+        "拟人"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explain": "正确答案是“拟人”。",
       "correctFeedback": "答对了，继续向下一关前进！",
       "wrongFeedback": "别着急，看看正确答案再继续。",
@@ -255,11 +255,11 @@
       "stemType": "text",
       "stem": "仿写“香喷喷”，正确的是什么？",
       "options": [
-        "圆滚滚",
+        "皱皱巴巴",
         "花花绿绿",
-        "皱皱巴巴"
+        "圆滚滚"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "explain": "正确答案是“圆滚滚”。",
       "correctFeedback": "答对了，继续向下一关前进！",
       "wrongFeedback": "别着急，看看正确答案再继续。",
@@ -313,11 +313,11 @@
       "stemType": "text",
       "stem": "“第二天早上”写出了事情发生的什么？",
       "options": [
-        "时间",
         "地点",
+        "时间",
         "人物"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "explain": "正确答案是“时间”。",
       "correctFeedback": "答对了，继续向下一关前进！",
       "wrongFeedback": "别着急，看看正确答案再继续。",
@@ -5328,7 +5328,7 @@
       "type": "写作",
       "knowledgePoint": "安徒生童话",
       "stemType": "text",
-      "stem": "“照看着自己那六个可爱的小孙女——海公主”，破折号的作用是？",
+      "stem": "“照看着自己那六个可爱的小孙女——海公主”中破折号的作用是什么？",
       "options": [
         "解释说明",
         "表示转折",
@@ -8895,14 +8895,14 @@
       "type": "写作",
       "knowledgePoint": "灰尘的旅行",
       "stemType": "text",
-      "stem": "文中描写细菌怕高温时用了什么表达？",
+      "stem": "“细胞大小肥瘦的相差，总算差强人意吧”中“差强人意”意思是？",
       "options": [
-        "“我没有生望了”",
-        "“温度太高了”",
-        "“我被杀死了”"
+        "完全不能让人满意",
+        "大体上使人满意",
+        "非常令人满意"
       ],
       "correctIndex": 1,
-      "explain": "正确答案是““温度太高了””。",
+      "explain": "正确答案是“大体上使人满意”。",
       "correctFeedback": "答对了，继续向下一关前进！",
       "wrongFeedback": "别着急，看看正确答案再继续。",
       "source": "客户题库0716/四年级/灰尘的旅行",
@@ -9388,14 +9388,14 @@
       "type": "写作",
       "knowledgePoint": "灰尘的旅行",
       "stemType": "text",
-      "stem": "“例如，体重40磅的儿童，每年增加3.6磅”用了什么说明方法？",
+      "stem": "“浊水还可以改造为清水，人呢？”作为文章结尾有何好处？",
       "options": [
-        "作比较",
-        "打比方",
-        "举例子"
+        "总结前文",
+        "引发读者思考",
+        "点明文章主旨"
       ],
-      "correctIndex": 2,
-      "explain": "正确答案是“举例子”。",
+      "correctIndex": 1,
+      "explain": "正确答案是“引发读者思考”。",
       "correctFeedback": "答对了，继续向下一关前进！",
       "wrongFeedback": "别着急，看看正确答案再继续。",
       "source": "客户题库0716/四年级/灰尘的旅行",
@@ -10432,7 +10432,7 @@
       "type": "写作",
       "knowledgePoint": "三国演义",
       "stemType": "text",
-      "stem": "“面临绝境，我总会想起城楼上抚琴的。”应该写谁？",
+      "stem": "“面临绝境，我总会想起城楼上抚琴的________。”应该写谁？",
       "options": [
         "司马懿",
         "诸葛亮",
@@ -12294,8 +12294,8 @@
         "珍珠",
         "雨"
       ],
-      "correctIndex": 2,
-      "explain": "正确答案是“雨”。",
+      "correctIndex": 0,
+      "explain": "正确答案是“珍珠和雨”。",
       "correctFeedback": "答对了，继续向下一关前进！",
       "wrongFeedback": "别着急，看看正确答案再继续。",
       "source": "客户题库0716/五年级/西游记",
@@ -26469,7 +26469,7 @@
       "type": "写作",
       "knowledgePoint": "红楼梦",
       "stemType": "text",
-      "stem": "“等她们散了，咱们有多少诗不能作呢”运用了什么修辞手法？",
+      "stem": "“等她们散了，咱们有多少诗不能作呢？”这句话运用了什么修辞？",
       "options": [
         "比喻",
         "夸张",
@@ -34125,7 +34125,7 @@
       "type": "写作",
       "knowledgePoint": "读读儿童故事4",
       "stemType": "text",
-      "stem": "“湖水是绿绿的“是在写湖水的什么？",
+      "stem": "“湖水是绿绿的”是在写湖水的什么？",
       "options": [
         "味道",
         "声音",

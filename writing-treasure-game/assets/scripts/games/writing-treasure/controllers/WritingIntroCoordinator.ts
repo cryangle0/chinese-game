@@ -1,6 +1,7 @@
 import { Node } from 'cc';
 import { preloadInitialTheme, retainIntro } from '../../../core/assets/ThemePreloader';
 import { TaskScope } from '../../../core/lifecycle/TaskScope';
+import { prefetchMotion } from '../../../core/media/DomMotionSprite';
 import { CampaignProgress } from '../../../services/CampaignProgress';
 import { GameServices } from '../../../services/GameServices';
 import { resolveBookOption } from '../../../shared/config/BookCatalog';
@@ -22,22 +23,33 @@ export function mountWritingIntro(options: IntroOptions): Promise<unknown | null
     root, scope, campaign, services, launch, start,
   } = options;
   retainIntro(writingIntro);
+  const runMotion = campaign.current().assets.motion?.runRight;
+  prefetchMotion(runMotion);
   const preload = preloadInitialTheme(campaign.current())
     .then(() => null, (error: unknown) => error);
   if (typeof document !== 'undefined') document.body.dataset.gameView = 'intro';
   services.audio.play('opening');
-  new GameIntroView(root, writingIntro, scope.guard((book: string) => {
-    const selected = resolveBookOption(
-      book || (typeof document !== 'undefined' ? document.body.dataset.bookSelect : undefined),
-    );
-    launch.knowledgePoint = selected;
-    if (typeof document !== 'undefined') {
-      document.body.dataset.bookSelect = selected;
-      document.body.dataset.filterBook = selected;
-    }
-    services.audio.play('button');
-    services.audio.play('start');
-    start();
-  }), { initialBook: launch.knowledgePoint });
+  new GameIntroView(
+    root,
+    writingIntro,
+    scope.guard(() => start()),
+    {
+      initialBook: launch.knowledgePoint,
+      runMotion,
+      onRunStart: scope.guard((book: string) => {
+        const selected = resolveBookOption(
+          book || (typeof document !== 'undefined' ? document.body.dataset.bookSelect : undefined),
+        );
+        launch.knowledgePoint = selected;
+        if (typeof document !== 'undefined') {
+          document.body.dataset.bookSelect = selected;
+          document.body.dataset.filterBook = selected;
+        }
+        services.audio.play('button');
+        services.audio.play('start');
+        services.audio.play('walk');
+      }),
+    },
+  );
   return preload;
 }

@@ -1,16 +1,16 @@
 const ENVIRONMENTS = Object.freeze({
   develop: Object.freeze({
-    h5Url: 'https://game.xyouxing.com/reading-jumper/index.html?release=20260728-settlement-ui',
+    h5Url: 'https://game.xyouxing.com/reading-jumper/index.html?release=20260730210813',
     bankUrl: 'https://game.xyouxing.com/reading-jumper/question-bank.json',
     trackEndpoint: '',
   }),
   trial: Object.freeze({
-    h5Url: 'https://game.xyouxing.com/reading-jumper/index.html?release=20260728-settlement-ui',
+    h5Url: 'https://game.xyouxing.com/reading-jumper/index.html?release=20260730210813',
     bankUrl: 'https://game.xyouxing.com/reading-jumper/question-bank.json',
     trackEndpoint: '',
   }),
   release: Object.freeze({
-    h5Url: 'https://game.xyouxing.com/reading-jumper/index.html?release=20260728-settlement-ui',
+    h5Url: 'https://game.xyouxing.com/reading-jumper/index.html?release=20260730210813',
     bankUrl: 'https://game.xyouxing.com/reading-jumper/question-bank.json',
     trackEndpoint: '',
   }),

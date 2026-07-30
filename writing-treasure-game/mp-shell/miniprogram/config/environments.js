@@ -1,16 +1,16 @@
 ﻿const ENVIRONMENTS = Object.freeze({
   develop: Object.freeze({
-    h5Url: 'https://game.xyouxing.com/writing-treasure/index.html?release=20260728-settlement-ui',
+    h5Url: 'https://game.xyouxing.com/writing-treasure/index.html?release=20260730210813',
     bankUrl: 'https://game.xyouxing.com/writing-treasure/question-bank.json',
     trackEndpoint: 'https://agent.onnsa.cn/writing-treasure/api/track',
   }),
   trial: Object.freeze({
-    h5Url: 'https://game.xyouxing.com/writing-treasure/index.html?release=20260728-settlement-ui',
+    h5Url: 'https://game.xyouxing.com/writing-treasure/index.html?release=20260730210813',
     bankUrl: 'https://game.xyouxing.com/writing-treasure/question-bank.json',
     trackEndpoint: 'https://agent.onnsa.cn/writing-treasure/api/track',
   }),
   release: Object.freeze({
-    h5Url: 'https://game.xyouxing.com/writing-treasure/index.html?release=20260728-settlement-ui',
+    h5Url: 'https://game.xyouxing.com/writing-treasure/index.html?release=20260730210813',
     bankUrl: 'https://game.xyouxing.com/writing-treasure/question-bank.json',
     trackEndpoint: 'https://agent.onnsa.cn/writing-treasure/api/track',
   }),

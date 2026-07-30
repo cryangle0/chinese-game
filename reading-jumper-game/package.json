@@ -41,6 +41,7 @@
     "bank:fingerprint": "node tools/bank/approve-question-bank.mjs --fingerprint",
     "approve:bank": "node tools/bank/approve-question-bank.mjs",
     "build:audio": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/assets/generate-audio.ps1",
+    "rebuild:feedback": "node tools/assets/rebuild-feedback-motion.mjs",
     "check:bank": "node tools/bank/check-question-bank.mjs",
     "check:bank:release": "node tools/bank/check-question-bank.mjs --release",
     "test:server": "node --test server/*.test.mjs",

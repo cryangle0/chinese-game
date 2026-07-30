@@ -88,6 +88,7 @@ export class StageResultCoordinator {
         primaryLabel: actions.replay,
         homeLabel: actions.proceed,
         primaryOnly: false,
+        rankingMaxScore: AppConfig.scoreCorrect * AppConfig.maxQuestions,
       },
     );
     if (this.callbacks.returnHome) {

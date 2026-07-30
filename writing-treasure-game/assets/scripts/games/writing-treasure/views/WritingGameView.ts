@@ -37,7 +37,7 @@ export class WritingGameView {
   };
 
   constructor(
-    private readonly root: Node,
+    root: Node,
     firstTheme: GameTheme | undefined,
     onInteract: (index: number) => void,
     onVoiceDown: () => void,
@@ -86,12 +86,16 @@ export class WritingGameView {
       this.feedback.hide();
       this.prompt.hide();
     }
-    [this.background, this.hud.root, this.board.root, this.deer.root, this.voice.root].forEach((node) => {
-      node.active = active;
+    this.background.active = active;
+    this.deer.root.active = active;
+    this.setPlayUiVisible(active);
+  }
+
+  setPlayUiVisible(visible: boolean): void {
+    [this.hud.root, this.board.root, this.voice.root].forEach((node) => {
+      node.active = visible;
     });
-    this.root.children.filter((node) => node.name.startsWith('MagicBook')).forEach((node) => {
-      node.active = active;
-    });
+    this.books.setVisible(visible);
   }
 
   mount(theme: GameTheme): void {

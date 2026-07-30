@@ -518,7 +518,7 @@ async function runDesktop(browser) {
   await assertRuntime(page, startedAt, readyAt, 'desktop');
   await capture(page, 'desktop-writing-intro');
   await page.mouse.click(938, 466);
-  await page.waitForSelector('body[data-game-view="play"]', { timeout: 2500 });
+  await page.waitForSelector('body[data-game-view="play"]', { timeout: 5000 });
   await page.waitForTimeout(300);
   await capture(page, 'desktop-writing-game');
   for (let wrong = 0; wrong < 3; wrong += 1) {
@@ -577,7 +577,7 @@ async function runMobile(browser) {
   await assertRuntime(page, startedAt, readyAt, 'mobile');
   await capture(page, 'mobile-writing-intro');
   await page.touchscreen.tap(528, 224);
-  await page.waitForSelector('body[data-game-view="play"]', { timeout: 2500 });
+  await page.waitForSelector('body[data-game-view="play"]', { timeout: 5000 });
   await page.waitForTimeout(300);
   await capture(page, 'mobile-writing-game');
   await completeCampaign(

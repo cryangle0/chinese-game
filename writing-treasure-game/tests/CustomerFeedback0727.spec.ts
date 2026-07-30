@@ -169,11 +169,27 @@ describe('customer feedback 0727', () => {
     expect(feedbackStageMotionPath(path, 99)).toBe('./media/dinosaur/wrong-3.webp');
   });
 
-  it('uses a supplied scene state image before the original choice artwork', () => {
+  it('uses the selected color state before the generic state and original artwork', () => {
     const choices = ['red-egg', 'purple-egg', 'blue-egg'];
+    const states = ['red-open', 'purple-open', 'green-open'];
+    expect(revealChoiceAsset('treasure', 0, 'generic-open', choices, states)).toBe('red-open');
+    expect(revealChoiceAsset('treasure', 1, 'generic-open', choices, states)).toBe('purple-open');
+    expect(revealChoiceAsset('treasure', 2, 'generic-open', choices, states)).toBe('green-open');
     expect(revealChoiceAsset('dinosaur', 1, 'generic-red-open', choices)).toBe('generic-red-open');
     expect(revealChoiceAsset('treasure', 1, 'open-chest', choices)).toBe('open-chest');
     expect(revealChoiceAsset('desert', 2, undefined, choices)).toBe('blue-egg');
+  });
+
+  it('maps wrong feedback to the selected treasure or lotus color', () => {
+    const choices = ['red', 'purple-or-white', 'green'];
+    const treasureWrong = ['red-broken', 'purple-broken', 'green-broken'];
+    const dunhuangWrong = ['red-lotus', 'white-lotus', 'green-lotus'];
+    expect(revealChoiceAsset('treasure', 1, 'generic-broken', choices, treasureWrong))
+      .toBe('purple-broken');
+    expect(revealChoiceAsset('dunhuang', 1, 'generic-lotus', choices, dunhuangWrong))
+      .toBe('white-lotus');
+    expect(revealChoiceAsset('dunhuang', 2, 'generic-lotus', choices, dunhuangWrong))
+      .toBe('green-lotus');
   });
 
   it('contains the five customer-specified question corrections', () => {

@@ -5,15 +5,15 @@
  * `FeedbackMotionTiming.spec.ts` re-measures customer-media and fails on drift.
  */
 const FEEDBACK_DURATION_MS: Readonly<Record<string, { correct: number; wrong: number }>> = {
-  treasure: { correct: 1066, wrong: 1732 },
-  desert: { correct: 3066, wrong: 2066 },
+  treasure: { correct: 1082, wrong: 1707 },
+  desert: { correct: 3041, wrong: 2041 },
   dinosaur: { correct: 2999, wrong: 3000 },
-  dunhuang: { correct: 2999, wrong: 2199 },
-  magic: { correct: 1732, wrong: 1399 },
+  dunhuang: { correct: 2999, wrong: 2166 },
+  magic: { correct: 1707, wrong: 1416 },
 };
 
 /** Longest packaged effect, so an unknown scene still plays to the end. */
-const DEFAULT_FEEDBACK_DURATION = { correct: 3066, wrong: 2999 };
+const DEFAULT_FEEDBACK_DURATION = { correct: 3041, wrong: 3000 };
 
 /** Beat on the held final frame before the stage advances (effects play once). */
 export const FEEDBACK_TAIL_MS = 240;

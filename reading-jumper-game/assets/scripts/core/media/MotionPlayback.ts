@@ -14,15 +14,15 @@ const TRANSITION_MS: Readonly<Record<string, number>> = {
  * `FeedbackMotionTiming.spec.ts` re-measures customer-media and fails on drift.
  */
 const FEEDBACK_DURATION_MS: Readonly<Record<string, { correct: number; wrong: number }>> = {
-  mario: { correct: 866, wrong: 2599 },
-  'deep-sea': { correct: 2799, wrong: 2866 },
-  space: { correct: 2732, wrong: 2799 },
-  food: { correct: 2866, wrong: 3066 },
-  poetry: { correct: 1066, wrong: 1999 },
+  mario: { correct: 832, wrong: 2624 },
+  'deep-sea': { correct: 2791, wrong: 2874 },
+  space: { correct: 2707, wrong: 2233 },
+  food: { correct: 2832, wrong: 3041 },
+  poetry: { correct: 1041, wrong: 1999 },
 };
 
 /** Longest packaged effect, so an unknown scene still plays to the end. */
-const DEFAULT_FEEDBACK_DURATION = { correct: 2866, wrong: 3066 };
+const DEFAULT_FEEDBACK_DURATION = { correct: 2832, wrong: 3041 };
 
 /** Beat on the held final frame before the stage advances (effects play once). */
 export const FEEDBACK_TAIL_MS = 240;

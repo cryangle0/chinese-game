@@ -25,6 +25,7 @@ export class WritingStartCoordinator {
     private readonly timer: RoundTimer,
     private readonly services: GameServices,
     private readonly stages: WritingStageCoordinator,
+    private readonly playInitialEntry = true,
   ) {}
 
   async start(): Promise<QuestionCursor | null> {
@@ -37,12 +38,21 @@ export class WritingStartCoordinator {
     if (!this.scope.isActive()) return null;
     this.root.getChildByName('GameIntro')?.destroy();
     this.view.setActive(true);
-    this.voice.initialize();
+    this.view.setPlayUiVisible(!this.playInitialEntry);
     this.round.begin();
-    this.timer.start(AppConfig.roundSeconds);
     this.services.audio.playMusic();
     this.services.analytics.track({ name: 'game_start', game: 'writing-treasure' });
+    const cursor = this.stages.mount();
+    if (this.playInitialEntry) {
+      if (typeof document !== 'undefined') document.body.dataset.gameView = 'stage-entry';
+      this.services.audio.play('walk');
+      await this.view.deer.enterFromLeft();
+      if (!this.scope.isActive()) return null;
+      this.view.setPlayUiVisible(true);
+    }
+    this.voice.initialize();
+    this.timer.start(AppConfig.roundSeconds);
     if (typeof document !== 'undefined') document.body.dataset.gameView = 'play';
-    return this.stages.mount();
+    return cursor;
   }
 }
