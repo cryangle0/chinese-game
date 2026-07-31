@@ -6,6 +6,7 @@ import { VoiceDiagnostic } from '../assets/scripts/services/VoiceDiagnostics';
 class FakeMediaRecorder {
   static latest: FakeMediaRecorder | undefined;
   static supportedTypes = new Set(['audio/webm;codecs=opus']);
+  static requestDataDelayMs = 0;
   static isTypeSupported(type: string): boolean {
     return FakeMediaRecorder.supportedTypes.has(type);
   }
@@ -14,6 +15,7 @@ class FakeMediaRecorder {
   mimeType: string;
   ondataavailable: ((event: BlobEvent) => void) | null = null;
   onerror: ((event: Event) => void) | null = null;
+  onstart: (() => void) | null = null;
   onstop: (() => void) | null = null;
   requestDataCalls = 0;
 
@@ -22,9 +24,20 @@ class FakeMediaRecorder {
     FakeMediaRecorder.latest = this;
   }
 
-  start(_timeslice?: number): void { this.state = 'recording'; }
+  start(_timeslice?: number): void {
+    this.state = 'recording';
+    queueMicrotask(() => {
+      if (this.state === 'recording') this.onstart?.();
+    });
+  }
   requestData(): void {
     this.requestDataCalls += 1;
+    if (FakeMediaRecorder.requestDataDelayMs > 0) {
+      setTimeout(() => {
+        if (this.state === 'recording') this.emitData();
+      }, FakeMediaRecorder.requestDataDelayMs);
+      return;
+    }
     this.emitData();
   }
   stop(): void {
@@ -92,6 +105,7 @@ afterEach(() => {
   globalThis.fetch = originalFetch;
   FakeMediaRecorder.latest = undefined;
   FakeMediaRecorder.supportedTypes = new Set(['audio/webm;codecs=opus']);
+  FakeMediaRecorder.requestDataDelayMs = 0;
 });
 
 describe('speech option matching', () => {
@@ -185,12 +199,13 @@ describe('SpeechSelectionService', () => {
       }),
     }));
     expect(matches).toEqual([1]);
-    expect(states).toEqual(['listening', 'processing', 'idle']);
+    expect(states).toEqual(['preparing', 'listening', 'processing', 'idle']);
     expect(tracks[0].enabled).toBe(false);
     expect(tracks[0].stop).toHaveBeenCalledTimes(1);
     expect(diagnostics.map((record) => record.phase)).toEqual([
       'started',
       'microphone_ready',
+      'recorder_ready',
       'capture_ready',
       'asr_response',
       'match_success',
@@ -199,6 +214,7 @@ describe('SpeechSelectionService', () => {
       expect.objectContaining({
         phase: 'capture_ready',
         audioBytes: 256,
+        chunkCount: 1,
         mimeType: 'audio/webm;codecs=opus',
       }),
       expect.objectContaining({
@@ -231,9 +247,10 @@ describe('SpeechSelectionService', () => {
     const recorder = FakeMediaRecorder.latest;
     service.finish();
 
-    expect(states.slice(0, 2)).toEqual(['listening', 'processing']);
+    expect(states).toEqual(['preparing', 'listening', 'processing']);
     expect(recorder?.requestDataCalls).toBe(1);
     expect(captureStates[0]).toBe(true);
+    recorder?.stop();
     await flushAsync();
     expect(captureStates).toEqual([true, false]);
     service.dispose();
@@ -257,7 +274,7 @@ describe('SpeechSelectionService', () => {
     await flushAsync();
 
     expect(matches).toEqual([1]);
-    expect(states).toEqual(['listening', 'processing', 'idle']);
+    expect(states).toEqual(['preparing', 'listening', 'processing', 'idle']);
   });
 
   it('falls back to a supported recorder format for Safari-style browsers', async () => {
@@ -305,7 +322,7 @@ describe('SpeechSelectionService', () => {
     expect(tracks[0].enabled).toBe(false);
     expect(tracks[0].stop).toHaveBeenCalledTimes(1);
     expect(onMatch).not.toHaveBeenCalled();
-    expect(states).toEqual(['listening', 'processing']);
+    expect(states).toEqual(['preparing', 'listening', 'processing']);
     service.dispose();
     expect(tracks[0].stop).toHaveBeenCalledTimes(1);
   });
@@ -366,7 +383,7 @@ describe('SpeechSelectionService', () => {
     }
 
     expect(getUserMedia).toHaveBeenCalledTimes(1);
-    expect(states).toEqual(['listening', 'error', 'listening', 'error']);
+    expect(states).toEqual(['preparing', 'error', 'preparing', 'error']);
   });
 
   it('does not upload an empty recording', async () => {
@@ -382,7 +399,7 @@ describe('SpeechSelectionService', () => {
     await flushAsync();
 
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(states).toEqual(['listening', 'no-match']);
+    expect(states).toEqual(['preparing', 'listening', 'no-match']);
     expect(diagnostics).toEqual(expect.arrayContaining([
       expect.objectContaining({ phase: 'capture_empty', audioBytes: 0 }),
     ]));
@@ -402,7 +419,7 @@ describe('SpeechSelectionService', () => {
     FakeMediaRecorder.latest?.stop();
     await flushAsync();
 
-    expect(states).toEqual(['listening', 'processing', 'error']);
+    expect(states).toEqual(['preparing', 'listening', 'processing', 'error']);
     expect(diagnostics).toEqual(expect.arrayContaining([
       expect.objectContaining({
         phase: 'asr_error',
@@ -434,7 +451,7 @@ describe('SpeechSelectionService', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(matches).toEqual([1]);
-    expect(states).toEqual(['listening', 'processing', 'idle']);
+    expect(states).toEqual(['preparing', 'listening', 'processing', 'idle']);
   });
 
   it('retries one transient network failure and accepts the successful response', async () => {
@@ -490,7 +507,7 @@ describe('SpeechSelectionService', () => {
     await flushAsync();
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(states).toEqual(['listening', 'processing', 'error']);
+    expect(states).toEqual(['preparing', 'listening', 'processing', 'error']);
   });
 
   it('refuses conflicting recognition alternatives instead of guessing', async () => {
@@ -510,6 +527,72 @@ describe('SpeechSelectionService', () => {
     await flushAsync();
 
     expect(onMatch).not.toHaveBeenCalled();
-    expect(states).toEqual(['listening', 'processing', 'no-match']);
+    expect(states).toEqual(['preparing', 'listening', 'processing', 'no-match']);
+  });
+
+  it('cancels cleanly when the user releases before the microphone is ready', async () => {
+    const fetchMock = jest.fn();
+    const { getUserMedia, tracks } = installBrowser(fetchMock as unknown as typeof fetch);
+    let resolveMicrophone: (() => void) | undefined;
+    getUserMedia.mockImplementationOnce(() => new Promise<MediaStream>((resolve) => {
+      resolveMicrophone = () => {
+        const track = {
+          enabled: true,
+          readyState: 'live' as MediaStreamTrackState,
+          stop: jest.fn(),
+        };
+        track.stop.mockImplementation(() => {
+          track.enabled = false;
+          track.readyState = 'ended';
+        });
+        tracks.push(track);
+        resolve({ getTracks: () => [track] } as unknown as MediaStream);
+      };
+    }));
+    const diagnostics: VoiceDiagnostic[] = [];
+    const states: string[] = [];
+    const service = new SpeechSelectionService((record) => diagnostics.push(record));
+
+    service.listen(options, jest.fn(), (state) => states.push(state));
+    service.finish();
+
+    expect(states).toEqual(['preparing', 'not-ready']);
+    expect(FakeMediaRecorder.latest).toBeUndefined();
+    expect(diagnostics).toEqual(expect.arrayContaining([
+      expect.objectContaining({ phase: 'release_requested', recordingMs: 0 }),
+      expect.objectContaining({ phase: 'released_before_ready', recordingMs: 0 }),
+    ]));
+
+    resolveMicrophone?.();
+    await flushAsync();
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(tracks[0].stop).toHaveBeenCalledTimes(1);
+    service.dispose();
+  });
+
+  it('waits for a delayed final data chunk before stopping the recorder', async () => {
+    const fetchMock = jest.fn(async () =>
+      new Response(JSON.stringify({ transcript: '第二个' }), { status: 200 }));
+    installBrowser(fetchMock);
+    FakeMediaRecorder.requestDataDelayMs = 30;
+    const diagnostics: VoiceDiagnostic[] = [];
+    const service = new SpeechSelectionService((record) => diagnostics.push(record));
+
+    service.listen(options, jest.fn(), jest.fn());
+    await flushAsync();
+    service.finish();
+    await new Promise((resolve) => setTimeout(resolve, 230));
+    await flushAsync();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(diagnostics).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        phase: 'capture_ready',
+        audioBytes: 256,
+        chunkCount: 1,
+      }),
+    ]));
+    service.dispose();
   });
 });

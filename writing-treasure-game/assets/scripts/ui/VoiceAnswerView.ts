@@ -10,8 +10,10 @@ import { installCanvasPressFallback } from './CanvasPressFallback';
 
 const labels: Record<SpeechState, string> = {
   idle: '按住说话，完整说完后松开',
+  preparing: '麦克风准备中...',
   listening: '正在输入...',
   processing: '正在识别...',
+  'not-ready': '请听到提示音后再说',
   unsupported: '当前环境不支持录音，请直接点击选项作答',
   'no-match': '未识别到明确选项',
   error: '语音服务不可用，请检查麦克风权限和网络，或点击选项',
@@ -80,7 +82,7 @@ export class VoiceAnswerView {
     this.state = state;
     if (typeof document !== 'undefined') document.body.dataset.speechState = state;
     this.button.interactable = this.supported && this.enabled;
-    const listeningPlate = (state === 'listening' || state === 'processing')
+    const listeningPlate = state === 'listening'
       && Boolean(this.assets?.voiceListening)
       && this.supported && this.enabled;
     // voiceListening.png already bakes「正在输入...」— Label would double-stack.
@@ -98,7 +100,7 @@ export class VoiceAnswerView {
 
   private applyPlate(): void {
     if (!this.assets) return;
-    const listening = this.state === 'listening' || this.state === 'processing';
+    const listening = this.state === 'listening';
     // Always use voice PNG plates — never paint #FFD34D / #A8A8A8 fallbacks.
     const asset = listening
       ? (this.assets.voiceListening || DEFAULT_VOICE_LISTENING)
@@ -164,6 +166,8 @@ export class VoiceAnswerView {
 
   private canPress(): boolean {
     return this.supported && this.enabled
-      && this.state !== 'listening' && this.state !== 'processing';
+      && this.state !== 'preparing'
+      && this.state !== 'listening'
+      && this.state !== 'processing';
   }
 }

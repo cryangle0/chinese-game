@@ -23,7 +23,7 @@ export function trackVoiceDiagnostic(
   });
   if (record.phase === 'accepted' || record.phase === 'guard_rejected'
     || record.phase === 'asr_error' || record.phase === 'capture_empty'
-    || record.phase === 'match_failed') {
+    || record.phase === 'match_failed' || record.phase === 'released_before_ready') {
     void analytics.flush();
   }
 }

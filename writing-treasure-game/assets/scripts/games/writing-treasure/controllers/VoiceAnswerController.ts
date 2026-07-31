@@ -74,8 +74,8 @@ export class VoiceAnswerController {
       return;
     }
     const questionId = question.id;
-    this.services.audio.play('voiceStart');
-    let listening = true;
+    let recorderStarted = false;
+    let completionPlayed = false;
     this.speech.listen(
       question.options,
       (index, attemptId) => {
@@ -104,8 +104,11 @@ export class VoiceAnswerController {
         this.choose(index);
       },
       (state) => {
-        if (listening && state !== 'listening') {
-          listening = false;
+        if (state === 'listening' && !recorderStarted) {
+          recorderStarted = true;
+          this.services.audio.play('voiceStart');
+        } else if (recorderStarted && !completionPlayed && state === 'processing') {
+          completionPlayed = true;
           this.services.audio.play('voiceComplete');
         }
         this.view.voice.render(state);

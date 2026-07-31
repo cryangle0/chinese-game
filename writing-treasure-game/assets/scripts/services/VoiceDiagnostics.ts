@@ -1,6 +1,9 @@
 export type VoiceDiagnosticPhase =
   | 'started'
   | 'microphone_ready'
+  | 'recorder_ready'
+  | 'release_requested'
+  | 'released_before_ready'
   | 'short_press'
   | 'capture_empty'
   | 'capture_ready'
@@ -16,6 +19,8 @@ export interface VoiceDiagnostic {
   readonly phase: VoiceDiagnosticPhase;
   readonly elapsedMs?: number;
   readonly pressMs?: number;
+  readonly recordingMs?: number;
+  readonly chunkCount?: number;
   readonly audioBytes?: number;
   readonly mimeType?: string;
   readonly httpStatus?: number;
@@ -45,6 +50,8 @@ const STRING_LIMITS = {
 const NUMBER_FIELDS = [
   'elapsedMs',
   'pressMs',
+  'recordingMs',
+  'chunkCount',
   'audioBytes',
   'httpStatus',
   'transcriptLength',
