@@ -25,8 +25,8 @@ const pose = JSON.parse(
   fs.readFileSync(path.join(root, 'config/runtime-config.json'), 'utf8'),
 ).pose;
 const expectedConfig = {
-  movementSensitivity: 1,
-  moveDebounceMs: 150,
+  movementSensitivity: 1.15,
+  moveDebounceMs: 100,
   jumpCooldownMs: 700,
   enterThreshold: 0.1,
   returnThreshold: 0.04,

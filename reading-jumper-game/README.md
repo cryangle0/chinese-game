@@ -68,8 +68,8 @@ npm run serve
 ```json
 {
   "pose": {
-    "movementSensitivity": 1,
-    "moveDebounceMs": 150,
+    "movementSensitivity": 1.15,
+    "moveDebounceMs": 100,
     "jumpCooldownMs": 700,
     "enterThreshold": 0.1,
     "returnThreshold": 0.04,
@@ -80,8 +80,8 @@ npm run serve
 ```
 
 - MoveNet 推理上限固定为 12 FPS，摄像头首选 192×144、24 FPS。
-- 左右移动使用 0.10 进入阈值、0.04 回中阈值和 150ms 防抖。
+- 左右移动使用 1.15 灵敏度、0.10 进入阈值、0.04 回中阈值和 100ms 防抖。
 - 跳跃使用 0.045 阈值、700ms 冷却、0.35 EMA 和 0.97/0.03 漂移基线。
-- 生产环境应保持 `movementSensitivity=1`；修改任一值后不再视为与参考项目一致。
+- 当前生产调优值为 `movementSensitivity=1.15`，用于缩短进入左右区域的响应时间。
 - Web 构建会复制该文件为根目录 `runtime-config.json`，部署后可独立更新并刷新 CDN，
   不需要重新修改 TypeScript 源码。

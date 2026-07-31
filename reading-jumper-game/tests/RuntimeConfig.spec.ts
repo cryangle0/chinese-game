@@ -1,10 +1,13 @@
 import { parseRuntimeConfig } from '../assets/scripts/shared/config/RuntimeConfig';
 
 describe('RuntimeConfig', () => {
-  it('uses a neutral default when movement sensitivity is absent or invalid', () => {
-    expect(parseRuntimeConfig(null).pose.movementSensitivity).toBe(1);
+  it('uses the responsive production defaults when movement settings are absent or invalid', () => {
+    expect(parseRuntimeConfig(null).pose).toMatchObject({
+      movementSensitivity: 1.15,
+      moveDebounceMs: 100,
+    });
     expect(parseRuntimeConfig({ pose: { movementSensitivity: 'fast' } })
-      .pose.movementSensitivity).toBe(1);
+      .pose.movementSensitivity).toBe(1.15);
   });
 
   it('clamps movement sensitivity to the supported range', () => {

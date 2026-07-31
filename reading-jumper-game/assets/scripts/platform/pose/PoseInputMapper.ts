@@ -33,12 +33,12 @@ export class PoseInputMapper {
 
   constructor(options: PoseInputMapperOptions = {}) {
     this.minScore = options.minScore ?? 0.3;
-    const sensitivity = options.movementSensitivity ?? 1;
+    const sensitivity = options.movementSensitivity ?? 1.15;
     this.movementSensitivity = Number.isFinite(sensitivity)
-      ? Math.min(2, Math.max(0.5, sensitivity)) : 1;
+      ? Math.min(2, Math.max(0.5, sensitivity)) : 1.15;
     this.enterThreshold = options.enterThreshold ?? 0.1;
     this.returnThreshold = options.returnThreshold ?? 0.04;
-    this.moveDebounceMs = options.moveDebounceMs ?? 150;
+    this.moveDebounceMs = options.moveDebounceMs ?? 100;
     this.smoothingAlpha = options.smoothingAlpha ?? 0.35;
     this.jumpThreshold = options.jumpThreshold ?? 0.045;
     this.jumpCooldownMs = options.jumpCooldownMs ?? 700;

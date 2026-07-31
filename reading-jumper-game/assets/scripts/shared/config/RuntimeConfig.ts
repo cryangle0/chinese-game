@@ -18,11 +18,11 @@ export interface RuntimeConfig {
 
 const MIN_MOVEMENT_SENSITIVITY = 0.5;
 const MAX_MOVEMENT_SENSITIVITY = 2;
-/** Defaults aligned with wxgame-jumper-new PoseConfig (AppConfig.ts). */
+/** Production defaults tuned for responsive movement after interaction-position lock. */
 const DEFAULT_RUNTIME_CONFIG: RuntimeConfig = {
   pose: {
-    movementSensitivity: 1,
-    moveDebounceMs: 150,
+    movementSensitivity: 1.15,
+    moveDebounceMs: 100,
     jumpCooldownMs: 700,
     enterThreshold: 0.1,
     returnThreshold: 0.04,
