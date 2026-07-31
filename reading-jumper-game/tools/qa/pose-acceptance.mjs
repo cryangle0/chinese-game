@@ -1,5 +1,5 @@
 /**
- * Verify production pose behavior against wxgame-jumper-new commit a2677a2.
+ * Verify production pose behavior, including the stable interaction-position gate.
  * Run: node tools/qa/pose-acceptance.mjs
  */
 import fs from 'node:fs';
@@ -32,74 +32,114 @@ const expectedConfig = {
   returnThreshold: 0.04,
   smoothingAlpha: 0.35,
   jumpThreshold: 0.045,
+  minimumBodyScale: 0.16,
+  maximumBodyScale: 0.38,
+  interactionStableMs: 700,
+  interactionCenterTolerance: 0.22,
+  interactionScaleTolerance: 0.025,
+  interactionPositionTolerance: 0.055,
 };
 
-function capture(samples) {
-  const mapper = new PoseInputMapper(pose);
-  return samples.map((sample) => ({
-    at: sample.t,
+function capture(samples, overrides = {}) {
+  const mapper = new PoseInputMapper({ ...pose, ...overrides });
+  return samples.map((item) => ({
+    at: item.t,
     ...mapper.push(
-      { x: sample.x, y: sample.y, score: sample.score ?? 0.9 },
-      sample.t,
-      sample.actionsEnabled ?? true,
+      {
+        x: item.x,
+        y: item.y,
+        score: item.score ?? 0.9,
+        bodyScale: item.bodyScale ?? 0.25,
+        bodyScaleScore: item.bodyScaleScore ?? item.score ?? 0.9,
+      },
+      item.t,
+      item.actionsEnabled ?? true,
     ),
   }));
 }
 
 const movement = capture([
-  { x: 0.2, y: 0.5, t: 0 },
-  { x: 0.2, y: 0.5, t: 83 },
-  { x: 0.2, y: 0.5, t: 166 },
+  { x: 0.5, y: 0.5, t: 0 },
+  { x: 0.5, y: 0.5, t: 700 },
+  { x: 0.32, y: 0.5, t: 710 },
+  { x: 0.32, y: 0.5, t: 793 },
+  { x: 0.32, y: 0.5, t: 876 },
+  { x: 0.32, y: 0.5, t: 959 },
+  { x: 0.32, y: 0.5, t: 1125 },
 ]);
 const jump = capture([
   { x: 0.5, y: 0.5, t: 0 },
-  { x: 0.5, y: 0.35, t: 83 },
-  { x: 0.5, y: 0.5, t: 166 },
-  { x: 0.5, y: 0.5, t: 249 },
-  { x: 0.5, y: 0.35, t: 664 },
-  { x: 0.5, y: 0.5, t: 747 },
-  { x: 0.5, y: 0.35, t: 830 },
+  { x: 0.5, y: 0.5, t: 700 },
+  { x: 0.5, y: 0.35, t: 783 },
+  { x: 0.5, y: 0.5, t: 866 },
+  { x: 0.5, y: 0.35, t: 1200 },
+  { x: 0.5, y: 0.5, t: 1400 },
+  { x: 0.5, y: 0.35, t: 1490 },
 ]);
 const disabled = capture([
   { x: 0.5, y: 0.5, t: 0 },
-  { x: 0.5, y: 0.35, t: 83, actionsEnabled: false },
-  { x: 0.5, y: 0.35, t: 100, actionsEnabled: true },
+  { x: 0.5, y: 0.5, t: 700 },
+  { x: 0.5, y: 0.35, t: 783, actionsEnabled: false },
+  { x: 0.5, y: 0.35, t: 800, actionsEnabled: true },
 ]);
+const positioning = capture([
+  { x: 0.5, y: 0.68, bodyScale: 0.5, t: 0 },
+  { x: 0.56, y: 0.62, bodyScale: 0.35, t: 100 },
+  { x: 0.54, y: 0.56, bodyScale: 0.31, t: 300 },
+  ...Array.from({ length: 17 }, (_, index) => ({
+    x: 0.5,
+    y: 0.5,
+    bodyScale: 0.25,
+    t: 500 + index * 100,
+  })),
+], { smoothingAlpha: 1 });
 
 const checks = [
   {
-    name: '生产参数与参考提交 a2677a2 一致',
+    name: 'Production config includes the one-meter interaction gate',
     pass: JSON.stringify(pose) === JSON.stringify(expectedConfig),
     actual: pose,
     expected: expectedConfig,
   },
   {
-    name: '横向进入侧区持续 150ms 后切换到左列',
-    pass: movement.at(-1)?.column === 0,
+    name: 'Lateral movement is enabled after stable positioning',
+    pass: movement.some((item) => item.column === 0),
     actual: movement,
-    expected: '最后一帧 column=0',
+    expected: 'Last sample emits column=0',
   },
   {
-    name: '跳跃阈值 0.045 可触发，700ms 冷却内不重复触发',
-    pass: jump[1]?.jump === true
-      && jump.slice(2, 6).every((item) => item.jump !== true)
+    name: 'Jump remains available after positioning and respects cooldown',
+    pass: jump[2]?.jump === true
+      && jump.slice(3, 6).every((item) => item.jump !== true)
       && jump[6]?.jump === true,
     actual: jump,
-    expected: '83ms 与 830ms 触发，其间不触发',
+    expected: '783ms and 1490ms trigger; intermediate samples do not',
   },
   {
-    name: '答题禁用期间不消耗下一次跳跃冷却',
-    pass: disabled[1]?.jump !== true && disabled[2]?.jump === true,
+    name: 'Disabled answer input does not consume the next jump',
+    pass: disabled[2]?.jump !== true && disabled[3]?.jump === true,
     actual: disabled,
-    expected: '禁用帧不触发，恢复后立即可触发',
+    expected: 'Disabled sample does not trigger; enabled sample triggers',
+  },
+  {
+    name: 'Standing and backing away cannot select or jump before stable',
+    pass: positioning.slice(0, 3).every((item) => (
+      item.interactionReady === false
+      && item.column === undefined
+      && item.jump === undefined
+    ))
+      && positioning.every((item) => item.column === undefined && item.jump === undefined)
+      && positioning.at(-1)?.interactionReady === true,
+    actual: positioning,
+    expected: 'Only the final stable sample arms interaction',
   },
 ];
 
 const report = {
-  title: '阅读跳跳乐体感参考项目一致性验收',
+  title: 'Reading Jumper pose interaction acceptance',
   generatedAt: new Date().toISOString(),
-  referenceProject: 'E:\\angsa\\wxgame-jumper-new',
-  referenceCommit: 'a2677a2',
+  referenceProject: 'reading-jumper-game',
+  referenceCommit: 'one-meter-interaction-gate',
   allPass: checks.every((check) => check.pass),
   checks,
 };
@@ -124,12 +164,12 @@ function renderHtml(value) {
       <td><pre>${escapeHtml(JSON.stringify(check.actual, null, 2))}</pre></td>
     </tr>`).join('');
   return `<!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>${escapeHtml(value.title)}</title>
 <style>
-body{font-family:system-ui,"PingFang SC","Microsoft YaHei",sans-serif;margin:24px;color:#17202a}
+body{font-family:system-ui,sans-serif;margin:24px;color:#17202a}
 h1{font-size:24px}.meta{line-height:1.7;color:#52616b}
 table{width:100%;border-collapse:collapse;margin-top:20px}
 th,td{padding:10px;border:1px solid #d7dde3;text-align:left;vertical-align:top}
@@ -140,8 +180,8 @@ pre{margin:0;white-space:pre-wrap;font-size:12px}
 </head>
 <body>
 <h1>${escapeHtml(value.title)}</h1>
-<div class="meta">参考提交：${value.referenceCommit}<br>生成时间：${value.generatedAt}</div>
-<table><thead><tr><th>结果</th><th>验收项</th><th>实际数据</th></tr></thead>
+<div class="meta">Reference: ${value.referenceCommit}<br>Generated: ${value.generatedAt}</div>
+<table><thead><tr><th>Result</th><th>Acceptance check</th><th>Actual data</th></tr></thead>
 <tbody>${rows}</tbody></table>
 </body>
 </html>`;

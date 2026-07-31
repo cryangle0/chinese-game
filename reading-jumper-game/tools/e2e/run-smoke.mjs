@@ -673,10 +673,14 @@ async function installPoseMovementStub(page) {
           if (window.__poseMoveEnabled) frame += 1;
           const rawX = !window.__poseMoveEnabled || frame < 5
             ? 96
-            : frame < 17 ? 145 : frame < 31 ? 48 : 96;
+            : frame < 17 ? 132 : frame < 31 ? 60 : 96;
           const keypoints = Array.from({ length: 17 }, () => ({
             x: rawX, y: 72, score: 0.95,
           }));
+          keypoints[5] = { x: rawX - 14, y: 32, score: 0.95 };
+          keypoints[6] = { x: rawX + 14, y: 32, score: 0.95 };
+          keypoints[11] = { x: rawX - 12, y: 72, score: 0.95 };
+          keypoints[12] = { x: rawX + 12, y: 72, score: 0.95 };
           return [{ keypoints }];
         },
         dispose: () => undefined,
@@ -824,15 +828,22 @@ async function runPoseSimulation(browser) {
       createDetector: async () => ({
         estimatePoses: async () => {
           frame += 1;
-          if (!questionReadyFrame && document.body.dataset.answerReady === 'true') {
+          const interactionReady = document.body.dataset.poseInteractionReady === 'true';
+          if (!questionReadyFrame
+            && interactionReady
+            && document.body.dataset.answerReady === 'true') {
             questionReadyFrame = frame;
           }
           const questionFrame = questionReadyFrame ? frame - questionReadyFrame : -1;
-          const rawX = frame < 5 ? 96 : 145;
+          const rawX = interactionReady ? 132 : 96;
           const rawY = questionFrame >= 10 && questionFrame <= 12 ? 40 : 72;
           const keypoints = Array.from({ length: 17 }, () => ({
             x: rawX, y: rawY, score: 0.95,
           }));
+          keypoints[5] = { x: rawX - 14, y: rawY - 40, score: 0.95 };
+          keypoints[6] = { x: rawX + 14, y: rawY - 40, score: 0.95 };
+          keypoints[11] = { x: rawX - 12, y: rawY, score: 0.95 };
+          keypoints[12] = { x: rawX + 12, y: rawY, score: 0.95 };
           return [{ keypoints }];
         },
         dispose: () => undefined,

@@ -6,6 +6,12 @@
     "enterThreshold": 0.1,
     "returnThreshold": 0.04,
     "smoothingAlpha": 0.35,
-    "jumpThreshold": 0.045
+    "jumpThreshold": 0.045,
+    "minimumBodyScale": 0.16,
+    "maximumBodyScale": 0.38,
+    "interactionStableMs": 700,
+    "interactionCenterTolerance": 0.22,
+    "interactionScaleTolerance": 0.025,
+    "interactionPositionTolerance": 0.055
   }
 }

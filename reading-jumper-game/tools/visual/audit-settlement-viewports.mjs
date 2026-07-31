@@ -90,11 +90,16 @@ async function installPoseMovementStub(page) {
       SupportedModels: { MoveNet: 'MoveNet' },
       movenet: { modelType: { SINGLEPOSE_LIGHTNING: 'lightning' } },
       createDetector: async () => ({
-        estimatePoses: async () => [{
-          keypoints: Array.from({ length: 17 }, () => ({
+        estimatePoses: async () => {
+          const keypoints = Array.from({ length: 17 }, () => ({
             x: 96, y: 72, score: 0.95,
-          })),
-        }],
+          }));
+          keypoints[5] = { x: 82, y: 32, score: 0.95 };
+          keypoints[6] = { x: 110, y: 32, score: 0.95 };
+          keypoints[11] = { x: 84, y: 72, score: 0.95 };
+          keypoints[12] = { x: 108, y: 72, score: 0.95 };
+          return [{ keypoints }];
+        },
         dispose: () => undefined,
       }),
     };

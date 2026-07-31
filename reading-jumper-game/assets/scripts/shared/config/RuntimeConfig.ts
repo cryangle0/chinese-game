@@ -7,6 +7,12 @@ export interface RuntimeConfig {
     readonly returnThreshold: number;
     readonly smoothingAlpha: number;
     readonly jumpThreshold: number;
+    readonly minimumBodyScale: number;
+    readonly maximumBodyScale: number;
+    readonly interactionStableMs: number;
+    readonly interactionCenterTolerance: number;
+    readonly interactionScaleTolerance: number;
+    readonly interactionPositionTolerance: number;
   };
 }
 
@@ -22,6 +28,12 @@ const DEFAULT_RUNTIME_CONFIG: RuntimeConfig = {
     returnThreshold: 0.04,
     smoothingAlpha: 0.35,
     jumpThreshold: 0.045,
+    minimumBodyScale: 0.16,
+    maximumBodyScale: 0.38,
+    interactionStableMs: 700,
+    interactionCenterTolerance: 0.22,
+    interactionScaleTolerance: 0.025,
+    interactionPositionTolerance: 0.055,
   },
 };
 let activeRuntimeConfig = DEFAULT_RUNTIME_CONFIG;
@@ -46,6 +58,27 @@ export function parseRuntimeConfig(value: unknown): RuntimeConfig {
       returnThreshold: clampNumber(pose.returnThreshold, defaults.returnThreshold, 0.02, 0.2),
       smoothingAlpha: clampNumber(pose.smoothingAlpha, defaults.smoothingAlpha, 0.05, 1),
       jumpThreshold: clampNumber(pose.jumpThreshold, defaults.jumpThreshold, 0.03, 0.25),
+      minimumBodyScale: clampNumber(
+        pose.minimumBodyScale, defaults.minimumBodyScale, 0.08, 0.35,
+      ),
+      maximumBodyScale: clampNumber(
+        pose.maximumBodyScale, defaults.maximumBodyScale, 0.2, 0.65,
+      ),
+      interactionStableMs: clampNumber(
+        pose.interactionStableMs, defaults.interactionStableMs, 200, 2000,
+      ),
+      interactionCenterTolerance: clampNumber(
+        pose.interactionCenterTolerance, defaults.interactionCenterTolerance, 0.12, 0.35,
+      ),
+      interactionScaleTolerance: clampNumber(
+        pose.interactionScaleTolerance, defaults.interactionScaleTolerance, 0.01, 0.08,
+      ),
+      interactionPositionTolerance: clampNumber(
+        pose.interactionPositionTolerance,
+        defaults.interactionPositionTolerance,
+        0.02,
+        0.12,
+      ),
     },
   };
 }
@@ -80,6 +113,12 @@ async function load(url: string, timeoutMs: number): Promise<RuntimeConfig> {
   if (typeof document !== 'undefined') {
     document.body.dataset.poseMovementSensitivity = String(
       activeRuntimeConfig.pose.movementSensitivity,
+    );
+    document.body.dataset.poseMinimumBodyScale = String(
+      activeRuntimeConfig.pose.minimumBodyScale,
+    );
+    document.body.dataset.poseMaximumBodyScale = String(
+      activeRuntimeConfig.pose.maximumBodyScale,
     );
   }
   return activeRuntimeConfig;

@@ -8,6 +8,7 @@ import {
   MODEL_START_TIMEOUT_MS,
   poseErrorReason,
   poseInferenceIntervalMs,
+  poseInteractionStatusLabel,
   withTimeout,
 } from './PoseRuntimePolicy';
 import type { WebPoseInputCallbacks } from './PoseRuntimePolicy';
@@ -19,6 +20,7 @@ export class WebPoseInput {
   private raf = 0; private startToken = 0; private lastInferAt = 0;
   private inputEnabled = false; private paused = false; private disposed = false;
   private state: CameraOverlayState | null = null;
+  private stateLabel = '';
   private frames = 0; private inferenceAverage = 0; private inferenceFailures = 0;
   private readonly inferIntervalMs = poseInferenceIntervalMs();
   constructor(private readonly callbacks: WebPoseInputCallbacks) {
@@ -111,21 +113,52 @@ export class WebPoseInput {
   private consume(keypoints: readonly MoveNetKeypoint[]): void {
     const video = this.overlay?.video; if (!video) return;
     const sample = hipMotionSample(keypoints, video.videoWidth, video.videoHeight);
+    const wasInteractionReady = this.mapper.isInteractionReady();
     const tracking = this.mapper.ingest(sample, Date.now());
-    this.setState(tracking ? 'ready' : 'lost');
+    const interactionReady = this.mapper.isInteractionReady();
+    const interactionStatus = this.mapper.interactionStatus();
+    const bodyScale = this.mapper.currentBodyScale();
+    this.overlay?.setDiagnostics(bodyScale, interactionReady, interactionStatus);
+    if (!tracking) {
+      this.setState('lost');
+      return;
+    }
+    if (!interactionReady) {
+      this.setState('positioning', poseInteractionStatusLabel(interactionStatus), {
+        bodyScale: Number((bodyScale ?? 0).toFixed(4)),
+        interactionStatus,
+      });
+      return;
+    }
+    this.setState('ready', undefined, {
+      inferenceMs: Math.round(this.inferenceAverage),
+      frames: this.frames,
+      bodyScale: Number((bodyScale ?? 0).toFixed(4)),
+      interactionStatus,
+    });
+    if (!wasInteractionReady && this.inputEnabled) {
+      this.callbacks.onColumn(this.mapper.currentColumn());
+    }
   }
   private dispatchActions(): void {
     const result = this.mapper.poll(Date.now(), this.inputEnabled);
-    if (!this.inputEnabled || !result.tracking) return;
+    if (!this.inputEnabled || !result.tracking || !result.interactionReady) return;
     if (result.column !== undefined) this.callbacks.onColumn(result.column);
     if (result.jump) this.callbacks.onJump(this.mapper.currentColumn());
   }
-  private setState(state: CameraOverlayState): void {
-    if (this.disposed || this.state === state) return;
-    this.state = state; this.overlay?.setState(state);
-    this.callbacks.onState(state, state === 'ready' ? {
+  private setState(
+    state: CameraOverlayState,
+    statusOverride?: string,
+    details?: Readonly<Record<string, string | number>>,
+  ): void {
+    const label = statusOverride ?? '';
+    if (this.disposed || (this.state === state && this.stateLabel === label)) return;
+    this.state = state;
+    this.stateLabel = label;
+    this.overlay?.setState(state, statusOverride);
+    this.callbacks.onState(state, details ?? (state === 'ready' ? {
       inferenceMs: Math.round(this.inferenceAverage), frames: this.frames,
-    } : undefined);
+    } : undefined));
   }
   private fallback(reason: string): void {
     if (this.disposed) return; this.releaseRuntime();

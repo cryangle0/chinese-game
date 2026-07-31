@@ -2,6 +2,7 @@ export type CameraOverlayState =
   | 'idle'
   | 'requesting'
   | 'loading'
+  | 'positioning'
   | 'ready'
   | 'lost'
   | 'fallback';
@@ -9,7 +10,8 @@ export type CameraOverlayState =
 const STYLE_ID = 'reading-pose-overlay-style';
 const STATE_TEXT: Readonly<Record<CameraOverlayState, string>> = {
   idle: '', requesting: '请求摄像头', loading: '体感初始化',
-  ready: '体感已连接', lost: '等待人体入镜', fallback: '触屏模式',
+  positioning: '请站到手机约1米处', ready: '体感已连接',
+  lost: '等待人体入镜', fallback: '触屏模式',
 };
 
 export class CameraOverlay {
@@ -94,10 +96,27 @@ export class CameraOverlay {
     this.root.classList.toggle('is-paused', paused);
   }
 
+  setDiagnostics(
+    bodyScale: number | null,
+    interactionReady: boolean,
+    interactionStatus: string,
+  ): void {
+    const scale = bodyScale === null ? '' : bodyScale.toFixed(4);
+    this.root.dataset.poseBodyScale = scale;
+    this.root.dataset.poseInteractionReady = String(interactionReady);
+    this.root.dataset.poseInteractionStatus = interactionStatus;
+    document.body.dataset.poseBodyScale = scale;
+    document.body.dataset.poseInteractionReady = String(interactionReady);
+    document.body.dataset.poseInteractionStatus = interactionStatus;
+  }
+
   destroy(): void {
     this.clearStream();
     this.root.remove();
     if (document.body.dataset.poseState) delete document.body.dataset.poseState;
+    delete document.body.dataset.poseBodyScale;
+    delete document.body.dataset.poseInteractionReady;
+    delete document.body.dataset.poseInteractionStatus;
   }
 
   private installStyle(): void {
@@ -116,6 +135,7 @@ export class CameraOverlay {
 #reading-pose-overlay[data-pose-state="ready"] .pose-camera__header{display:none}
 #reading-pose-overlay[data-pose-state="idle"] .pose-camera__header{display:none}
 #reading-pose-overlay[data-pose-state="ready"] .pose-camera__status{color:#69f0ae}
+#reading-pose-overlay[data-pose-state="positioning"] .pose-camera__status{color:#ffe082}
 #reading-pose-overlay[data-pose-state="fallback"] .pose-camera__viewport video{opacity:.35}
 #reading-pose-overlay[data-pose-state="fallback"]{width:clamp(260px,31vw,390px);filter:none;padding:10px 78px 10px 12px;box-sizing:border-box;border:2px solid #fff;border-radius:9px;background:#18212be8;pointer-events:auto}
 #reading-pose-overlay[data-pose-state="fallback"] .pose-camera__viewport{display:none}

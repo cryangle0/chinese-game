@@ -30,7 +30,7 @@ describe('PoseRuntimePolicy', () => {
     expect(poseInferenceIntervalMs()).toBe(83);
   });
 
-  it('uses hip confidence only, matching the reference gameplay controller', () => {
+  it('measures torso scale while keeping hip and body confidence separate', () => {
     const keypoints = Array.from({ length: 17 }, () => ({ x: 0, y: 0, score: 0 }));
     keypoints[5] = { x: 80, y: 30, score: 0.05 };
     keypoints[6] = { x: 112, y: 30, score: 0.05 };
@@ -40,6 +40,8 @@ describe('PoseRuntimePolicy', () => {
       x: 1 - 88 / 192,
       y: 0.5,
       score: 0.88,
+      bodyScale: Math.hypot(8, 42) / 240,
+      bodyScaleScore: 0.05,
     });
   });
 });
