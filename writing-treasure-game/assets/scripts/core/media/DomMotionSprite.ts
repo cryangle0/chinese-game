@@ -115,10 +115,17 @@ export class DomMotionSprite {
   }
 
   private onImageReady(): void {
+    if (!this.requestedVisible) {
+      this.updateElement();
+      return;
+    }
+    // Run the state handoff before hiding the fallback. Callers can resize and
+    // reposition the node in this same task, so the browser never paints the
+    // previous sprite inside the next motion's frame.
+    this.notifyReady();
     if (this.fallback?.isValid) this.fallback.active = false;
     this.updateElement();
     this.ensureTicking();
-    this.notifyReady();
   }
 
   private onImageError(): void {

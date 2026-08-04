@@ -16,6 +16,15 @@ const mediaSource = path.join(root, 'customer-media');
 const mediaTarget = path.join(webTarget, 'media');
 const runtimeMediaSource = path.join(root, 'runtime-media');
 const runtimeMediaTarget = path.join(mediaTarget, 'runtime');
+const readingThemeIds = new Set(['mario', 'deep-sea', 'space', 'food', 'poetry']);
+const retiredLocomotionNames = new Set(['idle.webp', 'run-left.webp', 'run-right.webp']);
+
+function shouldCopyCustomerMedia(source) {
+  return !(
+    retiredLocomotionNames.has(path.basename(source).toLowerCase())
+    && readingThemeIds.has(path.basename(path.dirname(source)).toLowerCase())
+  );
+}
 
 async function filesBelow(directory) {
   const entries = await fs.readdir(directory, { withFileTypes: true });
@@ -49,7 +58,10 @@ if (!mainJs.includes('reading-jumper') || mainJs.includes('zyb-writing-treasure'
 await fs.rm(releaseRoot, { recursive: true, force: true });
 await fs.mkdir(releaseRoot, { recursive: true });
 await fs.cp(webSource, webTarget, { recursive: true });
-await fs.cp(mediaSource, mediaTarget, { recursive: true });
+await fs.cp(mediaSource, mediaTarget, {
+  recursive: true,
+  filter: shouldCopyCustomerMedia,
+});
 await fs.cp(runtimeMediaSource, runtimeMediaTarget, { recursive: true });
 await fs.cp(shellSource, shellTarget, {
   recursive: true,

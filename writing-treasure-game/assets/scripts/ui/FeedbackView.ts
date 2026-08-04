@@ -60,6 +60,10 @@ export class FeedbackView {
     sceneId = 'treasure',
     callbacks: MotionPlaybackCallbacks = {},
   ): void {
+    this.removeLegacyFeedbackShade();
+    if (typeof document !== 'undefined') {
+      document.body.dataset.feedbackUnderlay = '0';
+    }
     Tween.stopAllByTarget(this.root);
     this.root.active = true;
     this.restoreBackground = restoreBackground;
@@ -133,7 +137,9 @@ export class FeedbackView {
     }
     this.usingStatic = false;
     this.root.active = false;
+    this.removeLegacyFeedbackShade();
     if (typeof document !== 'undefined') {
+      delete document.body.dataset.feedbackUnderlay;
       delete document.body.dataset.feedbackMotionReady;
     }
   }
@@ -148,9 +154,15 @@ export class FeedbackView {
 
   dispose(): void {
     Tween.stopAllByTarget(this.root);
+    this.removeLegacyFeedbackShade();
     this.fallbackMotion.dispose();
     this.layers.dispose();
     this.stageMotion.dispose();
+  }
+
+  private removeLegacyFeedbackShade(): void {
+    if (typeof document === 'undefined') return;
+    document.getElementById('CustomerFeedbackUnderlay')?.remove();
   }
 
   private showMotion(

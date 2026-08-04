@@ -9,6 +9,10 @@ const InitialEntry = {
   startPadding: 24,
   durationSeconds: 1.18,
 } as const;
+const HORIZONTAL_RUN_PIXELS_PER_SECOND = 330;
+const HORIZONTAL_RUN_MIN_SECONDS = 0.18;
+const IDLE_BREATH_AMPLITUDE = 4;
+const IDLE_BREATH_CYCLES_PER_SECOND = 0.42;
 
 export class WizardDeerView {
   readonly root: Node;
@@ -18,6 +22,8 @@ export class WizardDeerView {
   private motionAssets?: MotionAssets;
   private actionColumnX = 0;
   private sceneId = 'treasure';
+  private idleSeconds = 0;
+  private breathing = false;
 
   constructor(
     parent: Node,
@@ -39,7 +45,19 @@ export class WizardDeerView {
       pinFeet: true,
     });
     spriteLoader.apply(this.visual, idleAsset, 'contain');
-    this.motion.show(motionAssets?.idle);
+    this.applyIdle(idle.position.x);
+  }
+
+  update(deltaSeconds: number): void {
+    if (!this.breathing || !this.root.activeInHierarchy) return;
+    this.idleSeconds += deltaSeconds;
+    const offsetY = Math.sin(
+      this.idleSeconds * Math.PI * 2 * IDLE_BREATH_CYCLES_PER_SECOND,
+    ) * IDLE_BREATH_AMPLITUDE;
+    this.visual.setPosition(0, offsetY, 0);
+    if (typeof document !== 'undefined') {
+      document.body.dataset.deerIdleBreathOffset = offsetY.toFixed(2);
+    }
   }
 
   /**
@@ -48,41 +66,69 @@ export class WizardDeerView {
    */
   castAt(columnX: number, done: () => void, digHold = 0.9): void {
     Tween.stopAllByTarget(this.root);
+    this.stopBreathing();
     this.actionColumnX = columnX;
-    const action = sceneCharacter(this.sceneId).action;
-    this.motion.setPinFeet(false);
-    this.motion.setFit('fill');
-    this.applyFrame(action.size[0], action.size[1]);
-    spriteLoader.apply(this.visual, this.actionAsset, 'contain');
-    const idleX = sceneCharacter(this.sceneId).idle.position.x;
-    this.motion.show(
-      columnX < idleX
-        ? this.motionAssets?.runLeft ?? this.motionAssets?.action
-        : this.motionAssets?.runRight ?? this.motionAssets?.action,
+    const character = sceneCharacter(this.sceneId);
+    const run = character.run;
+    const startX = this.root.position.x;
+    const travelDistance = Math.abs(columnX - startX);
+    const travelSeconds = Math.max(
+      HORIZONTAL_RUN_MIN_SECONDS,
+      travelDistance / HORIZONTAL_RUN_PIXELS_PER_SECOND,
     );
+    const runAsset = columnX < startX
+      ? this.motionAssets?.runLeft ?? this.motionAssets?.action
+      : this.motionAssets?.runRight ?? this.motionAssets?.action;
+    let runStarted = false;
+    this.motion.setPinFeet(true);
+    this.motion.setFit('contain');
     if (typeof document !== 'undefined') {
-      document.body.dataset.deerActionW = String(action.size[0]);
-      document.body.dataset.deerActionH = String(action.size[1]);
+      document.body.dataset.deerActionW = String(character.action.size[0]);
+      document.body.dataset.deerActionH = String(character.action.size[1]);
+      document.body.dataset.deerRunW = String(run.size[0]);
+      document.body.dataset.deerRunH = String(run.size[1]);
       document.body.dataset.deerScene = this.sceneId;
+      document.body.dataset.deerHorizontalRunDuration = travelSeconds.toFixed(3);
+      document.body.dataset.deerHorizontalRunDistance = travelDistance.toFixed(1);
     }
-    const move = tween(this.root)
-      .to(0.28, {
-        position: new Vec3(columnX, action.position.y, 0),
-        scale: Vec3.ONE,
-      }, { easing: 'quadOut' });
-    if (digHold > 0) {
-      move
-        .call(() => this.motion.show(this.motionAssets?.action))
-        .delay(digHold)
-        .call(done)
-        .start();
-    } else {
-      move.call(done).start();
+    const startRun = (): void => {
+      if (runStarted) return;
+      runStarted = true;
+      // Keep the correctly sized idle sprite visible until the run WebP is
+      // decoded, then switch the box and motion in one browser frame.
+      this.applyFrame(run.size[0], run.size[1]);
+      this.root.setPosition(startX, run.position.y, 0);
+      const move = tween(this.root)
+        .to(travelSeconds, {
+          position: new Vec3(columnX, run.position.y, 0),
+          scale: Vec3.ONE,
+        }, { easing: 'quadInOut' });
+      if (digHold > 0) {
+        move
+          .call(() => this.applyActionPose(columnX))
+          .delay(digHold)
+          .call(done)
+          .start();
+      } else {
+        move.call(done).start();
+      }
+    };
+    if (!runAsset) {
+      startRun();
+      return;
     }
+    this.motion.show(runAsset, true, false, {
+      onReady: startRun,
+      onError: () => {
+        this.motion.hide();
+        startRun();
+      },
+    });
   }
 
   idle(preserveColumn = false): void {
     Tween.stopAllByTarget(this.root);
+    this.stopBreathing();
     const idle = sceneCharacter(this.sceneId).idle;
     const x = preserveColumn ? this.root.position.x : idle.position.x;
     this.applyIdle(x);
@@ -90,41 +136,64 @@ export class WizardDeerView {
 
   enterFromLeft(): Promise<void> {
     Tween.stopAllByTarget(this.root);
-    const idle = sceneCharacter(this.sceneId).idle;
-    const startX = -720 - idle.size[0] / 2 - InitialEntry.startPadding;
+    this.stopBreathing();
+    const character = sceneCharacter(this.sceneId);
+    const idle = character.idle;
+    const run = character.run;
+    const runAsset = this.motionAssets?.runRight ?? this.motionAssets?.idle;
+    const startX = -720 - run.size[0] / 2 - InitialEntry.startPadding;
     this.motion.setFit('contain');
     this.motion.setPinFeet(true);
-    this.applyFrame(idle.size[0], idle.size[1]);
+    this.applyFrame(run.size[0], run.size[1]);
     this.root.active = true;
-    this.root.setPosition(startX, idle.position.y, 0);
+    this.root.setPosition(startX, run.position.y, 0);
     this.root.setScale(Vec3.ONE);
     this.root.angle = 0;
+    this.visual.setPosition(Vec3.ZERO);
     spriteLoader.apply(this.visual, this.idleAsset, 'contain');
-    this.motion.show(this.motionAssets?.runRight ?? this.motionAssets?.idle, true);
     if (typeof document !== 'undefined') {
       document.body.dataset.stageEntryActive = 'true';
       document.body.dataset.stageEntryStartX = String(startX);
       document.body.dataset.stageEntryTargetX = String(idle.position.x);
+      document.body.dataset.stageEntryRunW = String(run.size[0]);
+      document.body.dataset.stageEntryRunH = String(run.size[1]);
     }
     return new Promise((resolve) => {
-      tween(this.root)
-        .to(InitialEntry.durationSeconds, {
-          position: idle.position.clone(),
-        }, { easing: 'quadOut' })
-        .call(() => {
-          this.applyIdle(idle.position.x);
-          if (typeof document !== 'undefined') {
-            delete document.body.dataset.stageEntryActive;
-            document.body.dataset.stageEntryCompleted = 'true';
-          }
-          resolve();
-        })
-        .start();
+      let entryStarted = false;
+      const startEntry = (): void => {
+        if (entryStarted) return;
+        entryStarted = true;
+        tween(this.root)
+          .to(InitialEntry.durationSeconds, {
+            position: new Vec3(idle.position.x, run.position.y, 0),
+          }, { easing: 'quadOut' })
+          .call(() => {
+            this.applyIdle(idle.position.x);
+            if (typeof document !== 'undefined') {
+              delete document.body.dataset.stageEntryActive;
+              document.body.dataset.stageEntryCompleted = 'true';
+            }
+            resolve();
+          })
+          .start();
+      };
+      if (!runAsset) {
+        startEntry();
+        return;
+      }
+      this.motion.show(runAsset, true, false, {
+        onReady: startEntry,
+        onError: () => {
+          this.motion.hide();
+          startEntry();
+        },
+      });
     });
   }
 
   hide(): void {
     Tween.stopAllByTarget(this.root);
+    this.stopBreathing();
     this.motion.hide();
     this.root.active = false;
   }
@@ -144,13 +213,8 @@ export class WizardDeerView {
 
   strike(done: () => void): void {
     Tween.stopAllByTarget(this.root);
-    const action = sceneCharacter(this.sceneId).action;
-    this.motion.setPinFeet(false);
-    this.motion.setFit('fill');
-    this.applyFrame(action.size[0], action.size[1]);
-    this.root.setPosition(this.actionColumnX, action.position.y);
-    spriteLoader.apply(this.visual, this.actionAsset, 'contain');
-    this.motion.show(this.motionAssets?.action);
+    this.stopBreathing();
+    this.applyActionPose(this.actionColumnX);
     tween(this.root)
       .by(0.1, { angle: -6 })
       .by(0.12, { angle: 12 })
@@ -171,6 +235,7 @@ export class WizardDeerView {
 
   private applyIdle(x: number): void {
     const idle = sceneCharacter(this.sceneId).idle;
+    this.motion.hide();
     this.motion.setFit('contain');
     this.motion.setPinFeet(true);
     this.applyFrame(idle.size[0], idle.size[1]);
@@ -178,7 +243,33 @@ export class WizardDeerView {
     this.root.setPosition(x, idle.position.y, 0);
     this.root.setScale(Vec3.ONE);
     this.root.angle = 0;
+    this.visual.active = true;
+    this.visual.setPosition(Vec3.ZERO);
     spriteLoader.apply(this.visual, this.idleAsset, 'contain');
-    this.motion.show(this.motionAssets?.idle);
+    this.idleSeconds = 0;
+    this.breathing = true;
+    if (typeof document !== 'undefined') {
+      document.body.dataset.deerIdleMode = 'breathing-static';
+      document.body.dataset.deerIdleBreathOffset = '0.00';
+    }
+  }
+
+  private stopBreathing(): void {
+    this.breathing = false;
+    this.visual.setPosition(Vec3.ZERO);
+    if (typeof document !== 'undefined') {
+      delete document.body.dataset.deerIdleMode;
+      delete document.body.dataset.deerIdleBreathOffset;
+    }
+  }
+
+  private applyActionPose(columnX: number): void {
+    const action = sceneCharacter(this.sceneId).action;
+    this.motion.setPinFeet(false);
+    this.motion.setFit('contain');
+    this.applyFrame(action.size[0], action.size[1]);
+    this.root.setPosition(columnX, action.position.y);
+    spriteLoader.apply(this.visual, this.actionAsset, 'contain');
+    this.motion.show(this.motionAssets?.action, true);
   }
 }

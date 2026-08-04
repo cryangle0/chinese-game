@@ -1,7 +1,58 @@
-import { GameTheme, ThemeAssets, ThemePalette } from '../../../shared/types/Theme';
+import {
+  GameTheme, SpriteSheetAnimation, ThemeAssets, ThemePalette,
+} from '../../../shared/types/Theme';
 import { AudioTheme } from '../../../services/AudioCatalog';
 const readingAudioBase = './audio/reading';
 const marioAudioBase = './audio/mario';
+const locomotionSheetFps = 15;
+const locomotionSheetColumns = 4;
+const locomotionSheetSpecs = {
+  mario: {
+    width: 218, height: 340, idle: 17, runLeft: 16, runRight: 13,
+  },
+  'deep-sea': {
+    width: 397, height: 341, idle: 17, runLeft: 15, runRight: 15,
+  },
+  space: {
+    width: 270, height: 330, idle: 13, runLeft: 15, runRight: 15,
+  },
+  food: {
+    width: 125, height: 219, idle: 16, runLeft: 16, runRight: 16,
+  },
+  poetry: {
+    width: 240, height: 324, idle: 15, runLeft: 14, runRight: 14,
+  },
+} as const;
+type LocomotionSceneId = keyof typeof locomotionSheetSpecs;
+
+function locomotionSheet(
+  id: LocomotionSceneId,
+  action: 'idle' | 'run-left' | 'run-right',
+  frames: number,
+): SpriteSheetAnimation {
+  const spec = locomotionSheetSpecs[id];
+  return {
+    path: `themes/reading/${id}/locomotion-${action}`,
+    frameWidth: spec.width,
+    frameHeight: spec.height,
+    columns: locomotionSheetColumns,
+    frames,
+    padding: 0,
+    fps: locomotionSheetFps,
+  };
+}
+
+function locomotionAnimations(id: LocomotionSceneId): Pick<
+  ThemeAssets,
+  'characterIdleAnimation' | 'characterRunLeftAnimation' | 'characterRunRightAnimation'
+> {
+  const spec = locomotionSheetSpecs[id];
+  return {
+    characterIdleAnimation: locomotionSheet(id, 'idle', spec.idle),
+    characterRunLeftAnimation: locomotionSheet(id, 'run-left', spec.runLeft),
+    characterRunRightAnimation: locomotionSheet(id, 'run-right', spec.runRight),
+  };
+}
 const sharedReadingAudio: AudioTheme = {
   bgm: { url: `${readingAudioBase}/bgm.mp3`, volume: 0.22 },
   coin: { url: './audio/shared/score-coin.mp3', volume: 0.68 },
@@ -34,6 +85,7 @@ export function readingAudio(id: string): AudioTheme {
   };
 }
 const deepSeaAssets: ThemeAssets = {
+  ...locomotionAnimations('deep-sea'),
   background: 'themes/reading/deep-sea/background',
   characterIdle: 'themes/reading/deep-sea/deer',
   characterAction: 'themes/reading/deep-sea/deer',
@@ -57,8 +109,9 @@ const deepSeaAssets: ThemeAssets = {
   motion: motionAssets('deep-sea', 1),
 };
 const marioAssets: ThemeAssets = {
+  ...locomotionAnimations('mario'),
   background: 'themes/reading/mario/background',
-  // Same crisp static as intro (Cocos PNG). Idle webp stays unused for standing pose.
+  // Static fallback only. DeerView keeps the front-facing run-in-place motion visible in play.
   characterIdle: 'themes/reading/intro/deer',
   characterAction: 'themes/reading/intro/deer',
   hudTimer: 'themes/reading/mario/hud-timer',
@@ -85,21 +138,19 @@ const marioAssets: ThemeAssets = {
 function motionAssets(id: string, index: number): NonNullable<ThemeAssets['motion']> {
   const media = `./media/${id}`;
   return {
-    idle: `${media}/idle.webp`,
     action: `${media}/action.webp`,
-    runLeft: `${media}/run-left.webp`,
-    runRight: `${media}/run-right.webp`,
     correct: `${media}/correct.webp`,
     wrong: `${media}/wrong.webp`,
     result: `${media}/result.webp`,
     transition: index > 0 ? `./media/transitions/${index}.webp` : undefined,
   };
 }
-function themeAssets(id: string, index: number): ThemeAssets {
+function themeAssets(id: LocomotionSceneId, index: number): ThemeAssets {
   const base = `themes/reading/${id}`;
   const hasTitles = id === 'food' || id === 'poetry';
   const hasOwnRankRows = id === 'food';
   return {
+    ...locomotionAnimations(id),
     background: `${base}/background`,
     characterIdle: `${base}/deer`,
     characterAction: `${base}/deer`,

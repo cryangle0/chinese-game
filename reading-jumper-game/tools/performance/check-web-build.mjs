@@ -26,6 +26,24 @@ const themeFiles = base.filter((file) => /[\\/]assets[\\/]theme-reading-[^\\/]+[
 const themeBytes = themeFiles.reduce((sum, file) => sum + fs.statSync(file).size, 0);
 const motionFiles = base.filter((file) => /[\\/]media[\\/]/i.test(file));
 const motionBytes = motionFiles.reduce((sum, file) => sum + fs.statSync(file).size, 0);
+const retiredLocomotionFiles = motionFiles.filter((file) =>
+  /[\\/](?:mario|deep-sea|space|food|poetry)[\\/](?:idle|run-left|run-right)\.webp$/i
+    .test(file));
+const perThemeBytes = new Map();
+themeFiles.forEach((file) => {
+  const theme = file.match(/[\\/]assets[\\/]theme-reading-([^\\/]+)[\\/]/i)?.[1] ?? 'unknown';
+  perThemeBytes.set(theme, (perThemeBytes.get(theme) ?? 0) + fs.statSync(file).size);
+});
+const perMotionSceneBytes = new Map();
+motionFiles.forEach((file) => {
+  const scene = file.match(/[\\/]media[\\/](mario|deep-sea|space|food|poetry)[\\/]/i)?.[1];
+  if (scene) {
+    perMotionSceneBytes.set(
+      scene,
+      (perMotionSceneBytes.get(scene) ?? 0) + fs.statSync(file).size,
+    );
+  }
+});
 const initialBytes = baseBytes - poseBytes - themeBytes - motionBytes;
 const engineBytes = base
   .filter((file) => /cocos-js[\\/].+\.js$/i.test(file))
@@ -114,9 +132,22 @@ requiredPoseFiles.forEach((file) => {
 if (fs.existsSync(path.join(root, 'wasm', 'tfjs-backend-wasm-threaded-simd.wasm'))) {
   errors.push('unused threaded WASM variant must not be shipped');
 }
+if (retiredLocomotionFiles.length) {
+  errors.push(`${retiredLocomotionFiles.length} retired locomotion WebPs are still shipped`);
+}
+for (const [theme, bytes] of perThemeBytes) {
+  if (bytes > 6.5 * 1024 * 1024) {
+    errors.push(`lazy theme ${theme} exceeds 6.5 MB`);
+  }
+}
+for (const [scene, bytes] of perMotionSceneBytes) {
+  if (bytes > 3.5 * 1024 * 1024) {
+    errors.push(`lazy motion scene ${scene} exceeds 3.5 MB`);
+  }
+}
 if (initialBytes > 8.2 * 1024 * 1024) errors.push('initial build exceeds 8.2 MB');
-if (motionBytes > 6 * 1024 * 1024) errors.push('lazy motion media exceeds 6 MB');
-if (baseBytes > 22 * 1024 * 1024) errors.push('total build exceeds 22 MB');
+if (motionBytes > 13 * 1024 * 1024) errors.push('all lazy motion media exceeds 13 MB');
+if (baseBytes > 45 * 1024 * 1024) errors.push('five-theme build exceeds 45 MB');
 if (engineBytes > 1.8 * 1024 * 1024) errors.push('engine script exceeds 1.8 MB');
 if (errors.length) {
   console.error(errors.join('\n'));
@@ -126,5 +157,6 @@ console.log(`web performance ok: ${(initialBytes / 1048576).toFixed(2)} MB initi
   + `${(poseBytes / 1048576).toFixed(2)} MB lazy pose, `
   + `${(themeBytes / 1048576).toFixed(2)} MB lazy themes, `
   + `${(motionBytes / 1048576).toFixed(2)} MB lazy motion, `
+  + `${(Math.max(...perThemeBytes.values()) / 1048576).toFixed(2)} MB max theme, `
   + `${(baseBytes / 1048576).toFixed(2)} MB total, `
   + `${(brotliBytes / 1048576).toFixed(2)} MB Brotli text`);

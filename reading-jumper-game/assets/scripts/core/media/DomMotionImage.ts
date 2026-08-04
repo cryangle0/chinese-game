@@ -4,12 +4,17 @@ export interface DomMotionImageOptions {
   readonly zIndex?: number;
 }
 
+const PLAYBACK_SESSION = createPlaybackSession();
+let isolatedPlaybackSerial = 0;
+
 export class DomMotionImage {
   private image: HTMLImageElement;
   private sourceValue = '';
   private playbackSource = '';
   private loadedSource = '';
   private replayCount = 0;
+  private playbackGeneration = 0;
+  private sourceAssignmentFrame = 0;
 
   constructor(
     private readonly options: DomMotionImageOptions,
@@ -47,12 +52,12 @@ export class DomMotionImage {
       });
     }
     image.addEventListener('load', () => {
-      if (image !== this.image || !this.matchesCurrentSource()) return;
+      if (!this.matchesGeneration(image) || !this.matchesCurrentSource(image)) return;
       this.loadedSource = this.sourceValue;
       this.onReady();
     });
     image.addEventListener('error', () => {
-      if (image !== this.image) return;
+      if (!this.matchesGeneration(image)) return;
       this.loadedSource = '';
       this.onError();
     });
@@ -67,28 +72,29 @@ export class DomMotionImage {
     const changed = source !== this.sourceValue;
     const hadMotion = Boolean(this.loadedSource) && this.image.style.display !== 'none';
     if (changed || restart) {
+      this.cancelSourceAssignment();
       this.sourceValue = source;
       this.loadedSource = '';
+      this.playbackGeneration += 1;
       if (restart) {
         // Reusing one <img> for a completed animated WebP is unreliable in
         // Chromium/WebView: assigning the same URL can retain its final frame.
         // Use a fresh element so the current DOM node has no retained state.
         const previous = this.image;
+        previous.removeAttribute('src');
         this.image = this.createElement(previous);
         previous.replaceWith(this.image);
         this.replayCount += 1;
       }
       this.image.dataset.motionReplay = String(this.replayCount);
+      this.image.dataset.motionGeneration = String(this.playbackGeneration);
       // Prefetched animated WebPs can still share a completed decoder timeline
       // with fresh elements. Strict playback uses a unique request URL so the
       // browser starts a new animation timeline at frame 1.
       this.playbackSource = isolateTimeline
-        ? isolatedPlaybackSource(source, this.replayCount)
+        ? isolatedPlaybackSource(source, this.replayCount, this.playbackGeneration)
         : source;
-      this.image.src = this.playbackSource;
-    }
-    if (this.image.complete && this.image.naturalWidth > 1 && this.matchesCurrentSource()) {
-      this.loadedSource = this.sourceValue;
+      this.assignPlaybackSource(isolateTimeline);
     }
     return { changed, hadMotion };
   }
@@ -106,26 +112,75 @@ export class DomMotionImage {
   }
 
   dispose(): void {
+    this.cancelSourceAssignment();
+    this.image.removeAttribute('src');
     this.image.remove();
   }
 
-  private matchesCurrentSource(): boolean {
+  private assignPlaybackSource(deferOneFrame: boolean): void {
+    const image = this.image;
+    const source = this.playbackSource;
+    const generation = this.playbackGeneration;
+    const assign = (): void => {
+      this.sourceAssignmentFrame = 0;
+      if (image !== this.image || generation !== this.playbackGeneration) return;
+      image.src = source;
+      if (image.complete
+        && image.naturalWidth > 1
+        && this.matchesGeneration(image)
+        && this.matchesCurrentSource(image)) {
+        this.loadedSource = this.sourceValue;
+        this.onReady();
+      }
+    };
+    if (deferOneFrame && typeof requestAnimationFrame === 'function') {
+      this.sourceAssignmentFrame = requestAnimationFrame(assign);
+      return;
+    }
+    assign();
+  }
+
+  private cancelSourceAssignment(): void {
+    if (!this.sourceAssignmentFrame) return;
+    cancelAnimationFrame(this.sourceAssignmentFrame);
+    this.sourceAssignmentFrame = 0;
+  }
+
+  private matchesGeneration(image: HTMLImageElement): boolean {
+    return image === this.image
+      && image.dataset.motionGeneration === String(this.playbackGeneration);
+  }
+
+  private matchesCurrentSource(image = this.image): boolean {
     if (!this.playbackSource) return false;
-    if (this.image.getAttribute('src') === this.playbackSource) return true;
+    if (image.getAttribute('src') === this.playbackSource) return true;
     if (typeof location === 'undefined') return false;
     try {
       const absolute = new URL(this.playbackSource, location.href).href;
-      return this.image.currentSrc === absolute || this.image.src === absolute;
+      return image.currentSrc === absolute || image.src === absolute;
     } catch {
       return false;
     }
   }
 }
 
-function isolatedPlaybackSource(source: string, replayCount: number): string {
+function isolatedPlaybackSource(
+  source: string,
+  replayCount: number,
+  generation: number,
+): string {
   const hashAt = source.indexOf('#');
   const base = hashAt >= 0 ? source.slice(0, hashAt) : source;
   const hash = hashAt >= 0 ? source.slice(hashAt) : '';
   const separator = base.includes('?') ? '&' : '?';
-  return `${base}${separator}motionReplay=${replayCount}${hash}`;
+  isolatedPlaybackSerial += 1;
+  return `${base}${separator}motionReplay=${replayCount}`
+    + `&motionSession=${PLAYBACK_SESSION}`
+    + `&motionNonce=${generation}-${isolatedPlaybackSerial}${hash}`;
+}
+
+function createPlaybackSession(): string {
+  const now = Date.now().toString(36);
+  const random = Math.random().toString(36).slice(2, 10);
+  return `${now}-${random}`;
 }

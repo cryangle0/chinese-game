@@ -39,7 +39,6 @@ describe('Reading feedback 30fps timeline', () => {
     const presentation = readingFeedbackTimeline('space', true)?.presentation;
     expect(presentation).toMatchObject({
       animateIn: false,
-      underlay: false,
       scale: 1.02,
       offsetY: 125,
       isolateTimeline: true,
@@ -75,7 +74,6 @@ describe('Reading feedback 30fps timeline', () => {
     const presentation = readingFeedbackTimeline('space', false)?.presentation;
     expect(presentation).toMatchObject({
       animateIn: false,
-      underlay: false,
       scale: 1.35,
       offsetY: 121,
       isolateTimeline: true,

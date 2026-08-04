@@ -7,9 +7,15 @@ export function runDeerTo(
   baseY: number,
   done: () => void,
   settleSeconds = 0,
+  travelSeconds = 0.42,
+  smoothTravel = false,
 ): void {
   const sequence = tween(root)
-    .to(0.42, { position: new Vec3(x, baseY) }, { easing: 'quadOut' });
+    .to(
+      travelSeconds,
+      { position: new Vec3(x, baseY) },
+      { easing: smoothTravel ? 'quadInOut' : 'quadOut' },
+    );
   if (settleSeconds > 0) sequence.delay(settleSeconds);
   sequence.call(done).start();
 }

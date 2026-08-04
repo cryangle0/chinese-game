@@ -4,11 +4,17 @@ import { createUiNode } from '../../../core/ui/UiFactory';
 import { applyStretchXBackdrop } from '../../../core/ui/ResponsiveRoot';
 import { AppConfig } from '../../../shared/config/AppConfig';
 import { GameTheme } from '../../../shared/types/Theme';
+import {
+  DeepSeaInkEffectView,
+  deepSeaInkTarget,
+} from '../../../ui/DeepSeaInkEffectView';
 import { FeedbackView } from '../../../ui/FeedbackView';
 import { HudView } from '../../../ui/HudView';
 import { QuestionBoardView } from '../../../ui/QuestionBoardView';
 import { ScoreCoinEffectView } from '../../../ui/ScoreCoinEffectView';
 import type { ScoreCoinSnapshot } from '../../../ui/ScoreCoinEffectView';
+import type { ScoreFlightVisual } from '../../../ui/ScoreCoinDom';
+import { WrongFeedbackTopEffectView } from '../../../ui/WrongFeedbackTopEffectView';
 import { BrickGroupView } from './BrickGroupView';
 import { DeerView } from './DeerView';
 import { readingJumpHeight, readingLayout } from '../config/ReadingLayout';
@@ -23,6 +29,8 @@ export class ReadingGameView {
   readonly feedback: FeedbackView;
   private readonly transition: ReadingTransitionView;
   private readonly scoreCoins: ScoreCoinEffectView;
+  private readonly wrongTopEffect: WrongFeedbackTopEffectView;
+  private readonly deepSeaInk: DeepSeaInkEffectView;
   private mountedThemeId = '';
   private readonly syncBackdrop = () => {
     const sx = applyStretchXBackdrop(this.background);
@@ -55,6 +63,8 @@ export class ReadingGameView {
       firstTheme?.assets.characterAction ?? '',
       firstTheme?.assets.characterIdleAnimation,
       firstTheme?.assets.characterActionAnimation,
+      firstTheme?.assets.characterRunLeftAnimation,
+      firstTheme?.assets.characterRunRightAnimation,
       firstTheme?.assets.motion,
     );
     this.feedback = new FeedbackView(
@@ -65,10 +75,16 @@ export class ReadingGameView {
     );
     this.transition = new ReadingTransitionView(root);
     this.scoreCoins = new ScoreCoinEffectView(root);
+    this.wrongTopEffect = new WrongFeedbackTopEffectView(root);
+    this.deepSeaInk = new DeepSeaInkEffectView();
   }
 
   setActive(active: boolean): void {
-    if (!active) this.feedback.hide();
+    if (!active) {
+      this.feedback.hide();
+      this.wrongTopEffect.hide();
+      this.deepSeaInk.hide();
+    }
     [this.background, this.hud.root, this.board.root, this.deer.root].forEach((node) => {
       node.active = active;
     });
@@ -79,6 +95,7 @@ export class ReadingGameView {
 
   mount(theme: GameTheme): void {
     if (this.mountedThemeId === theme.id) return;
+    this.deepSeaInk.hide();
     this.mountedThemeId = theme.id;
     const layout = readingLayout(theme.id);
     spriteLoader.apply(this.background, theme.assets.background, 'cover');
@@ -107,6 +124,8 @@ export class ReadingGameView {
       theme.assets.characterAction,
       theme.assets.characterIdleAnimation,
       theme.assets.characterActionAnimation,
+      theme.assets.characterRunLeftAnimation,
+      theme.assets.characterRunRightAnimation,
       theme.assets.motion,
     );
   }
@@ -117,7 +136,11 @@ export class ReadingGameView {
 
   setFeedbackVisible(visible: boolean): void {
     this.deer.root.active = !visible;
-    if (!visible) this.feedback.hide();
+    if (!visible) {
+      this.feedback.hide();
+      this.wrongTopEffect.hide();
+      this.deepSeaInk.hide();
+    }
     if (typeof document !== 'undefined') {
       document.body.dataset.feedbackActorHandoff = visible ? 'feedback-ready' : 'actor-visible';
     }
@@ -132,10 +155,11 @@ export class ReadingGameView {
     source: ScoreCoinSnapshot | null,
     score: number,
     awarded: number,
+    visual: ScoreFlightVisual | undefined,
     onFirstArrival?: () => void,
   ): void {
     if (!source) {
-      this.hud.showScoreReward(score);
+      if (awarded > 0) this.hud.showScoreReward(score);
       onFirstArrival?.();
       return;
     }
@@ -143,11 +167,21 @@ export class ReadingGameView {
       source,
       target: { node: this.hud.scoreRewardTarget() },
       awarded,
+      visual,
       onFirstArrival: () => {
-        this.hud.showScoreReward(score);
+        if (awarded > 0) this.hud.showScoreReward(score);
         onFirstArrival?.();
       },
     });
+  }
+
+  showWrongFeedbackTop(sceneId: string): void {
+    this.wrongTopEffect.show(sceneId);
+  }
+
+  playDeepSeaInk(columnX: number): void {
+    const feedbackY = readingLayout('deep-sea').feedback.y;
+    this.deepSeaInk.play(deepSeaInkTarget(columnX, feedbackY));
   }
 
   renderHud(
@@ -168,6 +202,8 @@ export class ReadingGameView {
     if (typeof window !== 'undefined') window.removeEventListener('resize', this.syncBackdrop);
     this.transition.dispose();
     this.scoreCoins.dispose();
+    this.wrongTopEffect.dispose();
+    this.deepSeaInk.dispose();
     this.deer.dispose();
     this.feedback.dispose();
   }

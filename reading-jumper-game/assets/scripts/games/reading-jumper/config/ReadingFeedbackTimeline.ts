@@ -20,7 +20,6 @@ export interface ReadingFeedbackTimelineSpec {
   readonly correct: boolean;
   readonly presentation: {
     readonly animateIn: boolean;
-    readonly underlay: boolean;
     readonly scale: number;
     readonly offsetY: number;
     readonly isolateTimeline: boolean;
@@ -33,7 +32,6 @@ const SPACE_CORRECT_TIMELINE: ReadingFeedbackTimelineSpec = {
   correct: true,
   presentation: {
     animateIn: false,
-    underlay: false,
     // Measured against the 1920x1080 Demo contact sheet. The packaged 884x600
     // canvas keeps large transparent margins, so scale the full canvas instead
     // of cropping and stretching the visible rocket.
@@ -59,7 +57,6 @@ const SPACE_WRONG_TIMELINE: ReadingFeedbackTimelineSpec = {
   correct: false,
   presentation: {
     animateIn: false,
-    underlay: false,
     // The 550x1280 source is rendered at the Demo's natural stage scale.
     // Its actor remains centered on the selected option while the wreck falls
     // into the source canvas from above.

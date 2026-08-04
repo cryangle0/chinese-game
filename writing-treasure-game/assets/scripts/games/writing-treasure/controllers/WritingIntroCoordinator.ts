@@ -1,5 +1,7 @@
 import { Node } from 'cc';
-import { preloadInitialTheme, retainIntro } from '../../../core/assets/ThemePreloader';
+import {
+  preloadInitialThemeAfterFirstPaint, retainIntro,
+} from '../../../core/assets/ThemePreloader';
 import { TaskScope } from '../../../core/lifecycle/TaskScope';
 import { prefetchMotion } from '../../../core/media/DomMotionSprite';
 import { CampaignProgress } from '../../../services/CampaignProgress';
@@ -24,9 +26,9 @@ export function mountWritingIntro(options: IntroOptions): Promise<unknown | null
   } = options;
   retainIntro(writingIntro);
   const runMotion = campaign.current().assets.motion?.runRight;
-  prefetchMotion(runMotion);
-  const preload = preloadInitialTheme(campaign.current())
+  const preload = preloadInitialThemeAfterFirstPaint(campaign.current())
     .then(() => null, (error: unknown) => error);
+  scheduleRunMotionPrefetch(runMotion);
   if (typeof document !== 'undefined') document.body.dataset.gameView = 'intro';
   services.audio.play('opening');
   new GameIntroView(
@@ -52,4 +54,17 @@ export function mountWritingIntro(options: IntroOptions): Promise<unknown | null
     },
   );
   return preload;
+}
+
+function scheduleRunMotionPrefetch(runMotion: string | undefined): void {
+  if (!runMotion || typeof window === 'undefined') return;
+  const preload = () => prefetchMotion(runMotion);
+  const scheduleIdle = () => {
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(preload, { timeout: 1400 });
+    } else {
+      window.setTimeout(preload, 320);
+    }
+  };
+  window.requestAnimationFrame(() => window.requestAnimationFrame(scheduleIdle));
 }

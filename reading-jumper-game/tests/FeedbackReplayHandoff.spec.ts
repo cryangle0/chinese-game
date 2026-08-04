@@ -10,18 +10,21 @@ describe('Reading feedback replay and actor handoff', () => {
     const image = source('../assets/scripts/core/media/DomMotionImage.ts');
     const feedback = source('../assets/scripts/ui/FeedbackView.ts');
     expect(image).toContain('previous.replaceWith(this.image)');
+    expect(image).toContain("previous.removeAttribute('src')");
     expect(image).toContain('motionReplay=${replayCount}');
+    expect(image).toContain('motionSession=${PLAYBACK_SESSION}');
+    expect(image).toContain('motionNonce=${generation}-${isolatedPlaybackSerial}');
+    expect(image).toContain('this.sourceAssignmentFrame = requestAnimationFrame(assign)');
+    expect(image).toContain('image.dataset.motionGeneration = String(this.playbackGeneration)');
+    expect(image).toContain('this.matchesGeneration(image)');
     expect(feedback).toContain('this.motion.show(');
     expect(feedback).toContain('motionPath,\n        true,\n        true,');
     expect(feedback).toContain(
-      'onReady: () => {\n            this.ensureUnderlay(underlay);',
-    );
-    expect(feedback).toContain(
       'onError: () => {\n            this.image.active = true;',
     );
-    expect(feedback).toContain(
-      "spriteLoader.apply(this.image, assetPath, 'contain');\n            this.ensureUnderlay(false);",
-    );
+    expect(feedback).toContain('this.removeLegacyFeedbackShade();');
+    expect(feedback).not.toContain('this.ensureUnderlay(');
+    expect(feedback).not.toContain('rgba(5, 8, 11, 0.8)');
   });
 
   it('keeps the character until the feedback image reports ready', () => {
@@ -29,11 +32,9 @@ describe('Reading feedback replay and actor handoff', () => {
       '../assets/scripts/games/reading-jumper/controllers/ReadingAnswerController.ts',
     );
     const showIndex = controller.indexOf('this.view.feedback.show(');
-    const hideIndex = controller.indexOf(
-      'onReady: this.scope.guard(() => this.view.setFeedbackVisible(true))',
-    );
+    const readyIndex = controller.indexOf('createReadingFeedbackReadyHandler(');
     expect(showIndex).toBeGreaterThanOrEqual(0);
-    expect(hideIndex).toBeGreaterThan(showIndex);
+    expect(readyIndex).toBeGreaterThan(showIndex);
     expect(controller).toContain("feedbackActorHandoff = 'retained-on-error'");
   });
 });

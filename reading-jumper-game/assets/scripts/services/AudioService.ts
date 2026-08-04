@@ -5,6 +5,9 @@ import { MediaAudioPlayer } from './MediaAudioPlayer';
 import { playTone } from './TonePlayer';
 export type { SoundName } from './AudioCatalog';
 const musicNames: readonly MusicName[] = ['bgm', 'ambient'];
+export interface AudioThemeOptions {
+  readonly preload?: boolean;
+}
 export class AudioService {
   private context: AudioContext | null = null;
   private readonly media = new MediaAudioPlayer();
@@ -68,7 +71,7 @@ export class AudioService {
     }
   }
 
-  setTheme(theme: AudioTheme = {}): void {
+  setTheme(theme: AudioTheme = {}, options: AudioThemeOptions = {}): void {
     if (this.disposed) return;
     const previousMusic = new Map(musicNames.map((name) => [name, this.definition(name).url]));
     this.theme = theme;
@@ -84,7 +87,7 @@ export class AudioService {
       Object.values({ ...this.catalog, ...theme })
         .flatMap((definition) => definition?.url ? [definition.url] : []),
     );
-    this.preload(theme);
+    if (options.preload !== false) this.preload(theme);
     if (changed && this.musicRequested) this.playMusic();
   }
 

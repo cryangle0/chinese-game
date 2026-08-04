@@ -12,7 +12,9 @@ import {
   renderScoreCoin,
   screenPointText,
   spawnScoreCoinBurst,
+  spawnScoreTerminalEffect,
 } from './ScoreCoinDom';
+import type { ScoreFlightVisual } from './ScoreCoinDom';
 
 const FLIGHT_MS = 980;
 const STAGGER_MS = 34;
@@ -30,6 +32,7 @@ export interface ScoreCoinPlayOptions {
   readonly source: ScoreCoinOrigin | ScoreCoinSnapshot;
   readonly target: ScoreCoinOrigin;
   readonly awarded: number;
+  readonly visual?: ScoreFlightVisual;
   readonly onFirstArrival?: () => void;
 }
 
@@ -61,7 +64,8 @@ export class ScoreCoinEffectView {
     const sourceIsLive = 'node' in options.source;
     const start = sourceIsLive ? this.stagePoint(options.source) : options.source;
     const end = this.stagePoint(options.target);
-    const count = scoreCoinCount(options.awarded);
+    const visual = options.visual;
+    const count = visual?.count ?? scoreCoinCount(options.awarded);
     if (!start || !end || !this.container || count === 0) {
       options.onFirstArrival?.();
       return;
@@ -76,11 +80,12 @@ export class ScoreCoinEffectView {
     const runId = this.runId;
     this.container.style.display = 'block';
     const coins = Array.from({ length: count }, (_, index): ActiveCoin => {
-      const element = createScoreCoinElement(index);
+      const element = createScoreCoinElement(index, visual);
       this.container!.appendChild(element);
       return {
         element,
-        rotation: (index % 2 === 0 ? 1 : -1) * (260 + index * 27),
+        rotation: (index % 2 === 0 ? 1 : -1)
+          * 360 * (visual?.rotationTurns ?? (0.72 + index * 0.075)),
         arrived: false,
       };
     });
@@ -94,6 +99,8 @@ export class ScoreCoinEffectView {
       scoreCoinEndScreen: screenPointText(end, initialFrame),
       scoreCoinCount: String(count),
       scoreCoinAwarded: String(options.awarded),
+      scoreCoinAsset: visual?.asset ?? '',
+      scoreCoinTerminal: visual?.terminal ?? 'spark',
       scoreCoinAudio: 'coin',
       scoreCoinSource: sourceIsLive ? options.source.node.name : options.source.name,
       scoreCoinSourceMode: sourceIsLive ? 'live' : 'snapshot',
@@ -101,7 +108,13 @@ export class ScoreCoinEffectView {
       scoreCoinPhase: 'burst',
     });
     document.body.dataset.scoreCoinSparkCount =
-      String(spawnScoreCoinBurst(this.container, initialFrame, start, 'source'));
+      String(spawnScoreCoinBurst(
+        this.container,
+        initialFrame,
+        start,
+        'source',
+        visual?.trail,
+      ));
 
     let firstArrived = false;
     const startedAt = performance.now();
@@ -121,6 +134,7 @@ export class ScoreCoinEffectView {
         const point = scoreCoinTrackPoint(start, end, index, progress);
         const screen = renderScoreCoin(
           coin.element, stageFrame, point, progress, index, coin.rotation,
+          visual,
         );
         if (progress >= 1 && !coin.arrived) {
           coin.arrived = true;
@@ -129,7 +143,14 @@ export class ScoreCoinEffectView {
             document.body.dataset.scoreCoinArrivalScreen =
               `${screen.x.toFixed(2)},${screen.y.toFixed(2)}`;
             document.body.dataset.scoreCoinPhase = 'arrival';
-            spawnScoreCoinBurst(this.container!, stageFrame, end, 'arrival');
+            document.body.dataset.scoreCoinTerminalCount = String(
+              spawnScoreTerminalEffect(
+                this.container!,
+                stageFrame,
+                end,
+                visual ?? { asset: './effects/score-coin.png' },
+              ),
+            );
             options.onFirstArrival?.();
           }
         }
@@ -150,7 +171,7 @@ export class ScoreCoinEffectView {
         this.container.style.display = 'none';
         document.body.dataset.scoreCoinActive = 'false';
         document.body.dataset.scoreCoinPhase = 'complete';
-      }, 120);
+      }, 760);
     };
     this.animationFrame = requestAnimationFrame(tick);
   }

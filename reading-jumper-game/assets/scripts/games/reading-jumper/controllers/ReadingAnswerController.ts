@@ -6,6 +6,7 @@ import { GameSession } from '../../../services/GameSession';
 import { GameServices } from '../../../services/GameServices';
 import { RoundTimer } from '../../../services/RoundTimer';
 import { ChineseQuestion } from '../../../shared/types/Question';
+import { createReadingFeedbackReadyHandler } from '../../../ui/DeepSeaInkEffectView';
 import type { ScoreCoinSnapshot } from '../../../ui/ScoreCoinEffectView';
 import type { FeedbackPresentationOptions } from '../../../ui/FeedbackView';
 import {
@@ -16,6 +17,7 @@ import {
 } from '../config/ReadingFeedbackTimeline';
 import { readingLayout } from '../config/ReadingLayout';
 import { readingThemes } from '../config/ReadingTheme';
+import { readingScoreFeedback } from '../config/ReadingScoreFeedback';
 import { ReadingRound } from '../model/ReadingRound';
 import { ReadingGameView } from '../views/ReadingGameView';
 import { ReadingMotionController } from './ReadingMotionController';
@@ -113,15 +115,20 @@ export class ReadingAnswerController {
     onRewardArrival: () => void,
   ): void {
     this.view.bricks.showResult(index, correct);
-    if (scoreAwarded <= 0) return;
-    this.services.audio.play('coin');
+    const theme = this.campaign.current();
+    const visual = readingScoreFeedback(theme.id, correct);
+    if (!correct) this.view.showWrongFeedbackTop(theme.id);
+    if (!visual && scoreAwarded <= 0) return;
+    if (correct) this.services.audio.play('coin');
     if (typeof document !== 'undefined') {
       document.body.dataset.scoreCoinTriggerPhase = 'brick-apex';
+      document.body.dataset.scoreCoinFeedbackKind = correct ? 'reward' : 'penalty';
     }
     this.view.playScoreReward(
       scoreRewardStart,
       this.session.score(),
       scoreAwarded,
+      visual,
       onRewardArrival,
     );
   }
@@ -152,7 +159,9 @@ export class ReadingAnswerController {
       columnX,
       presentation,
       {
-        onReady: this.scope.guard(() => this.view.setFeedbackVisible(true)),
+        onReady: this.scope.guard(
+          createReadingFeedbackReadyHandler(this.view, theme.id, correct, columnX),
+        ),
         onError: () => {
           if (typeof document !== 'undefined') {
             document.body.dataset.feedbackActorHandoff = 'retained-on-error';

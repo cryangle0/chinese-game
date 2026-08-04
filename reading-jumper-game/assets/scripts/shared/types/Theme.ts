@@ -36,6 +36,8 @@ export interface ThemeAssets {
   characterAction: string;
   characterIdleAnimation?: SpriteSheetAnimation;
   characterActionAnimation?: SpriteSheetAnimation;
+  characterRunLeftAnimation?: SpriteSheetAnimation;
+  characterRunRightAnimation?: SpriteSheetAnimation;
   hudTimer: string;
   hudScore: string;
   scoreIcon: string;

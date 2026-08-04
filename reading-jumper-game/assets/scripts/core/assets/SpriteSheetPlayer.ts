@@ -2,12 +2,18 @@ import {
   Node, Rect, Sprite, SpriteFrame, UITransform,
 } from 'cc';
 import { SpriteSheetAnimation } from '../../shared/types/Theme';
-import { CachedFrame, fitSprite } from './SpriteAsset';
+import { CachedFrame } from './SpriteAsset';
 import { spriteLoader } from './SpriteLoader';
 
 interface SheetFrames {
   readonly spec: SpriteSheetAnimation;
   readonly frames: readonly SpriteFrame[];
+}
+
+export interface SpriteSheetPlaybackSnapshot {
+  readonly path: string;
+  readonly frame: number;
+  readonly frames: number;
 }
 
 export class SpriteSheetPlayer {
@@ -50,9 +56,22 @@ export class SpriteSheetPlayer {
     }
   }
 
-  clear(): void {
+  stop(): void {
     this.generation += 1;
     this.active = null;
+    this.elapsed = 0;
+  }
+
+  snapshot(): SpriteSheetPlaybackSnapshot | null {
+    return this.active ? {
+      path: this.active.spec.path,
+      frame: this.index,
+      frames: this.active.frames.length,
+    } : null;
+  }
+
+  clear(): void {
+    this.stop();
     const sprite = this.host.getChildByName('__sprite')?.getComponent(Sprite);
     if (sprite) sprite.spriteFrame = null;
     this.sheets.forEach(({ frames }) => frames.forEach((frame) => frame.destroy()));
@@ -83,13 +102,14 @@ export class SpriteSheetPlayer {
     const sprite = image.getComponent(Sprite) ?? image.addComponent(Sprite);
     sprite.spriteFrame = active.frames[index];
     sprite.sizeMode = Sprite.SizeMode.CUSTOM;
-    fitSprite(this.host, image, {
-      frame: active.frames[index],
-      width: active.spec.frameWidth,
-      height: active.spec.frameHeight,
-      lastUsed: Date.now(),
-      release: () => undefined,
-    }, 'contain');
+    const hostTransform = this.host.getComponent(UITransform);
+    const imageTransform = image.getComponent(UITransform);
+    if (hostTransform && imageTransform) {
+      imageTransform.setContentSize(active.spec.frameWidth, active.spec.frameHeight);
+      const scale = hostTransform.contentSize.height / active.spec.frameHeight;
+      image.setScale(scale, scale, 1);
+      image.setPosition(0, 0);
+    }
   }
 
   private createImage(): Node {

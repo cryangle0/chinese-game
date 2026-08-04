@@ -1,6 +1,6 @@
 import { Node, tween } from 'cc';
 import {
-  preloadPlayableTheme, retainIntroAndThemes,
+  preloadStartupThemeAfterFirstPaint, retainIntroAndThemes,
 } from '../../../core/assets/ThemePreloader';
 import { TaskScope } from '../../../core/lifecycle/TaskScope';
 import { CampaignProgress } from '../../../services/CampaignProgress';
@@ -26,10 +26,12 @@ export function mountReadingIntro(options: ReadingIntroOptions): Promise<unknown
     root, scope, campaign, services, launch, motion, start,
   } = options;
   retainIntroAndThemes(readingIntro, [campaign.current()]);
-  const preload = preloadPlayableTheme(campaign.current())
+  const preload = preloadStartupThemeAfterFirstPaint(campaign.current())
     .then(() => null, (error: unknown) => error);
   if (typeof document !== 'undefined') document.body.dataset.gameView = 'intro';
-  tween(root).delay(0.35).call(scope.guard(() => motion.start())).start();
+  // Let the homepage settle before camera/model initialization starts competing
+  // for main-thread and network time.
+  tween(root).delay(0.7).call(scope.guard(() => motion.start())).start();
 
   let introStarted = false;
   const enterPlay = scope.guard((book: string) => {

@@ -609,9 +609,7 @@ async function runThemeResults(browser) {
     await page.goto(launchUrl({ skipIntro: 1, scene }), { waitUntil: 'networkidle' });
     await page.waitForSelector(`body[data-game-stage="${scene}"]`);
     await page.waitForTimeout(500);
-    await assertVisibleMotion(
-      page, 'WizardDeer', `/media/${scene}/idle.webp`, `${scene} idle`,
-    );
+    await page.waitForSelector('body[data-deer-idle-mode="breathing-static"]');
     await capture(page, `desktop-writing-${scene}-game`);
 
     await page.mouse.click(1080, 595);

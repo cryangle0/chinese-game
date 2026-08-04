@@ -14,6 +14,8 @@ describe('Writing feedback replay and actor handoff', () => {
     expect(image).toContain('motionReplay=${replayCount}');
     expect(feedback).toContain('this.fallbackMotion.show(motionPath, true, true,');
     expect(stage).toContain('this.motion.show(path, true, true, callbacks)');
+    expect(feedback).toContain('this.removeLegacyFeedbackShade();');
+    expect(feedback).not.toContain('rgba(5, 8, 11, 0.8)');
   });
 
   it('hides the character only after the feedback image reports ready', () => {

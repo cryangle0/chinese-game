@@ -15,7 +15,6 @@ export interface FeedbackLayoutBox {
 
 export interface FeedbackPresentationOptions {
   readonly animateIn?: boolean;
-  readonly underlay?: boolean;
   readonly scale?: number;
   readonly offsetY?: number;
   readonly isolateTimeline?: boolean;
@@ -134,12 +133,12 @@ export class FeedbackView {
     presentation: FeedbackPresentationOptions = {},
     callbacks: FeedbackMotionCallbacks = {},
   ): void {
+    this.removeLegacyFeedbackShade();
     const sceneLayout = feedbackLayout[this.sceneId] ?? feedbackLayout.mario;
     const motionLayout = correct ? sceneLayout.correct : sceneLayout.wrong;
     const targetScale = presentation.scale ?? motionLayout.scale;
     const targetY = this.baseY + (presentation.offsetY ?? motionLayout.offsetY ?? 0);
     const animateIn = presentation.animateIn ?? true;
-    const underlay = presentation.underlay ?? true;
     Tween.stopAllByTarget(this.root);
     const opacity = this.root.getComponent(UIOpacity);
     if (opacity) Tween.stopAllByTarget(opacity);
@@ -147,7 +146,6 @@ export class FeedbackView {
     this.root.setPosition(columnX, targetY);
     this.root.setScale(targetScale, targetScale, 1);
     this.root.getComponent(UITransform)?.setContentSize(this.width, this.height);
-    this.ensureUnderlay(false);
     this.message.string = message || (correct ? '回答正确' : '再想一想');
     setLabelColor(this.message, correct ? '#18794E' : '#B4233D');
     // Hide white copy plate — it sat on the deer's feet and weakened impact.
@@ -164,7 +162,6 @@ export class FeedbackView {
         true,
         {
           onReady: () => {
-            this.ensureUnderlay(underlay);
             if (typeof document !== 'undefined') {
               document.body.dataset.feedbackMotionReady = 'true';
             }
@@ -174,7 +171,6 @@ export class FeedbackView {
             this.image.active = true;
             this.image.getComponent(UITransform)?.setContentSize(this.width, this.height);
             spriteLoader.apply(this.image, assetPath, 'contain');
-            this.ensureUnderlay(false);
             if (typeof document !== 'undefined') {
               document.body.dataset.feedbackMotionReady = 'error';
             }
@@ -187,7 +183,6 @@ export class FeedbackView {
       this.image.active = true;
       this.image.getComponent(UITransform)?.setContentSize(this.width, this.height);
       spriteLoader.apply(this.image, assetPath, 'contain');
-      this.ensureUnderlay(underlay);
       callbacks.onReady?.();
     }
 
@@ -200,7 +195,7 @@ export class FeedbackView {
       document.body.dataset.feedbackCorrect = correct ? '1' : '0';
       document.body.dataset.feedbackScale = targetScale.toFixed(3);
       document.body.dataset.feedbackPresentation = animateIn ? 'pop' : 'timeline';
-      document.body.dataset.feedbackUnderlay = underlay ? '1' : '0';
+      document.body.dataset.feedbackUnderlay = '0';
     }
 
     if (!opacity) return;
@@ -228,7 +223,7 @@ export class FeedbackView {
     if (opacity) Tween.stopAllByTarget(opacity);
     this.motion.hide();
     this.image.active = false;
-    this.ensureUnderlay(false);
+    this.removeLegacyFeedbackShade();
     this.root.active = false;
     if (typeof document !== 'undefined') {
       delete document.body.dataset.feedbackX;
@@ -245,28 +240,12 @@ export class FeedbackView {
   }
 
   dispose(): void {
-    this.ensureUnderlay(false);
+    this.removeLegacyFeedbackShade();
     this.motion.dispose();
   }
 
-  /** Full-viewport dim so feedback webp edges do not leak the stage art. */
-  private ensureUnderlay(show: boolean): void {
+  private removeLegacyFeedbackShade(): void {
     if (typeof document === 'undefined') return;
-    let underlay = document.getElementById('CustomerFeedbackUnderlay');
-    if (!underlay) {
-      underlay = document.createElement('div');
-      underlay.id = 'CustomerFeedbackUnderlay';
-      Object.assign(underlay.style, {
-        position: 'fixed',
-        inset: '0',
-        background: 'rgba(5, 8, 11, 0.8)',
-        zIndex: '34',
-        display: 'none',
-        pointerEvents: 'none',
-      });
-      document.body.appendChild(underlay);
-    }
-    underlay.style.background = 'rgba(5, 8, 11, 0.8)';
-    underlay.style.display = show ? 'block' : 'none';
+    document.getElementById('CustomerFeedbackUnderlay')?.remove();
   }
 }

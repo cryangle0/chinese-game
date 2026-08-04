@@ -173,7 +173,7 @@ const layouts: Readonly<Record<string, ReadingSceneLayout>> = {
     option: { width: 450, height: 140, y: -22, columns: [-495, 0, 495], padX: 50 },
     // HTML food box was the smallest (~307×368); push harder for impact.
     feedback: feedbackImpactFromHtml(170.19, 432.81, 306.78, 368.14, 1.48),
-    deer: { width: 118, height: 224, x: 0, y: -225 },
+    deer: { width: 118, height: 224, x: 0, y: -235 },
     // Customer review: raise the chef jump while preserving contact with the biscuit.
     jumpVisibleHeadInset: 23,
     timer: { width: 263, height: 78, x: -565, y: 345 },

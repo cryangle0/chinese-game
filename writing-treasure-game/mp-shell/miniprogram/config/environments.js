@@ -1,6 +1,6 @@
 ﻿const ENVIRONMENTS = Object.freeze({
   develop: Object.freeze({
-    h5Url: 'https://game.xyouxing.com/writing-treasure/index.html?release=20260731155049',
+    h5Url: 'https://game.xyouxing.com/writing-treasure/index.html?release=20260801204222',
     bankUrl: 'https://game.xyouxing.com/writing-treasure/question-bank.json',
     trackEndpoint: 'https://agent.onnsa.cn/writing-treasure/api/track',
   }),

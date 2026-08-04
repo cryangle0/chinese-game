@@ -7,6 +7,10 @@ import { MotionAssets, SpriteSheetAnimation } from '../../../shared/types/Theme'
 import { ReadingRect } from '../config/ReadingLayout';
 import { jumpDeerAt, runDeerTo } from './DeerMotionTweens';
 
+const HORIZONTAL_RUN_PIXELS_PER_SECOND = 300;
+const POSE_RUN_MIN_SECONDS = 0.45;
+const POSE_RUN_SETTLE_SECONDS = 0.08;
+
 export class DeerView {
   readonly root: Node;
   private readonly visual: Node;
@@ -14,6 +18,8 @@ export class DeerView {
   private actionAsset: string;
   private idleAnimation?: SpriteSheetAnimation;
   private actionAnimation?: SpriteSheetAnimation;
+  private runLeftAnimation?: SpriteSheetAnimation;
+  private runRightAnimation?: SpriteSheetAnimation;
   private readonly player: SpriteSheetPlayer;
   private readonly motion: DomMotionSprite;
   private motionAssets?: MotionAssets;
@@ -29,12 +35,16 @@ export class DeerView {
     actionAsset: string,
     idleAnimation?: SpriteSheetAnimation,
     actionAnimation?: SpriteSheetAnimation,
+    runLeftAnimation?: SpriteSheetAnimation,
+    runRightAnimation?: SpriteSheetAnimation,
     motionAssets?: MotionAssets,
   ) {
     this.idleAsset = idleAsset;
     this.actionAsset = actionAsset;
     this.idleAnimation = idleAnimation;
     this.actionAnimation = actionAnimation;
+    this.runLeftAnimation = runLeftAnimation;
+    this.runRightAnimation = runRightAnimation;
     this.motionAssets = motionAssets;
     this.root = createUiNode(parent, 'ReadingDeer', 152, 266, new Vec3(0, -147));
     this.visual = createUiNode(this.root, 'ReadingDeerVisual', 152, 266);
@@ -51,7 +61,15 @@ export class DeerView {
   }
   update(deltaSeconds: number): void {
     this.player.update(deltaSeconds);
-    if (this.idleAnimation || this.acting) return;
+    if (typeof document !== 'undefined') {
+      const playback = this.player.snapshot();
+      if (playback) {
+        document.body.dataset.deerSpritePath = playback.path;
+        document.body.dataset.deerSpriteFrame = String(playback.frame);
+        document.body.dataset.deerSpriteFrames = String(playback.frames);
+      }
+    }
+    if (this.motionAssets?.idle || this.idleAnimation || this.acting) return;
     this.idleSeconds += deltaSeconds;
     const breath = Math.sin(this.idleSeconds * Math.PI * 1.25);
     this.visual.setPosition(0, 0);
@@ -61,20 +79,26 @@ export class DeerView {
   moveTo(column: number): boolean {
     const x = this.columnX[column] ?? 0;
     if (Math.abs(this.root.position.x - x) < 1) return false;
+    const travelDistance = Math.abs(x - this.root.position.x);
+    const travelSeconds = Math.max(
+      POSE_RUN_MIN_SECONDS,
+      travelDistance / HORIZONTAL_RUN_PIXELS_PER_SECOND,
+    );
     Tween.stopAllByTarget(this.root);
+    this.root.setPosition(this.root.position.x, this.baseY);
+    this.root.setScale(Vec3.ONE);
     this.acting = true;
     this.markState('run');
     this.visual.setScale(Vec3.ONE);
-    const run = x < this.root.position.x
-      ? this.motionAssets?.runLeft ?? this.motionAssets?.action
-      : this.motionAssets?.runRight ?? this.motionAssets?.action;
-    // Prefer immediate visibility over frame-0 restart (restart clears src and races the move).
-    this.motion.show(run);
-    // Hold long enough for run webp to be seen (was 0.28s → often only static PNG).
+    const run = this.showRun(x);
     runDeerTo(this.root, x, this.baseY, () => {
       this.acting = false;
       this.showIdle();
-    }, 0.08);
+    }, POSE_RUN_SETTLE_SECONDS, travelSeconds, true);
+    if (typeof document !== 'undefined') {
+      document.body.dataset.deerRunDuration = String(travelSeconds);
+      document.body.dataset.deerRunAsset = run ?? '';
+    }
     return true;
   }
 
@@ -89,8 +113,9 @@ export class DeerView {
 
     const jump = () => {
       this.markState('action');
-      this.motion.show(this.motionAssets?.action, true);
+      this.player.stop();
       if (this.actionAnimation) {
+        this.motion.hide();
         const duration = this.actionAnimation.frames / this.actionAnimation.fps;
         this.player.play(this.actionAnimation, false);
         jumpDeerAt(
@@ -104,6 +129,7 @@ export class DeerView {
         );
         return;
       }
+      this.motion.show(this.motionAssets?.action, true);
       spriteLoader.apply(this.visual, this.actionAsset, 'contain');
       // No scale pulse — avoids size pop with DomMotionSprite (#11).
       jumpDeerAt(
@@ -119,12 +145,16 @@ export class DeerView {
 
     if (needRun) {
       this.markState('run');
-      this.motion.show(
-        x < this.root.position.x
-          ? this.motionAssets?.runLeft ?? this.motionAssets?.action
-          : this.motionAssets?.runRight ?? this.motionAssets?.action,
+      this.showRun(x);
+      const travelDistance = Math.abs(x - this.root.position.x);
+      const travelSeconds = Math.max(
+        POSE_RUN_MIN_SECONDS,
+        travelDistance / HORIZONTAL_RUN_PIXELS_PER_SECOND,
       );
-      runDeerTo(this.root, x, this.baseY, jump);
+      runDeerTo(this.root, x, this.baseY, jump, 0, travelSeconds, true);
+      if (typeof document !== 'undefined') {
+        document.body.dataset.deerPreJumpRunDuration = String(travelSeconds);
+      }
       return;
     }
     jump();
@@ -135,12 +165,16 @@ export class DeerView {
     actionAsset: string,
     idleAnimation?: SpriteSheetAnimation,
     actionAnimation?: SpriteSheetAnimation,
+    runLeftAnimation?: SpriteSheetAnimation,
+    runRightAnimation?: SpriteSheetAnimation,
     motionAssets?: MotionAssets,
   ): void {
     this.idleAsset = idleAsset;
     this.actionAsset = actionAsset;
     this.idleAnimation = idleAnimation;
     this.actionAnimation = actionAnimation;
+    this.runLeftAnimation = runLeftAnimation;
+    this.runRightAnimation = runRightAnimation;
     this.motionAssets = motionAssets;
     Tween.stopAllByTarget(this.root);
     this.root.setPosition(0, this.baseY);
@@ -173,11 +207,36 @@ export class DeerView {
   }
 
   private showIdle(): void {
-    this.motion.hide();
     this.visual.active = true;
     this.markState('idle');
-    if (this.idleAnimation) this.player.play(this.idleAnimation);
-    else spriteLoader.apply(this.visual, this.idleAsset, 'contain');
+    if (this.idleAnimation) {
+      this.motion.hide();
+      this.visual.setPosition(Vec3.ZERO);
+      this.visual.setScale(Vec3.ONE);
+      // The compact static deer is startup-critical. Keep it visible until the
+      // high-resolution idle sheet, deferred behind user intent, is decoded.
+      spriteLoader.apply(this.visual, this.idleAsset, 'contain');
+      this.player.play(this.idleAnimation);
+      if (typeof document !== 'undefined') {
+        document.body.dataset.deerIdleMotion = 'sprite-sheet-run-in-place';
+        document.body.dataset.deerLocomotionRenderer = 'sprite-sheet';
+      }
+      return;
+    }
+    const runInPlace = this.motionAssets?.idle;
+    if (runInPlace) {
+      this.player.clear();
+      this.visual.setPosition(Vec3.ZERO);
+      this.visual.setScale(Vec3.ONE);
+      this.motion.show(runInPlace);
+      if (typeof document !== 'undefined') {
+        document.body.dataset.deerIdleMotion = 'run-in-place';
+      }
+      return;
+    }
+    this.motion.hide();
+    if (typeof document !== 'undefined') delete document.body.dataset.deerIdleMotion;
+    spriteLoader.apply(this.visual, this.idleAsset, 'contain');
   }
 
   private finishAction(done: () => void): void {
@@ -189,5 +248,33 @@ export class DeerView {
   private markState(state: 'idle' | 'run' | 'action'): void {
     if (typeof document !== 'undefined') document.body.dataset.deerState = state;
   }
+
+  private showRun(targetX: number): string | undefined {
+    const movingLeft = targetX < this.root.position.x;
+    const animation = movingLeft ? this.runLeftAnimation : this.runRightAnimation;
+    const fallback = movingLeft
+      ? this.motionAssets?.runLeft ?? this.motionAssets?.action
+      : this.motionAssets?.runRight ?? this.motionAssets?.action;
+    this.visual.active = true;
+    this.visual.setPosition(Vec3.ZERO);
+    this.visual.setScale(Vec3.ONE);
+    if (animation) {
+      this.motion.hide();
+      this.player.play(animation);
+      if (typeof document !== 'undefined') {
+        document.body.dataset.deerRunAsset = animation.path;
+        document.body.dataset.deerLocomotionRenderer = 'sprite-sheet';
+      }
+      return animation.path;
+    }
+    this.player.stop();
+    this.motion.show(fallback);
+    if (typeof document !== 'undefined') {
+      document.body.dataset.deerRunAsset = fallback ?? '';
+      document.body.dataset.deerLocomotionRenderer = 'animated-webp';
+    }
+    return fallback;
+  }
+
   dispose(): void { this.motion.dispose(); }
 }

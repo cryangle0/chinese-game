@@ -73,6 +73,24 @@ export function preloadInitialTheme(theme?: GameTheme): Promise<void> {
   return preloadWithout(theme, deferred);
 }
 
+export function preloadInitialThemeAfterFirstPaint(theme?: GameTheme): Promise<void> {
+  if (!theme) return Promise.resolve();
+  if (typeof window === 'undefined') return preloadInitialTheme(theme);
+  return new Promise((resolve, reject) => {
+    const preload = () => {
+      void preloadInitialTheme(theme).then(resolve, reject);
+    };
+    const scheduleIdle = () => {
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(preload, { timeout: 1200 });
+      } else {
+        window.setTimeout(preload, 260);
+      }
+    };
+    window.requestAnimationFrame(() => window.requestAnimationFrame(scheduleIdle));
+  });
+}
+
 export function retainThemes(themes: readonly (GameTheme | undefined)[]): void {
   spriteLoader.retainOnly(themes.flatMap((theme) => theme ? themeAssetPaths(theme) : []));
 }

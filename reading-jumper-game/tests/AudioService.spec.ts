@@ -166,6 +166,17 @@ describe('AudioService', () => {
     audio.dispose();
   });
 
+  it('can retain a theme without preloading its media before user intent', () => {
+    const audio = new AudioService(catalog);
+    const setTheme = audio.setTheme.bind(audio) as (
+      theme: Parameters<AudioService['setTheme']>[0],
+      options?: { preload?: boolean },
+    ) => void;
+    setTheme({ bgm: { url: '/deferred-bgm.mp3' } }, { preload: false });
+    expect(FakeAudio.instances.has('/deferred-bgm.mp3')).toBe(false);
+    audio.dispose();
+  });
+
   it('starts and stops a theme ambient loop without restarting the shared BGM', async () => {
     const audio = new AudioService({ ...catalog, bgm: { url: '/shared.mp3' } });
     audio.playMusic();

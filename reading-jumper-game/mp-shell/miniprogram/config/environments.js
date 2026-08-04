@@ -1,6 +1,6 @@
 const ENVIRONMENTS = Object.freeze({
   develop: Object.freeze({
-    h5Url: 'https://game.xyouxing.com/reading-jumper/index.html?release=20260731171318',
+    h5Url: 'https://game.xyouxing.com/reading-jumper/index.html?release=20260802134144',
     bankUrl: 'https://game.xyouxing.com/reading-jumper/question-bank.json',
     trackEndpoint: '',
   }),

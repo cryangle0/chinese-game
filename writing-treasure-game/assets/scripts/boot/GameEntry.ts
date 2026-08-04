@@ -1,5 +1,6 @@
 import { _decorator, Component, Node, UITransform } from 'cc';
 import { PageLifecycle } from '../core/lifecycle/PageLifecycle';
+import { dismissStartupCoverAfterDraws } from '../core/lifecycle/StartupCover';
 import { createUiNode } from '../core/ui/UiFactory';
 import { preloadIntro } from '../core/assets/ThemePreloader';
 import { WritingGameController } from '../games/writing-treasure/controllers/WritingGameController';
@@ -102,12 +103,14 @@ export class GameEntry extends Component {
       this.loading?.root.destroy(); this.loading = null;
       messenger.ready();
       if (typeof document !== 'undefined') document.body.dataset.gameReady = 'true';
+      dismissStartupCoverAfterDraws(() => this.destroyed);
     } catch (error) {
       if (this.destroyed || (services && this.services !== services)) return;
       messenger.error(error);
       if (typeof document !== 'undefined') document.body.dataset.gameError = 'boot';
       console.error('[writing-treasure] boot failed', error);
       this.showBootError();
+      dismissStartupCoverAfterDraws(() => this.destroyed);
     } finally { this.booting = false; }
   }
 

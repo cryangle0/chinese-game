@@ -103,6 +103,7 @@ export class WritingGameController implements GameController {
   }
   update(deltaSeconds: number): void {
     if (!this.scope.isActive() || this.paused) return;
+    this.view.deer.update(deltaSeconds);
     if (this.timer.tick(deltaSeconds)) { this.timeoutStage(); return; }
     this.renderHud(false);
   }

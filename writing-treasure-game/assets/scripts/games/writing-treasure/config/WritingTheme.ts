@@ -65,6 +65,7 @@ function clientAssets(id: string, _index: number): ThemeAssets {
     magic: 4,
   };
   const transitionIndex = transitionByScene[id];
+  const characterMotionVersion = id === 'treasure' ? '?v=hq-character-2' : '';
   const choiceStateAvailability: Readonly<Record<string, {
     readonly success: boolean;
     readonly fail: boolean;
@@ -115,9 +116,9 @@ function clientAssets(id: string, _index: number): ThemeAssets {
     resultBackground: `${base}/resultBackground`,
     motion: {
       idle: `${media}/idle.webp`,
-      action: `${media}/action.webp`,
-      runLeft: `${media}/run-left.webp`,
-      runRight: `${media}/run-right.webp${id === 'treasure' ? '?v=hq-entry-1' : ''}`,
+      action: `${media}/action.webp${characterMotionVersion}`,
+      runLeft: `${media}/run-left.webp${characterMotionVersion}`,
+      runRight: `${media}/run-right.webp${characterMotionVersion}`,
       correct: `${media}/correct.webp`,
       wrong: `${media}/wrong.webp`,
       result: `${media}/result.webp`,

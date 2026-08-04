@@ -24,6 +24,7 @@ const enabledPhases = new Set(
   (process.env.E2E_PHASES ?? 'desktop,mobile,themes,pose')
     .split(',').map((value) => value.trim()).filter(Boolean),
 );
+const startupOnly = process.env.E2E_STARTUP_ONLY === '1';
 const chrome = process.env.CHROME_PATH
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 let productionBankTransferBytes = 0;
@@ -311,6 +312,12 @@ async function assertRuntime(page, startedAt, readyAt, label) {
       + `(${(totalTransfer / 1048576).toFixed(2)} MB total)\n${largest}`,
     );
   }
+  console.log(
+    `[e2e] ${label} startup=${startupMs}ms frameP95=${frame.p95.toFixed(2)}ms; `
+    + 'pre-interaction transfer: '
+    + `${(coreTransfer / 1048576).toFixed(2)} MB core + `
+    + `${(poseTransfer / 1048576).toFixed(2)} MB pose`,
+  );
 }
 
 async function constrain(page) {
@@ -405,14 +412,23 @@ async function assertObservedMotionPaths(page, expected, label) {
 
 async function assertReadingDeerIdle(page, label) {
   await page.waitForSelector('body[data-deer-state="idle"]', { timeout: 4000 });
-  const motion = page.locator('img[data-customer-motion="ReadingDeer"]');
-  await motion.waitFor({ state: 'hidden', timeout: 2000 });
-  const source = normalizePublicPath(await motion.evaluate((image) => (
-    image.currentSrc || image.getAttribute('src') || ''
-  )));
-  if (!/\/media\/[^/]+\/run-(?:left|right)\.webp$/.test(source)) {
-    throw new Error(`${label} did not finish from a run motion: ${source || 'no source'}`);
+  const idleMotion = await page.getAttribute('body', 'data-deer-idle-motion');
+  const renderer = await page.getAttribute('body', 'data-deer-locomotion-renderer');
+  if (idleMotion !== 'sprite-sheet-run-in-place' || renderer !== 'sprite-sheet') {
+    throw new Error(
+      `${label} did not use sprite-sheet run-in-place idle: `
+      + `${idleMotion || 'missing'}/${renderer || 'missing'}`,
+    );
   }
+}
+
+async function assertReadingDeerRun(page, scene) {
+  await page.waitForFunction((sceneId) => {
+    const { deerState, deerRunAsset, deerLocomotionRenderer } = document.body.dataset;
+    return deerState === 'run'
+      && deerLocomotionRenderer === 'sprite-sheet'
+      && deerRunAsset?.startsWith(`themes/reading/${sceneId}/locomotion-run-`);
+  }, scene, { timeout: 5000 });
 }
 
 async function assertMediaPlayback(page) {
@@ -559,6 +575,11 @@ async function runDesktop(browser) {
   await assertRuntime(page, startedAt, readyAt, 'desktop');
   await assertIntroCameraOverlay(page, 'desktop', 322, 334);
   await capture(page, 'desktop-reading-intro');
+  if (startupOnly) {
+    if (failures.length) throw new Error(failures.join('\n'));
+    await context.close();
+    return;
+  }
   await page.mouse.click(720, 365);
   await page.waitForSelector('body[data-game-view="play"]', { timeout: 2500 });
   await capture(page, 'desktop-reading-game');
@@ -702,10 +723,7 @@ async function runPlaceholderThemes(browser) {
     await page.waitForSelector('body[data-pose-state="ready"]', { timeout: 10000 });
     await page.mouse.click(10, 10);
     await page.evaluate(() => { window.__poseMoveEnabled = true; });
-    await assertObservedMotionPaths(page, [
-      `/media/${scene}/run-left.webp`,
-      `/media/${scene}/run-right.webp`,
-    ], `${scene} pose movement`);
+    await assertReadingDeerRun(page, scene);
     await page.evaluate(() => { window.__poseMoveEnabled = false; });
     await assertReadingDeerIdle(page, `${scene} idle`);
     await capture(page, `desktop-reading-${scene}-placeholder`);
@@ -748,7 +766,7 @@ async function runPlaceholderThemes(browser) {
       : `/audio/reading/${scene}`;
     await assertPlayedPaths(page, [
       '/audio/mario/run.mp3',
-      '/audio/mario/strike.mp3',
+      ...(scene === 'space' ? [] : ['/audio/mario/strike.mp3']),
       '/audio/mario/reward.mp3',
       '/audio/mario/danger.mp3',
       '/audio/mario/result.mp3',
@@ -757,8 +775,6 @@ async function runPlaceholderThemes(browser) {
     ], scene);
     await assertObservedMotionPaths(page, [
       `/media/${scene}/action.webp`,
-      `/media/${scene}/run-left.webp`,
-      `/media/${scene}/run-right.webp`,
       `/media/${scene}/correct.webp`,
       `/media/${scene}/wrong.webp`,
       `/media/${scene}/result.webp`,

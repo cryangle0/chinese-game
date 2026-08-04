@@ -99,7 +99,7 @@ describe('Reading play text size + bounds', () => {
   it.each([
     ['deep-sea', 40, 80.5],
     ['space', 54, 73],
-    ['food', 23, 44],
+    ['food', 23, 54],
     ['poetry', -5, 64],
   ])(
     '%s: uses the measured action-frame correction for a visible brick contact',

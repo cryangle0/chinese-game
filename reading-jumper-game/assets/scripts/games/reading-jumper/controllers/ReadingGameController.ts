@@ -1,7 +1,9 @@
 import { director, Director, Node } from 'cc';
 import { TaskScope } from '../../../core/lifecycle/TaskScope';
 import { stopTweensRecursively } from '../../../core/lifecycle/TweenCleanup';
-import { preloadPlayableTheme, retainThemes } from '../../../core/assets/ThemePreloader';
+import {
+  preloadPlayTheme, preloadStartupTheme, retainThemes,
+} from '../../../core/assets/ThemePreloader';
 import { createUiNode } from '../../../core/ui/UiFactory';
 import { CampaignProgress } from '../../../services/CampaignProgress';
 import { GameSession } from '../../../services/GameSession';
@@ -52,7 +54,7 @@ export class ReadingGameController implements GameController {
     private readonly onReturnHome: () => void = () => undefined) {
     this.root = createUiNode(parent, 'ReadingJumper', 1440, 810);
     this.campaign = new CampaignProgress(readingThemes, options.initialScene);
-    this.services.audio.setTheme(marioAudio);
+    this.services.audio.setTheme(marioAudio, { preload: false });
     this.view = new ReadingGameView(this.root, undefined, (i) => this.choose(i));
     this.hud = new ReadingHudController(
       this.view, this.timer, this.session, this.services, this.campaign,
@@ -86,7 +88,6 @@ export class ReadingGameController implements GameController {
       () => this.stageResults.completeQuestion(),
     );
     this.view.setActive(false);
-    this.view.mount(this.campaign.current());
     this.options.knowledgePoint = resolveBookOption(this.options.knowledgePoint ?? DEFAULT_BOOK);
     if (options.skipIntro) void this.start().catch((error) => this.completion.fail(error));
     else this.initialThemePreload = mountReadingIntro({
@@ -120,10 +121,15 @@ export class ReadingGameController implements GameController {
       this.initialThemePreload = null;
       if (preloadError) throw preloadError;
     } else {
-      await preloadPlayableTheme(this.campaign.current());
+      await preloadStartupTheme(this.campaign.current());
     }
+    // Run/action sheets begin loading only after explicit user intent. Idle stays
+    // visible while SpriteSheetPlayer resolves a directional sheet, so this does
+    // not block or expose a blank frame.
+    void preloadPlayTheme(this.campaign.current());
     await this.services.questions.waitForRefresh(CLICK_QUESTION_GRACE_MS);
     if (!this.scope.isActive()) return;
+    this.view.mount(this.campaign.current());
     const intro = this.root.getChildByName('GameIntro');
     this.view.setActive(true);
     this.round.begin();
