@@ -28,11 +28,19 @@ const defaultOutputRoot = path.join(projectRoot, 'customer-media', 'reward-props
 const expectedRowFrames = [9, 7, 5, 5];
 const alphaThreshold = 8;
 const minimumComponentPixels = 8;
-const frameSize = 256;
-const columns = 5;
-const rows = 6;
-const bodyTop = 8;
-const bodyRight = 248;
+const frameWidth = 261;
+const frameHeight = 241;
+const bodyTop = 0;
+const bodyRight = frameWidth - 1;
+const squidPlayback = {
+  fps: 24,
+  popupFrames: Array.from({ length: 9 }, (_, index) => index),
+  repositionFrame: 12,
+  sprayFrames: Array.from({ length: 13 }, (_, index) => index + 13),
+  excludedFrames: [9, 10, 11],
+};
+const squidFrameDirectoryName = 'ink-squid-frames';
+const legacySquidSheetName = 'ink-squid-sheet.png';
 const brushMaxSide = 256;
 const pngOptions = {
   colorType: 6,
@@ -52,12 +60,44 @@ export async function buildReadingNegativeFeedbackAssets({
   ]);
   const squidSource = PNG.sync.read(squidSourceBytes);
   const poetrySource = PNG.sync.read(poetrySourceBytes);
-  const squid = buildSquidSheet(squidSource);
+  const squid = buildSquidFrames(squidSource);
   const poetry = buildPoetryBrush(poetrySource);
+  const squidDirectory = path.join(outputRoot, 'deep-sea', squidFrameDirectoryName);
+  const squidManifest = {
+    version: 1,
+    source: {
+      name: path.basename(squidSourcePath),
+      width: squidSource.width,
+      height: squidSource.height,
+      sha256: sha256(squidSourceBytes),
+    },
+    fps: squidPlayback.fps,
+    rowFrames: [...expectedRowFrames],
+    frameWidth,
+    frameHeight,
+    anchor: { x: bodyRight, y: bodyTop },
+    playback: {
+      popupFrames: [...squidPlayback.popupFrames],
+      repositionFrame: squidPlayback.repositionFrame,
+      sprayFrames: [...squidPlayback.sprayFrames],
+      excludedFrames: [...squidPlayback.excludedFrames],
+    },
+    frames: squid.frames.map((frame, index) => ({
+      index,
+      file: frameFileName(index),
+      width: frame.image.width,
+      height: frame.image.height,
+      sha256: sha256(frame.bytes),
+    })),
+  };
   const outputs = [
+    ...squid.frames.map((frame, index) => ({
+      file: path.join(squidDirectory, frameFileName(index)),
+      bytes: frame.bytes,
+    })),
     {
-      file: path.join(outputRoot, 'deep-sea', 'ink-squid-sheet.png'),
-      bytes: squid.bytes,
+      file: path.join(squidDirectory, 'manifest.json'),
+      bytes: Buffer.from(`${JSON.stringify(squidManifest, null, 2)}\n`),
     },
     {
       file: path.join(outputRoot, 'poetry', 'penalty.png'),
@@ -67,11 +107,17 @@ export async function buildReadingNegativeFeedbackAssets({
 
   if (check) {
     await validateOutputs(outputs);
+    await validateLegacySquidSheet(outputRoot);
   } else {
+    await fs.rm(squidDirectory, { recursive: true, force: true });
     await Promise.all(outputs.map(async ({ file, bytes }) => {
       await fs.mkdir(path.dirname(file), { recursive: true });
       await fs.writeFile(file, bytes);
     }));
+    await fs.rm(
+      path.join(outputRoot, 'deep-sea', legacySquidSheetName),
+      { force: true },
+    );
   }
 
   return {
@@ -80,16 +126,23 @@ export async function buildReadingNegativeFeedbackAssets({
       source: { width: squidSource.width, height: squidSource.height },
       rowFrames: [...expectedRowFrames],
       frames: expectedRowFrames.reduce((sum, count) => sum + count, 0),
-      frameWidth: frameSize,
-      frameHeight: frameSize,
-      columns,
-      rows,
+      frameWidth,
+      frameHeight,
+      playback: {
+        fps: squidPlayback.fps,
+        popupFrames: [...squidPlayback.popupFrames],
+        repositionFrame: squidPlayback.repositionFrame,
+        sprayFrames: [...squidPlayback.sprayFrames],
+        excludedFrames: [...squidPlayback.excludedFrames],
+      },
+      directory: squidFrameDirectoryName,
       detachedComponents: squid.detachedComponents,
       lastFrameDetachedComponents: squid.lastFrameDetachedComponents,
-      width: squid.image.width,
-      height: squid.image.height,
-      bytes: squid.bytes.length,
-      sha256: sha256(squid.bytes),
+      bytes: squid.frames.reduce((sum, frame) => sum + frame.bytes.length, 0),
+      manifestSha256: sha256(outputs[expectedRowFrames.reduce(
+        (sum, count) => sum + count,
+        0,
+      )].bytes),
     },
     poetry: {
       sourceName: path.basename(poetrySourcePath),
@@ -104,7 +157,7 @@ export async function buildReadingNegativeFeedbackAssets({
   };
 }
 
-function buildSquidSheet(source) {
+function buildSquidFrames(source) {
   if (source.width !== 1536 || source.height !== 1024) {
     throw new Error(
       `Unexpected squid source dimensions: ${source.width}x${source.height}`,
@@ -159,18 +212,10 @@ function buildSquidSheet(source) {
     })));
   }
 
-  const image = new PNG({
-    width: columns * frameSize,
-    height: rows * frameSize,
-    colorType: 6,
-  });
-  image.data.fill(0);
-  frames.forEach((frame, frameIndex) => {
-    placeSquidFrame(source, image, frame, frameIndex);
-  });
+  const outputFrames = frames.map((frame, frameIndex) =>
+    buildSquidFrame(source, frame, frameIndex));
   return {
-    image,
-    bytes: PNG.sync.write(image, pngOptions),
+    frames: outputFrames,
     detachedComponents,
     lastFrameDetachedComponents: frames.at(-1).detached.length,
   };
@@ -267,27 +312,47 @@ function findComponents(image, { top, bottom }) {
   return components;
 }
 
-function placeSquidFrame(source, sheet, { body, detached }, frameIndex) {
-  if (body.width > frameSize || body.height > frameSize) {
+function buildSquidFrame(source, { body, detached }, frameIndex) {
+  if (body.width > frameWidth || body.height > frameHeight) {
     throw new Error(
       `Squid frame ${frameIndex} body is too large: ${body.width}x${body.height}`,
     );
   }
-  const cellX = frameIndex % columns * frameSize;
-  const cellY = Math.floor(frameIndex / columns) * frameSize;
+  const image = new PNG({ width: frameWidth, height: frameHeight, colorType: 6 });
+  image.data.fill(0);
   const bodyLeft = bodyRight - body.width + 1;
-  copyComponent(source, sheet, body, cellX + bodyLeft, cellY + bodyTop);
+  copyComponent(source, image, body, bodyLeft, bodyTop, frameIndex);
 
   for (const component of detached) {
-    const relativeLeft = bodyLeft + component.left - body.left;
-    const relativeTop = bodyTop + component.top - body.top;
-    const targetLeft = clamp(relativeLeft, 0, frameSize - component.width);
-    const targetTop = clamp(relativeTop, 0, frameSize - component.height);
-    copyComponent(source, sheet, component, cellX + targetLeft, cellY + targetTop);
+    const targetLeft = bodyLeft + component.left - body.left;
+    const targetTop = bodyTop + component.top - body.top;
+    copyComponent(source, image, component, targetLeft, targetTop, frameIndex);
   }
+  return {
+    image,
+    bytes: PNG.sync.write(image, pngOptions),
+  };
 }
 
-function copyComponent(source, target, component, targetLeft, targetTop) {
+function copyComponent(
+  source,
+  target,
+  component,
+  targetLeft,
+  targetTop,
+  frameIndex,
+) {
+  if (
+    targetLeft < 0
+    || targetTop < 0
+    || targetLeft + component.width > target.width
+    || targetTop + component.height > target.height
+  ) {
+    throw new Error(
+      `Squid frame ${frameIndex} component exceeds ${target.width}x${target.height}: `
+      + `${targetLeft},${targetTop},${component.width},${component.height}`,
+    );
+  }
   for (const sourcePixel of component.pixels) {
     const sourceX = sourcePixel % source.width;
     const sourceY = Math.floor(sourcePixel / source.width);
@@ -300,6 +365,10 @@ function copyComponent(source, target, component, targetLeft, targetTop) {
     target.data[targetOffset + 2] = source.data[sourceOffset + 2];
     target.data[targetOffset + 3] = source.data[sourceOffset + 3];
   }
+}
+
+function frameFileName(index) {
+  return `frame-${String(index).padStart(2, '0')}.png`;
 }
 
 function buildPoetryBrush(source) {
@@ -416,12 +485,19 @@ async function validateOutputs(outputs) {
   }
 }
 
-function alphaAt(image, x, y) {
-  return image.data[(y * image.width + x) * 4 + 3];
+async function validateLegacySquidSheet(outputRoot) {
+  const legacyFile = path.join(outputRoot, 'deep-sea', legacySquidSheetName);
+  try {
+    await fs.access(legacyFile);
+  } catch (error) {
+    if (error.code === 'ENOENT') return;
+    throw error;
+  }
+  throw new Error(`${legacySquidSheetName} should be removed`);
 }
 
-function clamp(value, minimum, maximum) {
-  return Math.max(minimum, Math.min(maximum, value));
+function alphaAt(image, x, y) {
+  return image.data[(y * image.width + x) * 4 + 3];
 }
 
 function sha256(bytes) {

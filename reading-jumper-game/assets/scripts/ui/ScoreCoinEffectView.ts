@@ -10,6 +10,7 @@ import {
   createScoreCoinElement,
   pointText,
   renderScoreCoin,
+  scoreTerminalDurationMs,
   screenPointText,
   spawnScoreCoinBurst,
   spawnScoreTerminalEffect,
@@ -34,6 +35,7 @@ export interface ScoreCoinPlayOptions {
   readonly awarded: number;
   readonly visual?: ScoreFlightVisual;
   readonly onFirstArrival?: () => void;
+  readonly onTerminalComplete?: () => void;
 }
 
 interface ActiveCoin {
@@ -68,11 +70,13 @@ export class ScoreCoinEffectView {
     const count = visual?.count ?? scoreCoinCount(options.awarded);
     if (!start || !end || !this.container || count === 0) {
       options.onFirstArrival?.();
+      options.onTerminalComplete?.();
       return;
     }
     const canvas = document.getElementById('GameCanvas');
     if (!(canvas instanceof HTMLCanvasElement)) {
       options.onFirstArrival?.();
+      options.onTerminalComplete?.();
       return;
     }
 
@@ -117,6 +121,7 @@ export class ScoreCoinEffectView {
       ));
 
     let firstArrived = false;
+    let terminalCompleteAt = 0;
     const startedAt = performance.now();
     const tick = (now: number): void => {
       if (runId !== this.runId || !this.container) return;
@@ -140,18 +145,30 @@ export class ScoreCoinEffectView {
           coin.arrived = true;
           if (!firstArrived) {
             firstArrived = true;
+            const terminalVisual = visual ?? { asset: './effects/score-coin.png' };
+            const terminalDurationMs = scoreTerminalDurationMs(terminalVisual);
+            terminalCompleteAt = now + terminalDurationMs;
             document.body.dataset.scoreCoinArrivalScreen =
               `${screen.x.toFixed(2)},${screen.y.toFixed(2)}`;
             document.body.dataset.scoreCoinPhase = 'arrival';
+            document.body.dataset.scoreCoinTerminalPhase = 'active';
+            document.body.dataset.scoreCoinTerminalStartedAt = now.toFixed(1);
             document.body.dataset.scoreCoinTerminalCount = String(
               spawnScoreTerminalEffect(
                 this.container!,
                 stageFrame,
                 end,
-                visual ?? { asset: './effects/score-coin.png' },
+                terminalVisual,
               ),
             );
             options.onFirstArrival?.();
+            window.setTimeout(() => {
+              if (runId !== this.runId) return;
+              document.body.dataset.scoreCoinTerminalPhase = 'complete';
+              document.body.dataset.scoreCoinTerminalCompletedAt =
+                performance.now().toFixed(1);
+              options.onTerminalComplete?.();
+            }, terminalDurationMs);
           }
         }
       });
@@ -165,13 +182,14 @@ export class ScoreCoinEffectView {
       }
       this.animationFrame = 0;
       coins.forEach((coin) => coin.element.remove());
+      const terminalRemainingMs = Math.max(0, terminalCompleteAt - performance.now());
       window.setTimeout(() => {
         if (runId !== this.runId || !this.container) return;
         this.container.replaceChildren();
         this.container.style.display = 'none';
         document.body.dataset.scoreCoinActive = 'false';
         document.body.dataset.scoreCoinPhase = 'complete';
-      }, 760);
+      }, Math.max(760, terminalRemainingMs));
     };
     this.animationFrame = requestAnimationFrame(tick);
   }
@@ -196,6 +214,9 @@ export class ScoreCoinEffectView {
     this.animationFrame = 0;
     this.container?.replaceChildren();
     if (this.container) this.container.style.display = 'none';
-    if (typeof document !== 'undefined') document.body.dataset.scoreCoinActive = 'false';
+    if (typeof document !== 'undefined') {
+      document.body.dataset.scoreCoinActive = 'false';
+      document.body.dataset.scoreCoinTerminalPhase = 'idle';
+    }
   }
 }

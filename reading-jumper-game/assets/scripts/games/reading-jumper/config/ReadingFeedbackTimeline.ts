@@ -1,10 +1,12 @@
 export const READING_FEEDBACK_TIMELINE_FPS = 30;
+export const WRONG_TOP_EFFECT_HOLD_MS = 800;
 
 export type ReadingFeedbackTimelineAction =
   | 'mark'
   | 'play-correct'
   | 'play-wrong'
   | 'show-feedback'
+  | 'show-wrong-top'
   | 'play-reward'
   | 'play-danger'
   | 'complete';
@@ -67,13 +69,13 @@ const SPACE_WRONG_TIMELINE: ReadingFeedbackTimelineSpec = {
   events: [
     { id: 'choice.wrong', frame: 0, action: 'mark' },
     { id: 'audio.wrong', frame: 0, action: 'play-wrong' },
-    // The standard jump reaches the ground eight frames after contact. Start
-    // the source there so the response feels immediate without snapping the
-    // actor from the jump apex to the grounded feedback pose.
-    { id: 'hazard.object.enter', frame: 8, action: 'show-feedback' },
-    { id: 'impact.start', frame: 23, action: 'play-danger' },
-    { id: 'actor.terminal', frame: 30, action: 'mark' },
-    { id: 'transition.enter', frame: 90, action: 'complete' },
+    // This timeline starts only after the penalty terminal effect and landing
+    // have both completed, so the feedback source can begin at its first frame.
+    { id: 'hazard.object.enter', frame: 0, action: 'show-feedback' },
+    { id: 'impact.start', frame: 15, action: 'play-danger' },
+    { id: 'actor.terminal', frame: 22, action: 'mark' },
+    { id: 'page.top.enter', frame: 68, action: 'show-wrong-top' },
+    { id: 'transition.enter', frame: 93, action: 'complete' },
   ],
 };
 

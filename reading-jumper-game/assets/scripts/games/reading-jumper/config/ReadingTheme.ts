@@ -4,7 +4,8 @@ import {
 import { AudioTheme } from '../../../services/AudioCatalog';
 const readingAudioBase = './audio/reading';
 const marioAudioBase = './audio/mario';
-const locomotionSheetFps = 15;
+const locomotionIdleSheetFps = 20;
+const locomotionTravelSheetFps = 15;
 const locomotionSheetColumns = 4;
 const locomotionSheetSpecs = {
   mario: {
@@ -38,7 +39,7 @@ function locomotionSheet(
     columns: locomotionSheetColumns,
     frames,
     padding: 0,
-    fps: locomotionSheetFps,
+    fps: action === 'idle' ? locomotionIdleSheetFps : locomotionTravelSheetFps,
   };
 }
 

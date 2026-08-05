@@ -588,10 +588,12 @@ async function runDesktop(browser) {
     await page.mouse.click(720, 430);
     await page.waitForSelector('body[data-answer-correct="false"]', { timeout: 3000 });
     if (wrong === 0) {
-      await page.waitForTimeout(650);
+      await page.waitForSelector('body[data-feedback-sequence-phase="feedback"]', {
+        timeout: 7000,
+      });
       await capture(page, 'desktop-reading-wrong-feedback');
     }
-    await page.waitForSelector('body[data-answer-ready="true"]', { timeout: 6000 });
+    await page.waitForSelector('body[data-answer-ready="true"]', { timeout: 9000 });
     if (await page.getAttribute('body', 'data-game-stage') !== 'mario'
       || await page.getAttribute('body', 'data-game-view') !== 'play') {
       throw new Error('reading ended the first scene before five questions after wrong answers');
@@ -736,7 +738,7 @@ async function runPlaceholderThemes(browser) {
       page, 'Feedback', `/media/${scene}/wrong.webp`, `${scene} wrong feedback`,
     );
     await page.locator('img[data-customer-motion="Feedback"]')
-      .waitFor({ state: 'hidden', timeout: 3000 });
+      .waitFor({ state: 'hidden', timeout: 5000 });
 
     await page.mouse.click(320, 430);
     await assertVisibleMotion(

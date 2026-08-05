@@ -219,6 +219,7 @@ export class DeerView {
       this.player.play(this.idleAnimation);
       if (typeof document !== 'undefined') {
         document.body.dataset.deerIdleMotion = 'sprite-sheet-run-in-place';
+        document.body.dataset.deerIdleFps = String(this.idleAnimation.fps);
         document.body.dataset.deerLocomotionRenderer = 'sprite-sheet';
       }
       return;
@@ -231,11 +232,15 @@ export class DeerView {
       this.motion.show(runInPlace);
       if (typeof document !== 'undefined') {
         document.body.dataset.deerIdleMotion = 'run-in-place';
+        delete document.body.dataset.deerIdleFps;
       }
       return;
     }
     this.motion.hide();
-    if (typeof document !== 'undefined') delete document.body.dataset.deerIdleMotion;
+    if (typeof document !== 'undefined') {
+      delete document.body.dataset.deerIdleMotion;
+      delete document.body.dataset.deerIdleFps;
+    }
     spriteLoader.apply(this.visual, this.idleAsset, 'contain');
   }
 

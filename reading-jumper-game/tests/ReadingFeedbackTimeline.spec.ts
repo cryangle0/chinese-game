@@ -3,6 +3,7 @@ import {
   readingFeedbackFrameMs,
   readingFeedbackTimeline,
   READING_FEEDBACK_TIMELINE_FPS,
+  WRONG_TOP_EFFECT_HOLD_MS,
 } from '../assets/scripts/games/reading-jumper/config/ReadingFeedbackTimeline';
 
 describe('Reading feedback 30fps timeline', () => {
@@ -45,16 +46,17 @@ describe('Reading feedback 30fps timeline', () => {
     });
   });
 
-  it('starts space wrong feedback as soon as the jump returns to ground', () => {
+  it('starts space wrong feedback after the penalty terminal gate', () => {
     const timeline = readingFeedbackTimeline('space', false);
     expect(timeline).not.toBeNull();
     expect(timeline?.events.map(({ id, frame }) => [id, frame])).toEqual([
       ['choice.wrong', 0],
       ['audio.wrong', 0],
-      ['hazard.object.enter', 8],
-      ['impact.start', 23],
-      ['actor.terminal', 30],
-      ['transition.enter', 90],
+      ['hazard.object.enter', 0],
+      ['impact.start', 15],
+      ['actor.terminal', 22],
+      ['page.top.enter', 68],
+      ['transition.enter', 93],
     ]);
   });
 
@@ -68,6 +70,20 @@ describe('Reading feedback 30fps timeline', () => {
     expect(terminal).toBeDefined();
     expect(impact!.frame - enter!.frame).toBe(15);
     expect(terminal!.frame - enter!.frame).toBe(22);
+  });
+
+  it('shows the page-top effect only after the wrong motion finishes', () => {
+    const timeline = readingFeedbackTimeline('space', false);
+    const enter = timeline?.events.find((event) => event.id === 'hazard.object.enter');
+    const top = timeline?.events.find((event) => event.id === 'page.top.enter');
+    const transition = timeline?.events.find((event) => event.id === 'transition.enter');
+    expect(enter).toBeDefined();
+    expect(top).toBeDefined();
+    expect(transition).toBeDefined();
+    expect(readingFeedbackFrameMs(top!.frame - enter!.frame))
+      .toBeGreaterThanOrEqual(feedbackDurationMs('space', false));
+    expect(readingFeedbackFrameMs(transition!.frame - top!.frame))
+      .toBeGreaterThanOrEqual(WRONG_TOP_EFFECT_HOLD_MS);
   });
 
   it('uses a direct, bright, feet-pinned presentation for the falling wreck', () => {

@@ -1,5 +1,8 @@
 import { Node, tween } from 'cc';
-import { feedbackHoldMs } from '../../../core/media/MotionPlayback';
+import {
+  feedbackDurationMs,
+  feedbackHoldMs,
+} from '../../../core/media/MotionPlayback';
 import { TaskScope } from '../../../core/lifecycle/TaskScope';
 import { CampaignProgress } from '../../../services/CampaignProgress';
 import { GameSession } from '../../../services/GameSession';
@@ -8,12 +11,14 @@ import { RoundTimer } from '../../../services/RoundTimer';
 import { ChineseQuestion } from '../../../shared/types/Question';
 import { createReadingFeedbackReadyHandler } from '../../../ui/DeepSeaInkEffectView';
 import type { ScoreCoinSnapshot } from '../../../ui/ScoreCoinEffectView';
+import type { ScoreFlightVisual } from '../../../ui/ScoreCoinDom';
 import type { FeedbackPresentationOptions } from '../../../ui/FeedbackView';
 import {
   readingFeedbackFrameMs,
   readingFeedbackTimeline,
   ReadingFeedbackTimelineEvent,
   ReadingFeedbackTimelineSpec,
+  WRONG_TOP_EFFECT_HOLD_MS,
 } from '../config/ReadingFeedbackTimeline';
 import { readingLayout } from '../config/ReadingLayout';
 import { readingThemes } from '../config/ReadingTheme';
@@ -50,27 +55,34 @@ export class ReadingAnswerController {
     const scoreAwarded = this.session.score() - scoreBefore;
     const theme = this.campaign.current();
     const feedbackTimeline = readingFeedbackTimeline(theme.id, correct);
+    const scoreVisual = readingScoreFeedback(theme.id, correct);
+    const deepSeaWrong = theme.id === 'deep-sea' && !correct;
     this.lastAnswerIndex = index;
     if (typeof document !== 'undefined') {
       document.body.dataset.answerCorrect = String(correct);
       document.body.dataset.scoreCoinFeedbackGate =
-        feedbackTimeline
+        feedbackTimeline && correct
           ? 'timeline-contact'
-          : (scoreAwarded > 0 ? 'arrival-and-landing' : 'landing');
+          : (
+            theme.id === 'deep-sea' && !correct
+              ? 'scene-effect-and-landing'
+              : (correct ? 'arrival-and-landing' : 'terminal-and-landing')
+          );
     }
     if (!feedbackTimeline) this.services.audio.play('strike');
     this.trackAnswer(question, correct);
-    if (feedbackTimeline) {
+    if (feedbackTimeline && correct) {
       this.view.deer.jumpTo(
         index,
         this.scope.guard(() => this.markTimelineLanding(feedbackTimeline)),
         this.scope.guard(() => {
           this.showTriggerReward(
+            theme.id,
             index,
             correct,
             scoreAwarded,
             scoreRewardStart,
-            () => undefined,
+            scoreVisual,
           );
           this.startFeedbackTimeline(feedbackTimeline, correct, question);
         }),
@@ -78,19 +90,37 @@ export class ReadingAnswerController {
       return;
     }
     let landed = false;
-    let rewardArrived = scoreAwarded <= 0;
+    let scoreEffectReady = false;
     let feedbackShown = false;
     const showFeedbackWhenReady = (): void => {
-      if (!landed || !rewardArrived || feedbackShown) return;
+      if (!landed || !scoreEffectReady || feedbackShown) return;
       feedbackShown = true;
-      this.showFeedback(correct, question);
+      if (feedbackTimeline) {
+        this.startFeedbackTimeline(feedbackTimeline, correct, question);
+      } else if (deepSeaWrong) {
+        this.showDeepSeaWrongFeedback(question);
+      } else {
+        this.showFeedback(correct, question);
+      }
     };
     const onLanding = this.scope.guard(() => {
       landed = true;
+      if (feedbackTimeline) this.markTimelineLanding(feedbackTimeline);
       showFeedbackWhenReady();
     });
-    const onRewardArrival = this.scope.guard(() => {
-      rewardArrived = true;
+    const onScoreEffectReady = this.scope.guard(() => {
+      scoreEffectReady = true;
+      if (!correct && typeof document !== 'undefined') {
+        if (deepSeaWrong) {
+          document.body.dataset.feedbackSequencePhase = 'scene-ready';
+          document.body.dataset.deepSeaInkPopupCompletedAt =
+            performance.now().toFixed(1);
+        } else {
+          document.body.dataset.feedbackSequencePhase = 'terminal-complete';
+          document.body.dataset.feedbackSequenceTerminalCompletedAt =
+            performance.now().toFixed(1);
+        }
+      }
       showFeedbackWhenReady();
     });
     this.view.deer.jumpTo(
@@ -98,38 +128,56 @@ export class ReadingAnswerController {
       onLanding,
       this.scope.guard(() =>
         this.showTriggerReward(
+          theme.id,
           index,
           correct,
           scoreAwarded,
           scoreRewardStart,
-          onRewardArrival,
+          scoreVisual,
+          correct ? onScoreEffectReady : undefined,
+          correct ? undefined : onScoreEffectReady,
         )),
     );
   }
 
   private showTriggerReward(
+    themeId: string,
     index: number,
     correct: boolean,
     scoreAwarded: number,
     scoreRewardStart: ScoreCoinSnapshot | null,
-    onRewardArrival: () => void,
+    visual: ScoreFlightVisual | undefined,
+    onFirstArrival?: () => void,
+    onTerminalComplete?: () => void,
   ): void {
     this.view.bricks.showResult(index, correct);
-    const theme = this.campaign.current();
-    const visual = readingScoreFeedback(theme.id, correct);
-    if (!correct) this.view.showWrongFeedbackTop(theme.id);
-    if (!visual && scoreAwarded <= 0) return;
-    if (correct) this.services.audio.play('coin');
+    if (themeId === 'deep-sea' && !correct) {
+      if (typeof document !== 'undefined') {
+        document.body.dataset.deepSeaInkTriggerPhase = 'brick-apex';
+        document.body.dataset.scoreCoinFeedbackKind = 'scene-effect';
+        document.body.dataset.feedbackSequencePhase = 'terminal';
+      }
+      this.view.playDeepSeaInkPopup(index, () => onTerminalComplete?.());
+      return;
+    }
     if (typeof document !== 'undefined') {
       document.body.dataset.scoreCoinTriggerPhase = 'brick-apex';
       document.body.dataset.scoreCoinFeedbackKind = correct ? 'reward' : 'penalty';
+      if (!correct) document.body.dataset.feedbackSequencePhase = 'terminal';
     }
+    if (!visual && scoreAwarded <= 0) {
+      onFirstArrival?.();
+      onTerminalComplete?.();
+      return;
+    }
+    if (correct) this.services.audio.play('coin');
     this.view.playScoreReward(
       scoreRewardStart,
       this.session.score(),
       scoreAwarded,
       visual,
-      onRewardArrival,
+      onFirstArrival,
+      onTerminalComplete,
     );
   }
 
@@ -139,10 +187,16 @@ export class ReadingAnswerController {
     presentation: FeedbackPresentationOptions = {},
     scheduleCompletion = true,
     playDefaultAudio = true,
+    afterFeedbackReady?: () => void,
   ): void {
     const theme = this.campaign.current();
     const message = correct ? question.correctFeedback : question.wrongFeedback;
     const columnX = readingLayout(theme.id).option.columns[this.lastAnswerIndex] ?? 0;
+    if (!correct && typeof document !== 'undefined') {
+      document.body.dataset.feedbackSequencePhase = 'feedback';
+      document.body.dataset.feedbackSequenceFeedbackStartedAt =
+        performance.now().toFixed(1);
+    }
     if (playDefaultAudio) {
       this.services.audio.play(correct ? 'correct' : 'wrong');
       this.services.audio.play(correct ? 'reward' : 'danger');
@@ -151,6 +205,9 @@ export class ReadingAnswerController {
       }
     }
     const motionPath = correct ? theme.assets.motion?.correct : theme.assets.motion?.wrong;
+    const feedbackReady = this.scope.guard(
+      createReadingFeedbackReadyHandler(this.view, afterFeedbackReady),
+    );
     this.view.feedback.show(
       correct,
       correct ? theme.assets.feedbackCorrect : theme.assets.feedbackWrong,
@@ -159,20 +216,58 @@ export class ReadingAnswerController {
       columnX,
       presentation,
       {
-        onReady: this.scope.guard(
-          createReadingFeedbackReadyHandler(this.view, theme.id, correct, columnX),
-        ),
+        onReady: feedbackReady,
         onError: () => {
           if (typeof document !== 'undefined') {
             document.body.dataset.feedbackActorHandoff = 'retained-on-error';
           }
+          if (afterFeedbackReady) feedbackReady();
         },
       },
     );
     if (scheduleCompletion) {
-      const holdSec = feedbackHoldMs(theme.id, correct) / 1000;
-      tween(this.root).delay(holdSec).call(this.scope.guard(this.complete)).start();
+      if (correct) {
+        const holdSec = feedbackHoldMs(theme.id, true) / 1000;
+        tween(this.root).delay(holdSec).call(this.scope.guard(this.complete)).start();
+      } else {
+        tween(this.root)
+          .delay(feedbackDurationMs(theme.id, false) / 1000)
+          .call(this.scope.guard(() => this.showWrongTop(theme.id)))
+          .delay(WRONG_TOP_EFFECT_HOLD_MS / 1000)
+          .call(this.scope.guard(this.complete))
+          .start();
+      }
     }
+  }
+
+  private showDeepSeaWrongFeedback(question: ChineseQuestion): void {
+    let sprayStarted = false;
+    this.showFeedback(
+      false,
+      question,
+      {
+        animateIn: false,
+        isolateTimeline: true,
+      },
+      true,
+      true,
+      () => {
+        if (sprayStarted) return;
+        sprayStarted = true;
+        if (typeof document !== 'undefined') {
+          document.body.dataset.feedbackSequencePhase = 'spray';
+          document.body.dataset.deepSeaInkSprayStartedAt =
+            performance.now().toFixed(1);
+        }
+        this.view.playDeepSeaInkSpray(this.scope.guard(() => {
+          if (typeof document !== 'undefined') {
+            document.body.dataset.feedbackSequencePhase = 'terminal-complete';
+            document.body.dataset.feedbackSequenceTerminalCompletedAt =
+              performance.now().toFixed(1);
+          }
+        }));
+      },
+    );
   }
 
   private startFeedbackTimeline(
@@ -234,6 +329,9 @@ export class ReadingAnswerController {
           false,
         );
         return;
+      case 'show-wrong-top':
+        this.showWrongTop(timeline.sceneId);
+        return;
       case 'play-reward':
         this.services.audio.play('reward');
         this.markFeedbackAudio('reward', event.frame);
@@ -276,6 +374,15 @@ export class ReadingAnswerController {
   private markTimelineLanding(timeline: ReadingFeedbackTimelineSpec): void {
     if (typeof document === 'undefined') return;
     document.body.dataset.feedbackTimelineLanding = timeline.sceneId;
+  }
+
+  private showWrongTop(sceneId: string): void {
+    this.view.showWrongFeedbackTop(sceneId);
+    if (typeof document !== 'undefined') {
+      document.body.dataset.feedbackSequencePhase = 'top';
+      document.body.dataset.feedbackSequenceTopStartedAt =
+        performance.now().toFixed(1);
+    }
   }
 
   private trackAnswer(question: ChineseQuestion, correct: boolean): void {

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { readingLayout } from '../assets/scripts/games/reading-jumper/config/ReadingLayout';
+import { readingThemes } from '../assets/scripts/games/reading-jumper/config/ReadingTheme';
 
 describe('Reading deer run states', () => {
   const source = readFileSync(resolve(
@@ -16,7 +17,16 @@ describe('Reading deer run states', () => {
     expect(source).toContain('if (this.idleAnimation) {');
     expect(source).toContain('this.player.play(this.idleAnimation);');
     expect(source).toContain("document.body.dataset.deerIdleMotion = 'sprite-sheet-run-in-place';");
+    expect(source).toContain('document.body.dataset.deerIdleFps = String(this.idleAnimation.fps);');
     expect(source).toContain("document.body.dataset.deerLocomotionRenderer = 'sprite-sheet';");
+  });
+
+  it('runs in place faster while preserving the travel cadence', () => {
+    readingThemes.forEach((theme) => {
+      expect(theme.assets.characterIdleAnimation?.fps).toBe(20);
+      expect(theme.assets.characterRunLeftAnimation?.fps).toBe(15);
+      expect(theme.assets.characterRunRightAnimation?.fps).toBe(15);
+    });
   });
 
   it('plays directional sprite sheets for the full pose-controlled travel', () => {

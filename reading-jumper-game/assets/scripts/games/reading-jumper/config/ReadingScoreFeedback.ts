@@ -62,6 +62,16 @@ const feedback: Readonly<Record<string, {
       terminal: 'spark',
       rotationTurns: 0.55,
     },
+    wrong: {
+      asset: `${MEDIA}/food/penalty.png`,
+      width: 76,
+      height: 92,
+      count: 1,
+      trail: 'candy',
+      terminal: 'explosion',
+      rotationTurns: 0.65,
+      minFlipScale: 0.76,
+    },
   },
   poetry: {
     correct: {

@@ -5,6 +5,36 @@ export const SCORE_COIN_ASSET = './effects/score-coin.png';
 const COIN_WIDTH = 52;
 const COIN_HEIGHT = 55;
 const EFFECT_STYLE_ID = 'score-coin-effect-styles';
+const SCORE_COIN_BURST_METRICS = {
+  source: {
+    count: 14,
+    durationMs: 920,
+    sparkDelayMs: 13,
+    cleanupBufferMs: 80,
+    flashSize: 28,
+    ringSize: 38,
+    ringScale: 2.65,
+    flashScale: 2.2,
+    distanceBase: 38,
+    distanceStep: 12,
+    sizeBase: 12,
+    sizeStep: 3,
+  },
+  arrival: {
+    count: 16,
+    durationMs: 650,
+    sparkDelayMs: 10,
+    cleanupBufferMs: 70,
+    flashSize: 46,
+    ringSize: 58,
+    ringScale: 3.15,
+    flashScale: 2.8,
+    distanceBase: 46,
+    distanceStep: 14,
+    sizeBase: 13,
+    sizeStep: 4,
+  },
+} as const;
 
 export type ScoreFlightTrail = 'gold' | 'candy' | 'space' | 'aqua' | 'danger' | 'ink';
 export type ScoreFlightTerminal = 'spark' | 'explosion' | 'vortex' | 'ink';
@@ -22,28 +52,55 @@ export interface ScoreFlightVisual {
 
 const TERMINAL_METRICS = {
   explosion: {
-    width: 170,
-    height: 150,
-    flashWidth: 92,
-    flashHeight: 92,
-    fragments: 14,
-    peakMs: 180,
-    durationMs: 700,
-    removeAfterMs: 760,
+    width: 240,
+    height: 210,
+    flashWidth: 128,
+    flashHeight: 128,
+    ringWidth: 176,
+    ringHeight: 154,
+    fragments: 20,
+    peakMs: 205,
+    durationMs: 820,
+    removeAfterMs: 900,
+  },
+  vortex: {
+    imageScale: 2.4,
+    ringWidth: 198,
+    ringHeight: 162,
+    flashWidth: 94,
+    flashHeight: 94,
+    fragments: 16,
+    durationMs: 820,
+    removeAfterMs: 900,
   },
   ink: {
-    mainWidth: 110,
-    mainHeight: 82,
-    droplets: 18,
-    durationMs: 800,
-    removeAfterMs: 850,
+    mainWidth: 168,
+    mainHeight: 126,
+    ringWidth: 150,
+    ringHeight: 110,
+    droplets: 24,
+    durationMs: 920,
+    removeAfterMs: 980,
   },
 } as const;
 
 export function scoreTerminalMetrics(
-  terminal: 'explosion' | 'ink',
-): typeof TERMINAL_METRICS.explosion | typeof TERMINAL_METRICS.ink {
+  terminal: keyof typeof TERMINAL_METRICS,
+): (typeof TERMINAL_METRICS)[keyof typeof TERMINAL_METRICS] {
   return TERMINAL_METRICS[terminal];
+}
+
+export function scoreTerminalDurationMs(
+  visual: Pick<ScoreFlightVisual, 'terminal'>,
+): number {
+  const terminal = visual.terminal ?? 'spark';
+  if (terminal === 'spark') {
+    const metrics = SCORE_COIN_BURST_METRICS.arrival;
+    return metrics.durationMs
+      + metrics.count * metrics.sparkDelayMs
+      + metrics.cleanupBufferMs;
+  }
+  return TERMINAL_METRICS[terminal].removeAfterMs;
 }
 
 function ensureScoreCoinStyles(): void {
@@ -59,13 +116,13 @@ function ensureScoreCoinStyles(): void {
 }
 @keyframes score-coin-ring {
   0% { opacity: .95; transform: translate(-50%, -50%) scale(.35); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.65); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(var(--coin-ring-scale, 2.65)); }
 }
 @keyframes score-coin-flash {
   0% { opacity: 0; transform: translate(-50%, -50%) rotate(0deg) scale(.2); }
   16% { opacity: 1; }
   58% { opacity: .9; }
-  100% { opacity: 0; transform: translate(-50%, -50%) rotate(45deg) scale(2.2); }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(45deg) scale(var(--coin-flash-scale, 2.2)); }
 }
 @keyframes score-terminal-explosion-cloud {
   0% { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(.18); }
@@ -91,8 +148,23 @@ function ensureScoreCoinStyles(): void {
 }
 @keyframes score-terminal-vortex {
   0% { opacity: .15; transform: translate(-50%, -50%) rotate(0deg) scale(.2); }
-  38% { opacity: 1; transform: translate(-50%, -50%) rotate(190deg) scale(1.15); }
+  38% { opacity: 1; transform: translate(-50%, -50%) rotate(190deg) scale(1.22); }
   100% { opacity: 0; transform: translate(-50%, -50%) rotate(720deg) scale(.05); }
+}
+@keyframes score-terminal-vortex-ring {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(0deg) scale(.22); }
+  28% { opacity: .95; transform: translate(-50%, -50%) rotate(110deg) scale(.9); }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(420deg) scale(1.8); }
+}
+@keyframes score-terminal-vortex-flash {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(0deg) scale(.16); }
+  26% { opacity: 1; transform: translate(-50%, -50%) rotate(35deg) scale(1.12); }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(155deg) scale(2.05); }
+}
+@keyframes score-terminal-vortex-fragment {
+  0% { opacity: 0; transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(.16); }
+  28% { opacity: 1; transform: translate(-50%, -50%) translate(var(--vortex-peak-dx), var(--vortex-peak-dy)) rotate(var(--vortex-peak-rotation)) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--vortex-dx), var(--vortex-dy)) rotate(var(--vortex-rotation)) scale(.24); }
 }
 @keyframes score-terminal-ink-main {
   0% { opacity: 0; transform: translate(-50%, -50%) rotate(-7deg) scale(.14); }
@@ -198,12 +270,15 @@ export function spawnScoreCoinBurst(
   mode: 'source' | 'arrival',
   trail: ScoreFlightTrail = 'gold',
 ): number {
-  const screen = stageScreenPoint(point, frame);
-  const count = mode === 'source' ? 14 : 9;
-  const duration = mode === 'source' ? 920 : 520;
+  const screen = mode === 'arrival'
+    ? terminalScreenPoint(point, frame, 'spark')
+    : stageScreenPoint(point, frame);
+  const metrics = SCORE_COIN_BURST_METRICS[mode];
+  const count = metrics.count;
+  const duration = metrics.durationMs;
   const colors = trailColors(trail);
   const flash = document.createElement('span');
-  const flashSize = (mode === 'source' ? 28 : 22) * frame.scale;
+  const flashSize = metrics.flashSize * frame.scale;
   Object.assign(flash.style, {
     position: 'fixed',
     left: `${screen.x}px`,
@@ -216,9 +291,10 @@ export function spawnScoreCoinBurst(
     pointerEvents: 'none',
     animation: `score-coin-flash ${Math.round(duration * 0.72)}ms ease-out forwards`,
   });
+  flash.style.setProperty('--coin-flash-scale', String(metrics.flashScale));
   container.appendChild(flash);
   const ring = document.createElement('span');
-  const ringSize = (mode === 'source' ? 38 : 30) * frame.scale;
+  const ringSize = metrics.ringSize * frame.scale;
   Object.assign(ring.style, {
     position: 'fixed',
     left: `${screen.x}px`,
@@ -231,6 +307,7 @@ export function spawnScoreCoinBurst(
     pointerEvents: 'none',
     animation: `score-coin-ring ${duration}ms ease-out forwards`,
   });
+  ring.style.setProperty('--coin-ring-scale', String(metrics.ringScale));
   container.appendChild(ring);
   for (let index = 0; index < count; index += 1) {
     const spark = document.createElement('span');
@@ -239,8 +316,8 @@ export function spawnScoreCoinBurst(
     const angle = mode === 'source'
       ? Math.PI * (0.08 + fraction * 0.84)
       : Math.PI * 2 * fraction;
-    const distance = (mode === 'source' ? 38 : 22) + (index % 4) * 12;
-    const size = ((mode === 'source' ? 12 : 9) + (index % 3) * 3) * frame.scale;
+    const distance = metrics.distanceBase + (index % 5) * metrics.distanceStep;
+    const size = (metrics.sizeBase + (index % 4) * metrics.sizeStep) * frame.scale;
     Object.assign(spark.style, {
       position: 'fixed',
       left: `${screen.x}px`,
@@ -251,7 +328,7 @@ export function spawnScoreCoinBurst(
       clipPath: 'polygon(50% 0, 61% 37%, 100% 50%, 61% 63%, 50% 100%, 39% 63%, 0 50%, 39% 37%)',
       filter: `drop-shadow(0 0 7px ${colors.glow})`,
       pointerEvents: 'none',
-      animation: `score-coin-spark ${duration}ms ${index * 13}ms ease-out forwards`,
+      animation: `score-coin-spark ${duration}ms ${index * metrics.sparkDelayMs}ms ease-out forwards`,
     });
     spark.style.setProperty('--coin-dx', `${Math.cos(angle) * distance * frame.scale}px`);
     spark.style.setProperty('--coin-dy', `${-Math.sin(angle) * distance * frame.scale}px`);
@@ -261,7 +338,7 @@ export function spawnScoreCoinBurst(
     flash.remove();
     ring.remove();
     container.querySelectorAll(`[data-score-coin-spark^="${mode}-"]`).forEach((node) => node.remove());
-  }, duration + count * 13 + 80);
+  }, duration + count * metrics.sparkDelayMs + metrics.cleanupBufferMs);
   return count;
 }
 
@@ -275,13 +352,20 @@ export function spawnScoreTerminalEffect(
   if (terminal === 'spark') {
     return spawnScoreCoinBurst(container, frame, point, 'arrival', visual.trail);
   }
-  const screen = stageScreenPoint(point, frame);
+  const screen = terminalScreenPoint(point, frame, terminal);
   if (terminal === 'vortex') {
+    const metrics = TERMINAL_METRICS.vortex;
+    const nodes: HTMLElement[] = [];
     const vortex = document.createElement('img');
+    vortex.dataset.scoreTerminalLayer = 'vortex-image';
     vortex.src = visual.asset;
     vortex.alt = '';
-    const width = (visual.width ?? 72) * 1.65 * frame.scale;
-    const height = (visual.height ?? 52) * 1.65 * frame.scale;
+    const width = Number(
+      ((visual.width ?? 72) * metrics.imageScale * frame.scale).toFixed(3),
+    );
+    const height = Number(
+      ((visual.height ?? 52) * metrics.imageScale * frame.scale).toFixed(3),
+    );
     Object.assign(vortex.style, {
       position: 'fixed',
       left: `${screen.x}px`,
@@ -289,12 +373,82 @@ export function spawnScoreTerminalEffect(
       width: `${width}px`,
       height: `${height}px`,
       pointerEvents: 'none',
-      filter: 'drop-shadow(0 0 18px rgba(92, 96, 255, .95))',
-      animation: 'score-terminal-vortex 650ms ease-in forwards',
+      filter: 'drop-shadow(0 0 22px rgba(92, 96, 255, .98)) drop-shadow(0 0 34px rgba(68, 203, 255, .74))',
+      animation: `score-terminal-vortex ${metrics.durationMs}ms ease-in forwards`,
     });
     container.appendChild(vortex);
-    window.setTimeout(() => vortex.remove(), 720);
-    return 1;
+    nodes.push(vortex);
+
+    const ring = document.createElement('span');
+    ring.dataset.scoreTerminalLayer = 'vortex-ring';
+    Object.assign(ring.style, {
+      position: 'fixed',
+      left: `${screen.x}px`,
+      top: `${screen.y}px`,
+      width: `${metrics.ringWidth * frame.scale}px`,
+      height: `${metrics.ringHeight * frame.scale}px`,
+      border: `${Math.max(3, 5 * frame.scale)}px solid rgba(108, 224, 255, .92)`,
+      borderRadius: '50%',
+      boxShadow: '0 0 15px rgba(104, 231, 255, .94), inset 0 0 14px rgba(91, 97, 255, .78)',
+      pointerEvents: 'none',
+      animation: `score-terminal-vortex-ring ${metrics.durationMs}ms ease-out forwards`,
+    });
+    container.appendChild(ring);
+    nodes.push(ring);
+
+    const flash = document.createElement('span');
+    flash.dataset.scoreTerminalLayer = 'vortex-flash';
+    Object.assign(flash.style, {
+      position: 'fixed',
+      left: `${screen.x}px`,
+      top: `${screen.y}px`,
+      width: `${metrics.flashWidth * frame.scale}px`,
+      height: `${metrics.flashHeight * frame.scale}px`,
+      background: 'radial-gradient(circle, #FFFFFF 0 18%, #B8F5FF 34%, #7487FF 60%, rgba(72, 75, 203, .08) 72%)',
+      clipPath: 'polygon(50% 0, 59% 37%, 86% 14%, 64% 41%, 100% 50%, 64% 59%, 86% 86%, 59% 63%, 50% 100%, 41% 63%, 14% 86%, 36% 59%, 0 50%, 36% 41%, 14% 14%, 41% 37%)',
+      filter: 'drop-shadow(0 0 10px rgba(225, 252, 255, 1)) drop-shadow(0 0 20px rgba(104, 121, 255, .94))',
+      pointerEvents: 'none',
+      animation: `score-terminal-vortex-flash ${metrics.durationMs}ms ease-out forwards`,
+    });
+    container.appendChild(flash);
+    nodes.push(flash);
+
+    for (let index = 0; index < metrics.fragments; index += 1) {
+      const fragment = document.createElement('span');
+      fragment.dataset.scoreTerminalFragment = `vortex-${index}`;
+      const angle = index / metrics.fragments * Math.PI * 2
+        + (index % 2 === 0 ? 0.08 : -0.05);
+      const distance = (92 + (index % 5) * 15) * frame.scale;
+      const size = (8 + (index % 4) * 3.5) * frame.scale;
+      Object.assign(fragment.style, {
+        position: 'fixed',
+        left: `${screen.x}px`,
+        top: `${screen.y}px`,
+        width: `${size}px`,
+        height: `${size * (index % 3 === 0 ? 1.6 : 0.72)}px`,
+        borderRadius: '58% 42% 64% 36%',
+        background: index % 3 === 0 ? '#D8FBFF' : (index % 2 === 0 ? '#79DFFF' : '#7582FF'),
+        boxShadow: '0 0 7px rgba(92, 203, 255, .92)',
+        pointerEvents: 'none',
+        animation: `score-terminal-vortex-fragment ${metrics.durationMs}ms ease-out forwards`,
+      });
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
+      const rotation = index % 2 === 0 ? 260 + index * 21 : -230 - index * 19;
+      fragment.style.setProperty('--vortex-dx', `${dx}px`);
+      fragment.style.setProperty('--vortex-dy', `${dy}px`);
+      fragment.style.setProperty('--vortex-peak-dx', `${dx * 0.25}px`);
+      fragment.style.setProperty('--vortex-peak-dy', `${dy * 0.25}px`);
+      fragment.style.setProperty('--vortex-rotation', `${rotation}deg`);
+      fragment.style.setProperty('--vortex-peak-rotation', `${rotation * 0.3}deg`);
+      container.appendChild(fragment);
+      nodes.push(fragment);
+    }
+    window.setTimeout(
+      () => nodes.forEach((node) => node.remove()),
+      metrics.removeAfterMs,
+    );
+    return metrics.fragments;
   }
   if (terminal === 'ink') {
     const metrics = TERMINAL_METRICS.ink;
@@ -326,8 +480,8 @@ export function spawnScoreTerminalEffect(
       position: 'fixed',
       left: `${screen.x}px`,
       top: `${screen.y}px`,
-      width: `${96 * frame.scale}px`,
-      height: `${68 * frame.scale}px`,
+      width: `${metrics.ringWidth * frame.scale}px`,
+      height: `${metrics.ringHeight * frame.scale}px`,
       border: `${Math.max(2, 3 * frame.scale)}px solid rgba(28, 48, 64, .42)`,
       borderRadius: '52% 48% 57% 43% / 45% 55% 44% 56%',
       boxShadow: '0 0 12px rgba(20, 38, 54, .18)',
@@ -342,8 +496,8 @@ export function spawnScoreTerminalEffect(
       droplet.dataset.scoreTerminalDroplet = String(index);
       const angle = index / metrics.droplets * Math.PI * 2
         + ((index % 3) - 1) * 0.09;
-      const distance = (38 + (index % 5) * 10) * frame.scale;
-      const size = (6 + (index % 6) * 2.4) * frame.scale;
+      const distance = (58 + (index % 6) * 13) * frame.scale;
+      const size = (7 + (index % 6) * 2.8) * frame.scale;
       Object.assign(droplet.style, {
         position: 'fixed',
         left: `${screen.x}px`,
@@ -414,8 +568,8 @@ export function spawnScoreTerminalEffect(
     position: 'fixed',
     left: `${screen.x}px`,
     top: `${screen.y}px`,
-    width: `${126 * frame.scale}px`,
-    height: `${110 * frame.scale}px`,
+    width: `${metrics.ringWidth * frame.scale}px`,
+    height: `${metrics.ringHeight * frame.scale}px`,
     border: `${Math.max(3, 5 * frame.scale)}px solid rgba(255, 91, 37, .94)`,
     borderRadius: '50%',
     boxShadow: '0 0 10px rgba(255, 159, 45, .9), inset 0 0 9px rgba(255, 58, 28, .72)',
@@ -447,8 +601,8 @@ export function spawnScoreTerminalEffect(
     fragment.dataset.scoreTerminalFragment = String(index);
     const angle = index / metrics.fragments * Math.PI * 2
       + (index % 2 === 0 ? 0.06 : -0.04);
-    const distance = (72 + (index % 4) * 11) * frame.scale;
-    const size = (8 + (index % 4) * 3) * frame.scale;
+    const distance = (104 + (index % 5) * 14) * frame.scale;
+    const size = (10 + (index % 5) * 3) * frame.scale;
     Object.assign(fragment.style, {
       position: 'fixed',
       left: `${screen.x}px`,
@@ -501,6 +655,31 @@ function stageScreenPoint(point: ScoreCoinPoint, frame: MotionStageFrame): Score
   return {
     x: frame.left + (720 + point.x) * frame.scale,
     y: frame.top + (405 - point.y) * frame.scale,
+  };
+}
+
+function terminalScreenPoint(
+  point: ScoreCoinPoint,
+  frame: MotionStageFrame,
+  terminal: ScoreFlightTerminal,
+): ScoreCoinPoint {
+  const screen = stageScreenPoint(point, frame);
+  const inset = terminal === 'vortex'
+    ? 118
+    : terminal === 'explosion' ? 112 : 100;
+  const horizontalInset = inset * frame.scale;
+  const verticalInset = Math.min(inset, 112) * frame.scale;
+  const stageRight = frame.left + 1440 * frame.scale;
+  const stageBottom = frame.top + 810 * frame.scale;
+  return {
+    x: Math.min(
+      stageRight - horizontalInset,
+      Math.max(frame.left + horizontalInset, screen.x),
+    ),
+    y: Math.min(
+      stageBottom - verticalInset,
+      Math.max(frame.top + verticalInset, screen.y),
+    ),
   };
 }
 

@@ -26,8 +26,12 @@ describe('Reading locomotion quality pipeline', () => {
     expect(script).toContain('Math.ceil(frames.length / columns)');
   });
 
-  it('defines deterministic 15fps idle, left-run, and right-run animations', () => {
-    expect(theme).toContain('const locomotionSheetFps = 15;');
+  it('uses faster idle playback without changing directional travel cadence', () => {
+    expect(theme).toContain('const locomotionIdleSheetFps = 20;');
+    expect(theme).toContain('const locomotionTravelSheetFps = 15;');
+    expect(theme).toContain(
+      "fps: action === 'idle' ? locomotionIdleSheetFps : locomotionTravelSheetFps",
+    );
     expect(theme).toContain("characterIdleAnimation: locomotionSheet(id, 'idle', spec.idle)");
     expect(theme).toContain(
       "characterRunLeftAnimation: locomotionSheet(id, 'run-left', spec.runLeft)",

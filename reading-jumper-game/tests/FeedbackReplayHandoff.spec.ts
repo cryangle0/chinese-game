@@ -31,10 +31,11 @@ describe('Reading feedback replay and actor handoff', () => {
     const controller = source(
       '../assets/scripts/games/reading-jumper/controllers/ReadingAnswerController.ts',
     );
-    const showIndex = controller.indexOf('this.view.feedback.show(');
-    const readyIndex = controller.indexOf('createReadingFeedbackReadyHandler(');
-    expect(showIndex).toBeGreaterThanOrEqual(0);
-    expect(readyIndex).toBeGreaterThan(showIndex);
+    expect(controller).toContain('this.view.feedback.show(');
+    expect(controller).toContain(
+      'createReadingFeedbackReadyHandler(this.view, afterFeedbackReady)',
+    );
+    expect(controller).toContain('onReady: feedbackReady');
     expect(controller).toContain("feedbackActorHandoff = 'retained-on-error'");
   });
 });

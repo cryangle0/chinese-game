@@ -128,6 +128,7 @@ export class ReadingGameView {
       theme.assets.characterRunRightAnimation,
       theme.assets.motion,
     );
+    if (theme.id === 'deep-sea') this.deepSeaInk.preload();
   }
 
   playTransition(source: string | undefined): void {
@@ -157,10 +158,12 @@ export class ReadingGameView {
     awarded: number,
     visual: ScoreFlightVisual | undefined,
     onFirstArrival?: () => void,
+    onTerminalComplete?: () => void,
   ): void {
     if (!source) {
       if (awarded > 0) this.hud.showScoreReward(score);
       onFirstArrival?.();
+      onTerminalComplete?.();
       return;
     }
     this.scoreCoins.play({
@@ -172,6 +175,7 @@ export class ReadingGameView {
         if (awarded > 0) this.hud.showScoreReward(score);
         onFirstArrival?.();
       },
+      onTerminalComplete,
     });
   }
 
@@ -179,9 +183,17 @@ export class ReadingGameView {
     this.wrongTopEffect.show(sceneId);
   }
 
-  playDeepSeaInk(columnX: number): void {
-    const feedbackY = readingLayout('deep-sea').feedback.y;
-    this.deepSeaInk.play(deepSeaInkTarget(columnX, feedbackY));
+  playDeepSeaInkPopup(index: number, onComplete: () => void): void {
+    const layout = readingLayout('deep-sea');
+    const columnX = layout.option.columns[index] ?? 0;
+    this.deepSeaInk.playPopup(
+      deepSeaInkTarget(columnX, layout.option, layout.feedback),
+      onComplete,
+    );
+  }
+
+  playDeepSeaInkSpray(onComplete: () => void): void {
+    this.deepSeaInk.playSpray(onComplete);
   }
 
   renderHud(

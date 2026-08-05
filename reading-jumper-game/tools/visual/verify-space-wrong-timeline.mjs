@@ -13,10 +13,11 @@ const chrome = process.env.CHROME_PATH
 const expectedFrames = new Map([
   ['choice.wrong', 0],
   ['audio.wrong', 0],
-  ['hazard.object.enter', 8],
-  ['impact.start', 23],
-  ['actor.terminal', 30],
-  ['transition.enter', 90],
+  ['hazard.object.enter', 0],
+  ['impact.start', 15],
+  ['actor.terminal', 22],
+  ['page.top.enter', 68],
+  ['transition.enter', 93],
 ]);
 const viewports = [
   { name: 'design', width: 1440, height: 810 },
@@ -295,7 +296,7 @@ function validate(viewport, row) {
   } else {
     issues.push('terminal visible bounds unavailable');
   }
-  if (!terminal.audio.includes('wrong@0') || !terminal.audio.includes('danger@23')) {
+  if (!terminal.audio.includes('wrong@0') || !terminal.audio.includes('danger@15')) {
     issues.push(`audio=${terminal.audio}`);
   }
   for (const event of events) {

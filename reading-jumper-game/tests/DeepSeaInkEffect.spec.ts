@@ -9,36 +9,65 @@ import {
   deepSeaInkTarget,
 } from '../assets/scripts/ui/DeepSeaInkEffectView';
 
-const FRAME_MS = 1000 / 15;
+const FRAME_COUNT = 26;
+const FRAME_MS = 1000 / 24;
+const POPUP_END_FRAME = 8;
+const REPOSITION_FRAME = 12;
+const SPRAY_START_FRAME = 13;
+const REPOSITION_MS = 100;
+const IMPACT_HOLD_MS = 180;
+const OPTION = { width: 410, height: 124, y: -18 };
+const FEEDBACK = { width: 556, height: 667, y: 37 };
 const DYNAMIC_BODY_DIAGNOSTICS = [
   'deepSeaInkFrame',
+  'deepSeaInkFrameSource',
+  'deepSeaInkPhase',
   'deepSeaInkTarget',
   'deepSeaInkSprayHit',
   'deepSeaInkBodyTopRight',
+  'deepSeaInkSprayBodyTopRight',
+  'deepSeaInkOptionTopRight',
+  'deepSeaInkCharacterHeadBounds',
   'deepSeaInkViewportCenter',
+  'deepSeaInkViewportTopLeft',
+  'deepSeaInkSprayViewportTopLeft',
   'deepSeaInkFps',
   'deepSeaInkFrameCount',
 ] as const;
-const EXPECTED_BACKGROUND_POSITIONS = [
-  '0px 0px', '-128px 0px', '-256px 0px', '-384px 0px', '-512px 0px',
-  '0px -128px', '-128px -128px', '-256px -128px', '-384px -128px', '-512px -128px',
-  '0px -256px', '-128px -256px', '-256px -256px', '-384px -256px', '-512px -256px',
-  '0px -384px', '-128px -384px', '-256px -384px', '-384px -384px', '-512px -384px',
-  '0px -512px', '-128px -512px', '-256px -512px', '-384px -512px', '-512px -512px',
-  '0px -640px',
-] as const;
 
-class FakeElement {
+interface FakeFrame {
+  readonly source: string;
+}
+
+class FakeCanvasElement {
   id = '';
+  width = 0;
+  height = 0;
   readonly dataset: Record<string, string> = {};
   readonly style: Record<string, string> = {};
   readonly attributes: Record<string, string> = {};
+  readonly drawSources: string[] = [];
+  clearCount = 0;
   isConnected = false;
+  private readonly context = {
+    imageSmoothingEnabled: false,
+    imageSmoothingQuality: 'low',
+    clearRect: () => {
+      this.clearCount += 1;
+    },
+    drawImage: (frame: FakeFrame) => {
+      this.drawSources.push(frame.source);
+    },
+  };
 
-  constructor(private readonly detach: (element: FakeElement) => void) {}
+  constructor(private readonly detach: (element: FakeCanvasElement) => void) {}
 
   setAttribute(name: string, value: string): void {
     this.attributes[name] = value;
+  }
+
+  getContext(): CanvasRenderingContext2D {
+    return this.context as unknown as CanvasRenderingContext2D;
   }
 
   remove(): void {
@@ -48,56 +77,64 @@ class FakeElement {
 
 interface InkHarness {
   runtime: DeepSeaInkRuntime;
-  readonly children: FakeElement[];
+  readonly children: FakeCanvasElement[];
   readonly bodyDataset: Record<string, string>;
+  readonly loadSources: string[];
   now: number;
   pending(): FrameRequestCallback[];
   step(timestamp: number): void;
-  makeSheetReady(): Promise<void>;
-}
-
-interface RetryInkHarness extends InkHarness {
-  loadCount(): number;
-  resolveLoad(index: number): Promise<void>;
-  rejectLoad(index: number): Promise<void>;
+  makeFramesReady(): Promise<void>;
+  rejectFrames(): Promise<void>;
 }
 
 function createHarness(options: { readonly delayedReady?: boolean } = {}): InkHarness {
-  const children: FakeElement[] = [];
+  const children: FakeCanvasElement[] = [];
   const bodyDataset: Record<string, string> = {};
+  const loadSources: string[] = [];
   const callbacks = new Map<number, FrameRequestCallback>();
   let nextFrame = 1;
-  let resolveSheet = (): void => undefined;
-  const sheetReady = options.delayedReady
-    ? new Promise<void>((resolvePromise) => {
-      resolveSheet = resolvePromise;
+  let resolveFrames = (): void => undefined;
+  let rejectFrames = (): void => undefined;
+  const readiness = options.delayedReady
+    ? new Promise<void>((resolvePromise, rejectPromise) => {
+      resolveFrames = resolvePromise;
+      rejectFrames = () => rejectPromise(new Error('controlled frame load failure'));
     })
     : Promise.resolve();
   const harness: InkHarness = {
     now: 1000,
     children,
     bodyDataset,
+    loadSources,
     runtime: undefined as unknown as DeepSeaInkRuntime,
     pending: () => [...callbacks.values()],
     step: (timestamp: number) => {
+      harness.now = timestamp;
       const pending = [...callbacks.entries()];
       callbacks.clear();
       pending.forEach(([, callback]) => callback(timestamp));
     },
-    makeSheetReady: async () => {
-      resolveSheet();
-      await sheetReady;
+    makeFramesReady: async () => {
+      resolveFrames();
+      await readiness;
+      await Promise.resolve();
+      await Promise.resolve();
+    },
+    rejectFrames: async () => {
+      rejectFrames();
+      await readiness.catch(() => undefined);
+      await Promise.resolve();
       await Promise.resolve();
     },
   };
-  const detach = (element: FakeElement): void => {
+  const detach = (element: FakeCanvasElement): void => {
     const index = children.indexOf(element);
     if (index >= 0) children.splice(index, 1);
     element.isConnected = false;
   };
   const body = {
     dataset: bodyDataset,
-    appendChild: (element: FakeElement) => {
+    appendChild: (element: FakeCanvasElement) => {
       if (!children.includes(element)) children.push(element);
       element.isConnected = true;
       return element;
@@ -119,7 +156,7 @@ function createHarness(options: { readonly delayedReady?: boolean } = {}): InkHa
   harness.runtime = {
     document: {
       body,
-      createElement: () => new FakeElement(detach),
+      createElement: () => new FakeCanvasElement(detach),
       getElementById: (id: string) => (id === 'GameCanvas' ? canvas : null),
     } as unknown as Document,
     now: () => harness.now,
@@ -132,45 +169,14 @@ function createHarness(options: { readonly delayedReady?: boolean } = {}): InkHa
     cancelFrame: (handle: number) => {
       callbacks.delete(handle);
     },
-    loadImage: () => sheetReady,
-  } as DeepSeaInkRuntime;
-  return harness;
-}
-
-function createRetryHarness(): RetryInkHarness {
-  const harness = createHarness();
-  const attempts: Array<{
-    readonly promise: Promise<void>;
-    readonly resolve: () => void;
-    readonly reject: () => void;
-  }> = [];
-  const runtime: DeepSeaInkRuntime = {
-    ...harness.runtime,
-    loadImage: () => {
-      let resolveLoad = (): void => undefined;
-      let rejectLoad = (): void => undefined;
-      const promise = new Promise<void>((resolvePromise, rejectPromise) => {
-        resolveLoad = resolvePromise;
-        rejectLoad = () => rejectPromise(new Error('controlled image load failure'));
-      });
-      attempts.push({ promise, resolve: resolveLoad, reject: rejectLoad });
-      return promise;
+    loadImage: (source: string) => {
+      loadSources.push(source);
+      return readiness.then(
+        () => ({ source }) as unknown as CanvasImageSource,
+      );
     },
   };
-  const flushAttempt = async (index: number, settle: 'resolve' | 'reject'): Promise<void> => {
-    const attempt = attempts[index];
-    if (!attempt) throw new Error(`Missing load attempt ${index}`);
-    attempt[settle]();
-    await attempt.promise.catch(() => undefined);
-    await Promise.resolve();
-  };
-  return {
-    ...harness,
-    runtime,
-    loadCount: () => attempts.length,
-    resolveLoad: (index) => flushAttempt(index, 'resolve'),
-    rejectLoad: (index) => flushAttempt(index, 'reject'),
-  };
+  return harness;
 }
 
 function expectBodyDiagnosticsCleared(harness: InkHarness): void {
@@ -180,235 +186,261 @@ function expectBodyDiagnosticsCleared(harness: InkHarness): void {
   });
 }
 
-describe('DeepSeaInkEffectView', () => {
-  it('converts all answer columns to one head target and keeps the squid upper-right', () => {
-    const cases = [
-      {
-        columnX: -450,
-        target: { x: 270, y: 375 },
-        center: { x: 360, y: 300 },
-        bodyAnchor: { x: 480, y: 180 },
-      },
-      {
-        columnX: 0,
-        target: { x: 720, y: 375 },
-        center: { x: 810, y: 300 },
-        bodyAnchor: { x: 930, y: 180 },
-      },
-      {
-        columnX: 450,
-        target: { x: 1170, y: 375 },
-        center: { x: 1260, y: 300 },
-        bodyAnchor: { x: 1380, y: 180 },
-      },
-    ] as const;
+function frameSource(frameIndex: number): string {
+  return `./media/reward-props/deep-sea/ink-squid-frames/`
+    + `frame-${String(frameIndex).padStart(2, '0')}.png`;
+}
 
-    cases.forEach(({ columnX, target, center, bodyAnchor }) => {
-      const geometry = deepSeaInkGeometry(deepSeaInkTarget(columnX, 37));
-      expect(geometry.target).toEqual(target);
-      expect(geometry.viewportCenter).toEqual(center);
-      expect(geometry.bodyTopRight).toEqual(bodyAnchor);
-      expect(geometry.sprayHit).toEqual(target);
+describe('DeepSeaInkEffectView', () => {
+  it('anchors the popup above each option and targets the enlarged feedback head', () => {
+    [-450, 0, 450].forEach((columnX) => {
+      const geometry = deepSeaInkGeometry(
+        deepSeaInkTarget(columnX, OPTION, FEEDBACK),
+      );
+      expect(geometry.optionTopRight).toEqual({
+        x: 720 + columnX + 205,
+        y: 361,
+      });
+      expect(geometry.bodyTopRight).toEqual({
+        x: 720 + columnX + 205,
+        y: 343,
+      });
+      expect(geometry.target).toEqual({
+        x: 720 + columnX + 5,
+        y: 466,
+      });
+      expect(geometry.sprayHit).toEqual(geometry.target);
+      expect(geometry.sprayViewportTopLeft).toEqual({
+        x: 720 + columnX - 40,
+        y: 231,
+      });
+      expect(geometry.sprayBodyTopRight).toEqual({
+        x: 720 + columnX + 220,
+        y: 231,
+      });
+      expect(geometry.bodyTopRight.y).toBeLessThan(geometry.optionTopRight.y);
+      expect(geometry.sprayBodyTopRight.y).toBeLessThan(geometry.bodyTopRight.y);
+      expect(geometry.sprayHit.x).toBeGreaterThanOrEqual(
+        geometry.characterHeadBounds.left,
+      );
+      expect(geometry.sprayHit.x).toBeLessThanOrEqual(
+        geometry.characterHeadBounds.right,
+      );
+      expect(geometry.sprayHit.y).toBeGreaterThanOrEqual(
+        geometry.characterHeadBounds.top,
+      );
+      expect(geometry.sprayHit.y).toBeLessThanOrEqual(
+        geometry.characterHeadBounds.bottom,
+      );
     });
   });
 
-  it('waits for image readiness, then shows all 26 row-major frames from frame zero', async () => {
+  it('skips the shrinking restart frames between popup, hold, and spray', async () => {
     const harness = createHarness({ delayedReady: true });
     const effect = new DeepSeaInkEffectView(harness.runtime);
+    const events: string[] = [];
 
-    effect.play({ columnX: 0, headY: 375 });
+    effect.preload();
+    expect(harness.loadSources).toHaveLength(FRAME_COUNT);
+    expect(harness.loadSources[0]).toBe(frameSource(0));
+    expect(harness.loadSources[25]).toBe(frameSource(25));
+    effect.playPopup(
+      deepSeaInkTarget(0, OPTION, FEEDBACK),
+      () => events.push('popup-complete'),
+    );
 
     expect(harness.children).toHaveLength(0);
-    expect(harness.pending()).toHaveLength(0);
     expectBodyDiagnosticsCleared(harness);
-    harness.step(harness.now + FRAME_MS * 20);
-    expect(harness.children).toHaveLength(0);
-
     harness.now = 5000;
-    await harness.makeSheetReady();
+    await harness.makeFramesReady();
 
     expect(harness.children).toHaveLength(1);
     const element = harness.children[0];
-    expect(element.style.backgroundImage).toContain(
-      './media/reward-props/deep-sea/ink-squid-sheet.png',
-    );
+    expect(element.width).toBe(261);
+    expect(element.height).toBe(241);
     expect(element.style.zIndex).toBe('37');
-    expect(element.style.width).toBe('128px');
-    expect(element.style.height).toBe('128px');
-    expect(element.style.left).toBe('351px');
-    expect(element.style.top).toBe('106px');
-    expect(element.dataset.deepSeaInkFrame).toBe('0');
-    expect(element.style.backgroundPosition).toBe('0px 0px');
+    expect(element.style.width).toBe('130.5px');
+    expect(element.style.height).toBe('120.5px');
+    expect(element.style.left).toBe('342.5px');
+    expect(element.style.top).toBe('191.5px');
+    expect(element.style.backgroundImage).toBeUndefined();
+    expect(element.drawSources).toEqual([frameSource(0)]);
     expect(harness.bodyDataset).toMatchObject({
       deepSeaInkActive: 'true',
+      deepSeaInkAssetMode: 'customer-original-frames',
+      deepSeaInkRenderer: 'predecoded-canvas',
+      deepSeaInkPhase: 'popup',
       deepSeaInkFrame: '0',
-      deepSeaInkTarget: '720,375',
-      deepSeaInkSprayHit: '720,375',
+      deepSeaInkFrameSource: frameSource(0),
+      deepSeaInkTarget: '725,466',
+      deepSeaInkSprayHit: '725,466',
+      deepSeaInkBodyTopRight: '925,343',
+      deepSeaInkSprayBodyTopRight: '940,231',
+      deepSeaInkOptionTopRight: '925,361',
       deepSeaInkFrameCount: '26',
-      deepSeaInkFps: '15',
+      deepSeaInkFps: '24',
     });
 
-    EXPECTED_BACKGROUND_POSITIONS.forEach((backgroundPosition, frameIndex) => {
-      if (frameIndex > 0) {
-        harness.step(harness.now + FRAME_MS * frameIndex + 0.01);
-      }
+    const popupStartedAt = harness.now;
+    for (let frameIndex = 1; frameIndex <= POPUP_END_FRAME; frameIndex += 1) {
+      harness.step(popupStartedAt + FRAME_MS * frameIndex + 0.01);
       expect(element.dataset.deepSeaInkFrame).toBe(String(frameIndex));
-      expect(element.style.backgroundPosition).toBe(backgroundPosition);
-    });
-    expect(harness.bodyDataset.deepSeaInkActive).toBe('true');
+      expect(element.drawSources[element.drawSources.length - 1])
+        .toBe(frameSource(frameIndex));
+    }
+    expect(events).toEqual([]);
 
-    harness.step(harness.now + FRAME_MS * 26 + 0.01);
+    harness.step(popupStartedAt + FRAME_MS * (POPUP_END_FRAME + 1) + 0.01);
+    expect(events).toEqual(['popup-complete']);
+    expect(harness.children).toHaveLength(1);
+    expect(harness.bodyDataset.deepSeaInkPhase).toBe('hold');
+    expect(element.dataset.deepSeaInkFrame).toBe(String(POPUP_END_FRAME));
+
+    effect.playSpray(() => events.push('spray-complete'));
+    expect(harness.bodyDataset.deepSeaInkPhase).toBe('reposition');
+    harness.step(harness.now + REPOSITION_MS + 0.01);
+    expect(harness.bodyDataset.deepSeaInkPhase).toBe('spray');
+    expect(element.dataset.deepSeaInkFrame).toBe(String(SPRAY_START_FRAME));
+    expect(element.drawSources).toContain(frameSource(REPOSITION_FRAME));
+    [9, 10, 11].forEach((frameIndex) => {
+      expect(element.drawSources).not.toContain(frameSource(frameIndex));
+    });
+    expect(element.style.left).toBe('350px');
+    expect(element.style.top).toBe('135.5px');
+
+    const sprayStartedAt = harness.now;
+    for (
+      let frameIndex = SPRAY_START_FRAME + 1;
+      frameIndex < FRAME_COUNT;
+      frameIndex += 1
+    ) {
+      harness.step(
+        sprayStartedAt + FRAME_MS * (frameIndex - SPRAY_START_FRAME) + 0.01,
+      );
+      expect(element.dataset.deepSeaInkFrame).toBe(String(frameIndex));
+      expect(element.drawSources[element.drawSources.length - 1])
+        .toBe(frameSource(frameIndex));
+    }
+    expect(events).toEqual(['popup-complete']);
+
+    harness.step(
+      sprayStartedAt + FRAME_MS * (FRAME_COUNT - SPRAY_START_FRAME) + 0.01,
+    );
+    expect(harness.bodyDataset.deepSeaInkPhase).toBe('impact');
+    expect(harness.children).toHaveLength(1);
+
+    harness.step(harness.now + IMPACT_HOLD_MS + 0.01);
+    expect(events).toEqual(['popup-complete', 'spray-complete']);
     expect(harness.children).toHaveLength(0);
+    expect(Number(harness.bodyDataset.deepSeaInkCompletedAt)).toBeGreaterThan(5000);
     expectBodyDiagnosticsCleared(harness);
+    expect(element.drawSources).toEqual(
+      [
+        ...Array.from(
+          { length: POPUP_END_FRAME + 1 },
+          (_, index) => frameSource(index),
+        ),
+        frameSource(REPOSITION_FRAME),
+        ...Array.from(
+          { length: FRAME_COUNT - SPRAY_START_FRAME },
+          (_, index) => frameSource(index + SPRAY_START_FRAME),
+        ),
+      ],
+    );
   });
 
-  it('discards delayed readiness after replacement, hide, and dispose', async () => {
+  it('keeps only the latest delayed popup and cancels hidden playback', async () => {
     const replaced = createHarness({ delayedReady: true });
     const replacedEffect = new DeepSeaInkEffectView(replaced.runtime);
-    replacedEffect.play({ columnX: -450, headY: 375 });
-    replacedEffect.play({ columnX: 450, headY: 375 });
-    expect(replaced.children).toHaveLength(0);
-    await replaced.makeSheetReady();
+    const completions: string[] = [];
+    replacedEffect.playPopup(
+      deepSeaInkTarget(-450, OPTION, FEEDBACK),
+      () => completions.push('old'),
+    );
+    replacedEffect.playPopup(
+      deepSeaInkTarget(450, OPTION, FEEDBACK),
+      () => completions.push('latest'),
+    );
+    await replaced.makeFramesReady();
     expect(replaced.children).toHaveLength(1);
-    expect(replaced.bodyDataset.deepSeaInkTarget).toBe('1170,375');
+    expect(replaced.bodyDataset.deepSeaInkTarget).toBe('1175,466');
+    replaced.step(replaced.now + FRAME_MS * (POPUP_END_FRAME + 1) + 0.01);
+    expect(completions).toEqual(['latest']);
+    expect(replaced.bodyDataset.deepSeaInkPhase).toBe('hold');
 
     const hidden = createHarness({ delayedReady: true });
     const hiddenEffect = new DeepSeaInkEffectView(hidden.runtime);
-    hiddenEffect.play({ columnX: 0, headY: 375 });
+    let hiddenCompleted = false;
+    hiddenEffect.playPopup(
+      deepSeaInkTarget(0, OPTION, FEEDBACK),
+      () => { hiddenCompleted = true; },
+    );
     hiddenEffect.hide();
-    await hidden.makeSheetReady();
+    await hidden.makeFramesReady();
     expect(hidden.children).toHaveLength(0);
     expect(hidden.pending()).toHaveLength(0);
+    expect(hiddenCompleted).toBe(false);
     expectBodyDiagnosticsCleared(hidden);
-
-    const disposed = createHarness({ delayedReady: true });
-    const disposedEffect = new DeepSeaInkEffectView(disposed.runtime);
-    disposedEffect.play({ columnX: 0, headY: 375 });
-    disposedEffect.dispose();
-    await disposed.makeSheetReady();
-    expect(disposed.children).toHaveLength(0);
-    expect(disposed.pending()).toHaveLength(0);
-    expectBodyDiagnosticsCleared(disposed);
   });
 
-  it('retries a rejected image load and caches the later successful readiness', async () => {
-    const harness = createRetryHarness();
+  it('fails open when a customer frame cannot load', async () => {
+    const harness = createHarness({ delayedReady: true });
     const effect = new DeepSeaInkEffectView(harness.runtime);
-    expect(harness.loadCount()).toBe(0);
+    let completed = false;
+    effect.playPopup(
+      deepSeaInkTarget(0, OPTION, FEEDBACK),
+      () => { completed = true; },
+    );
 
-    effect.play({ columnX: -450, headY: 375 });
-    expect(harness.loadCount()).toBe(1);
-    await harness.rejectLoad(0);
+    await harness.rejectFrames();
+
+    expect(completed).toBe(true);
     expect(harness.children).toHaveLength(0);
-    expect(harness.pending()).toHaveLength(0);
-    expectBodyDiagnosticsCleared(harness);
-
-    effect.play({ columnX: 0, headY: 375 });
-    expect(harness.loadCount()).toBe(2);
-    effect.play({ columnX: 450, headY: 375 });
-    expect(harness.loadCount()).toBe(2);
-
-    harness.now = 7000;
-    await harness.resolveLoad(1);
-    expect(harness.children).toHaveLength(1);
-    expect(harness.children[0].dataset.deepSeaInkFrame).toBe('0');
-    expect(harness.bodyDataset.deepSeaInkTarget).toBe('1170,375');
-    expect(harness.pending()).toHaveLength(1);
-
-    effect.hide();
-    effect.play({ columnX: 0, headY: 375 });
-    await Promise.resolve();
-    expect(harness.loadCount()).toBe(2);
-    expect(harness.children).toHaveLength(1);
-    expect(harness.children[0].dataset.deepSeaInkFrame).toBe('0');
-    expect(harness.bodyDataset.deepSeaInkTarget).toBe('720,375');
+    expect(harness.bodyDataset).toMatchObject({
+      deepSeaInkActive: 'load-error',
+      deepSeaInkAssetMode: 'customer-original-frames',
+      deepSeaInkRenderer: 'predecoded-canvas',
+    });
   });
 
-  it('isolates stale animation callbacks and cleans and rebuilds diagnostics', async () => {
+  it('fails open if spray is requested before the popup hold', () => {
     const harness = createHarness();
     const effect = new DeepSeaInkEffectView(harness.runtime);
+    let completed = false;
 
-    effect.play({ columnX: -450, headY: 375 });
-    await harness.makeSheetReady();
-    const staleTick = harness.pending()[0];
-    expect(staleTick).toBeDefined();
-
-    effect.play({ columnX: 450, headY: 375 });
-    await harness.makeSheetReady();
-    const currentElement = harness.children[0];
-    expect(harness.bodyDataset.deepSeaInkActive).toBe('true');
-    expect(currentElement.dataset.deepSeaInkTarget).toBe('1170,375');
-
-    staleTick(harness.now + FRAME_MS * 10);
-    expect(currentElement.dataset.deepSeaInkFrame).toBe('0');
-    expect(currentElement.dataset.deepSeaInkTarget).toBe('1170,375');
-
-    harness.step(harness.now + FRAME_MS * 2 + 0.01);
-    expect(currentElement.dataset.deepSeaInkFrame).toBe('2');
-
-    effect.hide();
-    expect(harness.children).toHaveLength(0);
-    expect(harness.pending()).toHaveLength(0);
-    expectBodyDiagnosticsCleared(harness);
-
-    effect.play({ columnX: 0, headY: 375 });
-    await harness.makeSheetReady();
-    expect(harness.children).toHaveLength(1);
-    expect(harness.bodyDataset).toMatchObject({
-      deepSeaInkActive: 'true',
-      deepSeaInkFrame: '0',
-      deepSeaInkTarget: '720,375',
-      deepSeaInkSprayHit: '720,375',
-      deepSeaInkBodyTopRight: '930,180',
-      deepSeaInkViewportCenter: '810,300',
-      deepSeaInkFps: '15',
-      deepSeaInkFrameCount: '26',
+    effect.playSpray(() => {
+      completed = true;
     });
-    effect.dispose();
-    expect(harness.children).toHaveLength(0);
-    expectBodyDiagnosticsCleared(harness);
-    effect.play({ columnX: 0, headY: 375 });
-    await harness.makeSheetReady();
+
+    expect(completed).toBe(true);
     expect(harness.children).toHaveLength(0);
   });
 
-  it('uses an opaque pixel from the real final-frame ink stream as the spray hit', () => {
-    const sheet = PNG.sync.read(readFileSync(resolve(
+  it('preserves the opaque final ink tip from the supplied source cut', () => {
+    const frame = PNG.sync.read(readFileSync(resolve(
       __dirname,
-      '../customer-media/reward-props/deep-sea/ink-squid-sheet.png',
+      '../customer-media/reward-props/deep-sea/ink-squid-frames/frame-25.png',
     )));
-    const frame25X = 38;
-    const frame25Y = 5 * 256 + 203;
-    const alpha = sheet.data[(frame25Y * sheet.width + frame25X) * 4 + 3];
+    const alpha = frame.data[(235 * frame.width + 45) * 4 + 3];
 
-    expect({ width: sheet.width, height: sheet.height }).toEqual({
-      width: 1280,
-      height: 1536,
+    expect({ width: frame.width, height: frame.height }).toEqual({
+      width: 261,
+      height: 241,
     });
     expect(alpha).toBeGreaterThan(0);
   });
 
-  it('starts only for a deep-sea wrong answer after revealing feedback', () => {
+  it('reveals feedback before continuing the held squid effect', () => {
     const events: string[] = [];
-    const view = {
-      setFeedbackVisible: (visible: boolean) => events.push(`visible:${visible}`),
-      playDeepSeaInk: (columnX: number) => events.push(`ink:${columnX}`),
-    };
+    const ready = createReadingFeedbackReadyHandler(
+      {
+        setFeedbackVisible: (visible: boolean) => events.push(`visible:${visible}`),
+      },
+      () => events.push('spray'),
+    );
 
-    const marioWrongReady = createReadingFeedbackReadyHandler(view, 'mario', false, -450);
-    const deepSeaCorrectReady = createReadingFeedbackReadyHandler(view, 'deep-sea', true, 0);
-    const deepSeaWrongReady = createReadingFeedbackReadyHandler(view, 'deep-sea', false, 450);
+    ready();
 
-    expect(events).toEqual([]);
-    marioWrongReady();
-    deepSeaCorrectReady();
-    deepSeaWrongReady();
-
-    expect(events).toEqual([
-      'visible:true',
-      'visible:true',
-      'visible:true',
-      'ink:450',
-    ]);
+    expect(events).toEqual(['visible:true', 'spray']);
   });
 });

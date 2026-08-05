@@ -14,7 +14,13 @@ async function temporaryOutputRoot(t) {
   return root;
 }
 
-function populatedPixels(image, frameIndex, frameWidth, frameHeight, columns) {
+function populatedPixels(
+  image,
+  frameIndex = 0,
+  frameWidth = image.width,
+  frameHeight = image.height,
+  columns = 1,
+) {
   const startX = frameIndex % columns * frameWidth;
   const startY = Math.floor(frameIndex / columns) * frameHeight;
   let pixels = 0;
@@ -28,7 +34,13 @@ function populatedPixels(image, frameIndex, frameWidth, frameHeight, columns) {
   return pixels;
 }
 
-function sizableComponents(image, frameIndex, frameWidth, frameHeight, columns) {
+function sizableComponents(
+  image,
+  frameIndex = 0,
+  frameWidth = image.width,
+  frameHeight = image.height,
+  columns = 1,
+) {
   const startX = frameIndex % columns * frameWidth;
   const startY = Math.floor(frameIndex / columns) * frameHeight;
   const seen = new Uint8Array(frameWidth * frameHeight);
@@ -74,41 +86,83 @@ function sizableComponents(image, frameIndex, frameWidth, frameHeight, columns) 
   return components;
 }
 
-test('builds 26 populated squid frames from the 9/7/5/5 packed source', async (t) => {
+test('cuts 26 lossless standalone squid frames from the 9/7/5/5 source', async (t) => {
   const outputRoot = await temporaryOutputRoot(t);
+  const deepSeaRoot = path.join(outputRoot, 'deep-sea');
+  await fs.mkdir(deepSeaRoot, { recursive: true });
+  await fs.writeFile(path.join(deepSeaRoot, 'ink-squid-sheet.png'), 'legacy');
   const report = await buildReadingNegativeFeedbackAssets({ outputRoot });
 
   assert.deepEqual(report.squid.source, { width: 1536, height: 1024 });
   assert.deepEqual(report.squid.rowFrames, [9, 7, 5, 5]);
   assert.equal(report.squid.frames, 26);
-  assert.equal(report.squid.frameWidth, 256);
-  assert.equal(report.squid.frameHeight, 256);
-  assert.equal(report.squid.columns, 5);
-  assert.equal(report.squid.rows, 6);
-
-  const sheet = PNG.sync.read(
-    await fs.readFile(path.join(outputRoot, 'deep-sea', 'ink-squid-sheet.png')),
-  );
-  assert.deepEqual({ width: sheet.width, height: sheet.height }, {
-    width: 1280,
-    height: 1536,
+  assert.equal(report.squid.frameWidth, 261);
+  assert.equal(report.squid.frameHeight, 241);
+  assert.deepEqual(report.squid.playback, {
+    fps: 24,
+    popupFrames: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    repositionFrame: 12,
+    sprayFrames: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+    excludedFrames: [9, 10, 11],
   });
+  assert.equal(report.squid.directory, 'ink-squid-frames');
+  const frameRoot = path.join(deepSeaRoot, report.squid.directory);
+  const manifest = JSON.parse(await fs.readFile(
+    path.join(frameRoot, 'manifest.json'),
+    'utf8',
+  ));
+  assert.equal(manifest.source.name, '墨鱼喷汁雪碧图.png');
+  assert.equal(manifest.frames.length, 26);
+  assert.equal(manifest.fps, 24);
+  assert.deepEqual(manifest.anchor, { x: 260, y: 0 });
+  assert.deepEqual(manifest.playback, {
+    popupFrames: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    repositionFrame: 12,
+    sprayFrames: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+    excludedFrames: [9, 10, 11],
+  });
+
+  const frames = [];
   for (let frameIndex = 0; frameIndex < 26; frameIndex += 1) {
+    const frame = PNG.sync.read(await fs.readFile(path.join(
+      frameRoot,
+      `frame-${String(frameIndex).padStart(2, '0')}.png`,
+    )));
+    frames.push(frame);
+    assert.deepEqual(
+      { width: frame.width, height: frame.height },
+      { width: 261, height: 241 },
+    );
     assert.ok(
-      populatedPixels(sheet, frameIndex, 256, 256, 5) > 0,
+      populatedPixels(frame) > 0,
       `squid frame ${frameIndex} should contain source pixels`,
     );
   }
-  for (let frameIndex = 26; frameIndex < 30; frameIndex += 1) {
-    assert.equal(
-      populatedPixels(sheet, frameIndex, 256, 256, 5),
-      0,
-      `unused squid cell ${frameIndex} should remain transparent`,
-    );
-  }
+  assert.equal(
+    sizableComponents(frames[25]).length,
+    8,
+    'last spray frame should preserve the body and all seven detached ink droplets',
+  );
+  const popupAreas = manifest.playback.popupFrames.map(
+    (frameIndex) => populatedPixels(frames[frameIndex]),
+  );
   assert.ok(
-    sizableComponents(sheet, 25, 256, 256, 5).length >= 2,
-    'last spray frame should preserve detached ink droplets',
+    popupAreas.every((area, index) => index === 0 || area > popupAreas[index - 1]),
+    'popup playback should grow continuously without a shrinking restart frame',
+  );
+  assert.ok(
+    populatedPixels(frames[9]) < populatedPixels(frames[8]) * 0.6,
+    'excluded frame 9 should document the source size reset after popup frame 8',
+  );
+  assert.ok(
+    Array.from({ length: frames[25].height }, (_, y) =>
+      frames[25].data[(y * frames[25].width) * 4 + 3])
+      .some((alpha) => alpha > alphaThreshold),
+    'last spray frame should preserve the source pixel at the far-left edge',
+  );
+  await assert.rejects(
+    fs.access(path.join(deepSeaRoot, 'ink-squid-sheet.png')),
+    { code: 'ENOENT' },
   );
 });
 
@@ -135,14 +189,19 @@ test('builds poetry penalty from the supplied clean brush source', async (t) => 
 test('--check validates outputs without rewriting stale files', async (t) => {
   const outputRoot = await temporaryOutputRoot(t);
   await buildReadingNegativeFeedbackAssets({ outputRoot });
-  const squidPath = path.join(outputRoot, 'deep-sea', 'ink-squid-sheet.png');
+  const squidPath = path.join(
+    outputRoot,
+    'deep-sea',
+    'ink-squid-frames',
+    'frame-00.png',
+  );
   const staleBytes = Buffer.from(await fs.readFile(squidPath));
   staleBytes[staleBytes.length - 1] ^= 0xff;
   await fs.writeFile(squidPath, staleBytes);
 
   await assert.rejects(
     buildReadingNegativeFeedbackAssets({ outputRoot, check: true }),
-    /ink-squid-sheet\.png is stale/,
+    /frame-00\.png is stale/,
   );
   assert.deepEqual(await fs.readFile(squidPath), staleBytes);
 });

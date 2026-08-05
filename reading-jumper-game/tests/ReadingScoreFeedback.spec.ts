@@ -10,7 +10,7 @@ import * as ScoreCoinDom from '../assets/scripts/ui/ScoreCoinDom';
 
 const terminalMetrics = (
   ScoreCoinDom as typeof ScoreCoinDom & {
-    scoreTerminalMetrics?: (terminal: 'explosion' | 'ink') => unknown;
+    scoreTerminalMetrics?: (terminal: 'explosion' | 'vortex' | 'ink') => unknown;
   }
 ).scoreTerminalMetrics;
 
@@ -110,6 +110,13 @@ describe('Reading score feedback props', () => {
     });
     expect(readingScoreFeedback('deep-sea', true)?.asset)
       .toBe('./media/reward-props/deep-sea/reward.png');
+    expect(readingScoreFeedback('deep-sea', false)).toBeUndefined();
+    expect(readingScoreFeedback('food', false)).toMatchObject({
+      asset: './media/reward-props/food/penalty.png',
+      width: 76,
+      height: 92,
+      terminal: 'explosion',
+    });
   });
 
   it('scopes proactive prop loading to the current scene', () => {
@@ -121,7 +128,11 @@ describe('Reading score feedback props', () => {
     expect(scopedAssets('deep-sea')).toEqual([
       './media/reward-props/deep-sea/reward.png',
     ]);
-    expect(scopedAssets()).toHaveLength(8);
+    expect(scopedAssets('food')).toEqual([
+      './media/reward-props/food/reward.png',
+      './media/reward-props/food/penalty.png',
+    ]);
+    expect(scopedAssets()).toHaveLength(9);
   });
 
   it('ships every configured prop as a compact runtime PNG', () => {
@@ -151,27 +162,34 @@ describe('Reading score feedback props', () => {
   it('defines the full Mario explosion terminal geometry', () => {
     expect(terminalMetrics).toBeDefined();
     expect(terminalMetrics?.('explosion')).toMatchObject({
-      width: 170,
-      height: 150,
-      flashWidth: 92,
-      flashHeight: 92,
-      fragments: 14,
-      peakMs: 180,
-      durationMs: 700,
+      width: 240,
+      height: 210,
+      flashWidth: 128,
+      flashHeight: 128,
+      fragments: 20,
+      peakMs: 205,
+      durationMs: 820,
     });
   });
 
   it('defines the poetry ink terminal geometry', () => {
     expect(terminalMetrics).toBeDefined();
     expect(terminalMetrics?.('ink')).toMatchObject({
-      mainWidth: 110,
-      mainHeight: 82,
-      droplets: 18,
-      durationMs: 800,
+      mainWidth: 168,
+      mainHeight: 126,
+      droplets: 24,
+      durationMs: 920,
     });
   });
 
-  it('starts wrong-page top feedback from the captured trigger phase', () => {
+  it('exposes the full terminal hold used by the feedback sequence gate', () => {
+    expect(ScoreCoinDom.scoreTerminalDurationMs({ terminal: 'spark' })).toBe(880);
+    expect(ScoreCoinDom.scoreTerminalDurationMs({ terminal: 'explosion' })).toBe(900);
+    expect(ScoreCoinDom.scoreTerminalDurationMs({ terminal: 'vortex' })).toBe(900);
+    expect(ScoreCoinDom.scoreTerminalDurationMs({ terminal: 'ink' })).toBe(980);
+  });
+
+  it('serializes penalty terminal, wrong feedback, then page-top feedback', () => {
     const answers = readFileSync(
       resolve(
         __dirname,
@@ -179,11 +197,28 @@ describe('Reading score feedback props', () => {
       ),
       'utf8',
     );
+    const scoreEffect = readFileSync(
+      resolve(__dirname, '../assets/scripts/ui/ScoreCoinEffectView.ts'),
+      'utf8',
+    );
     const top = readFileSync(
       resolve(__dirname, '../assets/scripts/ui/WrongFeedbackTopEffectView.ts'),
       'utf8',
     );
-    expect(answers).toContain('if (!correct) this.view.showWrongFeedbackTop(theme.id)');
+    expect(answers).toContain("'terminal-and-landing'");
+    expect(answers).toContain("'scene-effect-and-landing'");
+    expect(answers).toContain('correct ? undefined : onScoreEffectReady');
+    expect(answers).toContain("themeId === 'deep-sea' && !correct");
+    expect(answers).toContain('this.view.playDeepSeaInkPopup(index');
+    expect(answers).toContain('this.showDeepSeaWrongFeedback(question)');
+    expect(answers).toContain('animateIn: false');
+    expect(answers).toContain('this.view.playDeepSeaInkSpray');
+    expect(answers).toContain("feedbackSequencePhase = 'spray'");
+    expect(answers).toContain('.delay(feedbackDurationMs(theme.id, false) / 1000)');
+    expect(answers).toContain('.call(this.scope.guard(() => this.showWrongTop(theme.id)))');
+    expect(answers).not.toContain('if (!correct) this.view.showWrongFeedbackTop(theme.id)');
+    expect(scoreEffect).toContain('scoreTerminalDurationMs(terminalVisual)');
+    expect(scoreEffect).toContain('options.onTerminalComplete?.();');
     expect(answers).toContain('scoreCoinFeedbackKind = correct ? \'reward\' : \'penalty\'');
     expect(top).toContain('const DESIGN_WIDTH = AppConfig.designWidth');
     expect(top).toContain('const BACKGROUND_SIBLING_INDEX = 1');
@@ -244,8 +279,8 @@ describe('Score terminal DOM behavior', () => {
       },
     );
 
-    expect(fragments).toBe(14);
-    expect(scaled.fake.children).toHaveLength(17);
+    expect(fragments).toBe(20);
+    expect(scaled.fake.children).toHaveLength(23);
     expect(scaled.fake.children.every(
       (child) => child.style.left === expectedLeft && child.style.top === expectedTop,
     )).toBe(true);
@@ -268,13 +303,13 @@ describe('Score terminal DOM behavior', () => {
     const fragmentNodes = scaled.fake.children.filter(
       (child) => child.dataset.scoreTerminalFragment !== undefined,
     );
-    expect(cloud.style.width).toBe('340px');
-    expect(cloud.style.height).toBe('300px');
-    expect(flash.style.width).toBe('184px');
-    expect(flash.style.height).toBe('184px');
-    expect(ring.style.width).toBe('252px');
-    expect(ring.style.height).toBe('220px');
-    expect(fragmentNodes).toHaveLength(14);
+    expect(cloud.style.width).toBe('480px');
+    expect(cloud.style.height).toBe('420px');
+    expect(flash.style.width).toBe('256px');
+    expect(flash.style.height).toBe('256px');
+    expect(ring.style.width).toBe('352px');
+    expect(ring.style.height).toBe('308px');
+    expect(fragmentNodes).toHaveLength(20);
 
     const unscaled = terminalContainer();
     ScoreCoinDom.spawnScoreTerminalEffect(
@@ -300,8 +335,8 @@ describe('Score terminal DOM behavior', () => {
         parseFloat(unscaledFirstFragment.style.getPropertyValue('--fragment-dx')) * 2,
       );
 
-    jest.advanceTimersByTime(759);
-    expect(scaled.fake.children).toHaveLength(17);
+    jest.advanceTimersByTime(899);
+    expect(scaled.fake.children).toHaveLength(23);
     jest.advanceTimersByTime(1);
     expect(scaled.fake.children).toHaveLength(0);
   });
@@ -318,8 +353,8 @@ describe('Score terminal DOM behavior', () => {
       },
     );
 
-    expect(droplets).toBe(18);
-    expect(scaled.fake.children).toHaveLength(20);
+    expect(droplets).toBe(24);
+    expect(scaled.fake.children).toHaveLength(26);
     expect(scaled.fake.children.every(
       (child) => child.style.left === expectedLeft && child.style.top === expectedTop,
     )).toBe(true);
@@ -329,11 +364,11 @@ describe('Score terminal DOM behavior', () => {
     const dropletNodes = scaled.fake.children.filter(
       (child) => child.dataset.scoreTerminalDroplet !== undefined,
     );
-    expect(main.style.width).toBe('220px');
-    expect(main.style.height).toBe('164px');
-    expect(ring.style.width).toBe('192px');
-    expect(ring.style.height).toBe('136px');
-    expect(dropletNodes).toHaveLength(18);
+    expect(main.style.width).toBe('336px');
+    expect(main.style.height).toBe('252px');
+    expect(ring.style.width).toBe('300px');
+    expect(ring.style.height).toBe('220px');
+    expect(dropletNodes).toHaveLength(24);
 
     const unscaled = terminalContainer();
     ScoreCoinDom.spawnScoreTerminalEffect(
@@ -359,8 +394,8 @@ describe('Score terminal DOM behavior', () => {
         parseFloat(unscaledFirstDroplet.style.getPropertyValue('--ink-dx')) * 2,
       );
 
-    jest.advanceTimersByTime(849);
-    expect(scaled.fake.children).toHaveLength(20);
+    jest.advanceTimersByTime(979);
+    expect(scaled.fake.children).toHaveLength(26);
     jest.advanceTimersByTime(1);
     expect(scaled.fake.children).toHaveLength(0);
   });
@@ -376,16 +411,16 @@ describe('Score terminal DOM behavior', () => {
       asset: './media/reward-props/poetry/penalty.png',
       terminal: 'ink',
     });
-    expect(fake.children).toHaveLength(37);
+    expect(fake.children).toHaveLength(49);
 
-    jest.advanceTimersByTime(360);
-    expect(fake.children).toHaveLength(20);
+    jest.advanceTimersByTime(500);
+    expect(fake.children).toHaveLength(26);
     expect(fake.children.filter(
       (child) => child.dataset.scoreTerminalDroplet !== undefined,
-    )).toHaveLength(18);
+    )).toHaveLength(24);
 
-    jest.advanceTimersByTime(489);
-    expect(fake.children).toHaveLength(20);
+    jest.advanceTimersByTime(479);
+    expect(fake.children).toHaveLength(26);
     jest.advanceTimersByTime(1);
     expect(fake.children).toHaveLength(0);
   });
@@ -403,17 +438,17 @@ describe('Score terminal DOM behavior', () => {
       },
     );
 
-    expect(sparks).toBe(9);
-    expect(fake.children).toHaveLength(11);
+    expect(sparks).toBe(16);
+    expect(fake.children).toHaveLength(18);
     expect(fake.children.every(
       (child) => child.style.left === expectedLeft && child.style.top === expectedTop,
     )).toBe(true);
     expect(fake.children.filter(
       (child) => child.dataset.scoreCoinSpark?.startsWith('arrival-'),
-    )).toHaveLength(9);
+    )).toHaveLength(16);
 
-    jest.advanceTimersByTime(716);
-    expect(fake.children).toHaveLength(11);
+    jest.advanceTimersByTime(879);
+    expect(fake.children).toHaveLength(18);
     jest.advanceTimersByTime(1);
     expect(fake.children).toHaveLength(0);
   });
@@ -432,19 +467,25 @@ describe('Score terminal DOM behavior', () => {
       },
     );
 
-    expect(vortexCount).toBe(1);
-    expect(fake.children).toHaveLength(1);
-    expect(fake.children[0]).toMatchObject({
+    expect(vortexCount).toBe(16);
+    expect(fake.children).toHaveLength(19);
+    const image = childWithDataset(fake, 'scoreTerminalLayer', 'vortex-image');
+    expect(image).toMatchObject({
       src: './media/reward-props/space/penalty.png',
       alt: '',
     });
-    expect(fake.children[0].style.left).toBe(expectedLeft);
-    expect(fake.children[0].style.top).toBe(expectedTop);
-    expect(fake.children[0].style.width).toBe('330px');
-    expect(fake.children[0].style.height).toBe('237.6px');
+    expect(image.style.left).toBe(expectedLeft);
+    expect(image.style.top).toBe(expectedTop);
+    expect(image.style.width).toBe('480px');
+    expect(image.style.height).toBe('345.6px');
+    expect(childWithDataset(fake, 'scoreTerminalLayer', 'vortex-ring').style.width)
+      .toBe('396px');
+    expect(fake.children.filter(
+      (child) => child.dataset.scoreTerminalFragment?.startsWith('vortex-'),
+    )).toHaveLength(16);
 
-    jest.advanceTimersByTime(719);
-    expect(fake.children).toHaveLength(1);
+    jest.advanceTimersByTime(899);
+    expect(fake.children).toHaveLength(19);
     jest.advanceTimersByTime(1);
     expect(fake.children).toHaveLength(0);
   });
