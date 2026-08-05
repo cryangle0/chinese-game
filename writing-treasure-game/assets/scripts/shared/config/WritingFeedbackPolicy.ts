@@ -1,4 +1,6 @@
 import { normalizeChineseTypography } from './ChineseTextWrap';
+import { DUNHUANG_TREASURE_FEEDBACK } from './DunhuangTreasureFeedback';
+import { MAGIC_ACADEMY_FEEDBACK } from './MagicAcademyFeedback';
 
 export type FeedbackPresentation = 'motion' | 'hybrid';
 
@@ -37,8 +39,14 @@ const actionTiming: Readonly<Record<string, WritingActionTiming>> = {
   treasure: { holdMs: 1500, impactAtMs: [280, 880, 1320] },
   desert: { holdMs: 1200, impactAtMs: [280, 720, 1080] },
   dinosaur: { holdMs: 1200, impactAtMs: [280, 760, 1080] },
-  dunhuang: { holdMs: 2600, impactAtMs: [280, 1320, 2280] },
-  magic: { holdMs: 2000, impactAtMs: [280, 1040, 1760] },
+  dunhuang: {
+    holdMs: DUNHUANG_TREASURE_FEEDBACK.castImpactMs,
+    impactAtMs: [900, 2100, DUNHUANG_TREASURE_FEEDBACK.castImpactMs],
+  },
+  magic: {
+    holdMs: MAGIC_ACADEMY_FEEDBACK.castHoldMs,
+    impactAtMs: MAGIC_ACADEMY_FEEDBACK.castImpactAtMs,
+  },
 };
 
 const choiceFeedbackGeometry: Readonly<
@@ -66,13 +74,13 @@ const feedbackMotionLayout: Readonly<Record<string, {
   readonly wrong: WritingFeedbackMotionLayout;
 }>> = {
   treasure: {
-    correct: { scale: 1.32 },
+    correct: { scale: 1.2, offsetY: 70 },
     wrong: { scale: 1.34 },
   },
   desert: {
     // Keep the complete 960px customer frame readable, including the outer amulets.
     correct: { scale: 1.32 },
-    wrong: { scale: 1.2 },
+    wrong: { scale: 1.02, offsetY: -92 },
   },
   dinosaur: {
     correct: { scale: 1.25 },
@@ -134,18 +142,18 @@ export function formatWritingOption(index: number, raw: string): string {
 
 /**
  * Dinosaur correct feedback still reveals the supplied hatchling artwork.
- * Dinosaur wrong feedback is now a complete full-stage chase animation.
+ * Dinosaur wrong feedback stays in the live scene from hatch through chase.
  */
 export function feedbackPresentation(
   sceneId: string,
   correct = true,
 ): FeedbackPresentation {
   if (sceneId === 'dinosaur') return 'hybrid';
-  return sceneId === 'desert' && !correct ? 'hybrid' : 'motion';
+  return 'motion';
 }
 
-export function feedbackUsesStageMotion(sceneId: string, correct: boolean): boolean {
-  return sceneId === 'dinosaur' && !correct;
+export function feedbackUsesStageMotion(_sceneId: string, _correct: boolean): boolean {
+  return false;
 }
 
 /** Select the dinosaur chase rendered for the answered egg column. */

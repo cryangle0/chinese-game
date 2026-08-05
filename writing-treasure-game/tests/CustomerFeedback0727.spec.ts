@@ -55,12 +55,12 @@ describe('customer feedback 0727', () => {
   it('uses layered artwork for both dinosaur outcomes', () => {
     expect(feedbackPresentation('treasure')).toBe('motion');
     expect(feedbackPresentation('desert')).toBe('motion');
-    expect(feedbackPresentation('desert', false)).toBe('hybrid');
+    expect(feedbackPresentation('desert', false)).toBe('motion');
     expect(feedbackPresentation('dinosaur', true)).toBe('hybrid');
     expect(feedbackPresentation('dinosaur', false)).toBe('hybrid');
     expect(feedbackPresentation('dunhuang')).toBe('motion');
     expect(feedbackPresentation('magic')).toBe('motion');
-    expect(feedbackUsesStageMotion('dinosaur', false)).toBe(true);
+    expect(feedbackUsesStageMotion('dinosaur', false)).toBe(false);
     expect(feedbackUsesStageMotion('dinosaur', true)).toBe(false);
   });
 
@@ -96,7 +96,7 @@ describe('customer feedback 0727', () => {
     expect(writingActionTiming('treasure').holdMs).toBe(1500);
     expect(writingActionTiming('desert').holdMs).toBe(1200);
     expect(writingActionTiming('dinosaur').holdMs).toBe(1200);
-    expect(writingActionTiming('dunhuang').holdMs).toBe(2600);
+    expect(writingActionTiming('dunhuang').holdMs).toBe(3300);
     expect(writingActionTiming('magic').holdMs).toBe(2000);
   });
 
@@ -148,7 +148,7 @@ describe('customer feedback 0727', () => {
     });
   });
 
-  it('keeps the dinosaur wrong chase in the full-stage motion asset', () => {
+  it('keeps the dinosaur wrong chase out of full-stage feedback playback', () => {
     const sequencePlan = (
       FeedbackPolicy as unknown as {
         feedbackSequencePlan?: (sceneId: string, correct: boolean) => unknown;
@@ -159,6 +159,7 @@ describe('customer feedback 0727', () => {
     });
     expect(sequencePlan?.('dinosaur', false)).toBeUndefined();
     expect(sequencePlan?.('treasure', true)).toBeUndefined();
+    expect(feedbackUsesStageMotion('dinosaur', false)).toBe(false);
   });
 
   it('selects the dinosaur chase matching the answered egg column', () => {

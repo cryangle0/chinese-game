@@ -1,0 +1,11 @@
+{
+  "taskId": "2085113121504387073",
+  "output": "wrong-16-white.png",
+  "aspectRatio": "1:1",
+  "resolution": "4k",
+  "quality": "high",
+  "sourceFiles": [
+    "负反馈恐龙雪碧图-4k.png"
+  ],
+  "prompt": "Use the supplied high-resolution orange baby dinosaur sprite sheet as the exact character reference.\n\nCreate one production-quality animation sprite sheet with exactly 16 sequential frames arranged in a strict 4-column by 4-row grid. Every grid cell must have equal size, wide empty gutters, and exactly one complete orange baby dinosaur pose. Do not add panel borders, labels, numbers, text, arrows, captions, eggs, shells, people, scenery, dust, or extra objects.\n\nPreserve the orange baby dinosaur design exactly in all frames: same head, eyes, teeth, orange skin, beige belly, body proportions, lighting, polished 3D-rendered cartoon style, and right-facing direction. Keep the dinosaur at one stable visual size and fixed foot baseline. No zooming, no cropping, no body-part clipping, no duplicated limbs, and no redesign.\n\nAnimate one smooth continuous action from left to right, top to bottom:\nframes 1-4: the dinosaur crouches low, pushes upward, and launches strongly as if jumping out of a hole;\nframes 5-8: a clear airborne jump arc with tucked legs, extended legs, and a strong landing anticipation;\nframes 9-16: a readable energetic run cycle to the right with large alternating leg strides, visible arm swing, body bounce, and clear takeoff/contact poses. The last eight frames must form a seamless loop.\n\nMotion spacing must be even and animation-ready. Neighboring frames must be close enough for smooth playback while each pose remains visibly distinct. Make the jump and run action much more obvious than the supplied reference.\n\nRender on one perfectly uniform pure white background (#FFFFFF), with no floor, no cast shadow, no checkerboard pattern, and no glow extending into the gutters. Keep every dinosaur fully isolated from neighboring cells so each frame can be cleanly background-removed and cut out.\n"
+}

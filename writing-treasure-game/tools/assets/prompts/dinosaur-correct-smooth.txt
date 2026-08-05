@@ -1,0 +1,22 @@
+Use the supplied transparent sprite sheet as the exact character and prop reference.
+
+Create one production-quality animation sprite sheet with exactly 24 sequential frames arranged in a strict 6-column by 4-row grid. Every grid cell must have equal size, wide empty gutters, and exactly one complete animation pose. Do not add panel borders, labels, numbers, text, arrows, captions, or extra objects.
+
+Preserve these designs exactly across all 24 frames:
+- the same yellow cartoon deer explorer, same face, antlers, hat, outfit, backpack, proportions, lighting, and polished 3D-rendered style;
+- the same purple spotted dinosaur egg and broken shell;
+- the same small green baby dinosaur, same face, colors, proportions, and polished 3D-rendered style.
+
+Keep a fixed front three-quarter camera and a fixed ground baseline. Keep the deer, egg, and baby dinosaur at stable scale from frame to frame. No zooming, no cropping, no body-part clipping, no duplicated limbs, and no character redesign.
+
+Animate one smooth continuous positive-feedback sequence from left to right, top to bottom:
+frames 1-4: the deer finishes approaching and leans toward the intact egg with gradually changing body and arm poses;
+frames 5-8: the egg rocks and develops progressively larger cracks while the deer reacts;
+frames 9-12: warm light grows inside the egg and shell pieces begin lifting;
+frames 13-16: the green baby dinosaur rises smoothly out of the shell, with distinct in-between poses;
+frames 17-20: the baby dinosaur stands and the deer reaches toward it, with gradual arm, head, and body motion;
+frames 21-24: the deer and baby dinosaur move into a happy embrace and celebration, ending in a clear joyful final pose.
+
+Motion spacing must be even and animation-ready, with noticeably different but closely spaced poses in every neighboring frame. This is not a storyboard; it is a continuous frame-by-frame animation sheet.
+
+Render on one perfectly uniform pure white background (#FFFFFF), with no floor, no cast shadow, no checkerboard pattern, and no glow extending into the gutters. Keep every subject fully isolated from neighboring cells so each frame can be cleanly background-removed and cut out.

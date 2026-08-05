@@ -26,7 +26,7 @@ export const WritingSceneCharacter: Readonly<Record<string, {
     action: box(519.07, -28.5, 399, 552.46),
   },
   dunhuang: {
-    idle: box(595, 172, 250, 250),
+    idle: box(557.5, 90, 325, 450),
     run: box(595, 75.85, 250, 346.15),
     action: box(531.64, 32.68, 325, 450),
   },

@@ -11,6 +11,23 @@ import { HudView } from '../../../ui/HudView';
 import { QuestionBoardView } from '../../../ui/QuestionBoardView';
 import { VoiceAnswerView } from '../../../ui/VoiceAnswerView';
 import { ScoreCoinEffectView } from '../../../ui/ScoreCoinEffectView';
+import {
+  ClassicTreasureEffectView,
+  type ClassicTreasureExplosionCallbacks,
+} from '../../../ui/ClassicTreasureEffectView';
+import { DesertTreasureEffectView } from '../../../ui/DesertTreasureEffectView';
+import {
+  DinosaurTreasureCorrectEffectView,
+  type DinosaurTreasureCorrectCallbacks,
+} from '../../../ui/DinosaurTreasureCorrectEffectView';
+import {
+  DinosaurTreasureWrongEffectView,
+  type DinosaurTreasureWrongCallbacks,
+} from '../../../ui/DinosaurTreasureWrongEffectView';
+import {
+  DunhuangTreasureWrongEffectView,
+  type DunhuangTreasureWrongEffectCallbacks,
+} from '../../../ui/DunhuangTreasureWrongEffectView';
 import { MagicBookGroupView } from './MagicBookGroupView';
 import { WizardDeerView } from './WizardDeerView';
 
@@ -24,6 +41,13 @@ export class WritingGameView {
   readonly prompt: ActionPromptView;
   readonly voice: VoiceAnswerView;
   readonly scoreCoins: ScoreCoinEffectView;
+  private readonly classicTreasureEffect: ClassicTreasureEffectView;
+  private readonly desertTreasureEffect: DesertTreasureEffectView;
+  private readonly dinosaurTreasureCorrectEffect:
+    DinosaurTreasureCorrectEffectView;
+  private readonly dinosaurTreasureWrongEffect:
+    DinosaurTreasureWrongEffectView;
+  private readonly dunhuangTreasureWrongEffect: DunhuangTreasureWrongEffectView;
   private readonly transitionAnchor: Node;
   private readonly transition: DomMotionSprite;
   private transitionTimer = 0;
@@ -61,6 +85,7 @@ export class WritingGameView {
       firstTheme?.assets.characterAction ?? '',
       firstTheme?.assets.motion,
       firstTheme?.id ?? 'treasure',
+      firstTheme?.assets.feedbackWrong ?? '',
     );
     this.feedback = new FeedbackView(root, this.background);
     this.syncBackdrop();
@@ -79,12 +104,20 @@ export class WritingGameView {
       { fit: 'cover', zIndex: 40, fullscreen: true },
     );
     this.scoreCoins = new ScoreCoinEffectView(root);
+    this.classicTreasureEffect = new ClassicTreasureEffectView();
+    this.desertTreasureEffect = new DesertTreasureEffectView();
+    this.dinosaurTreasureCorrectEffect =
+      new DinosaurTreasureCorrectEffectView();
+    this.dinosaurTreasureWrongEffect =
+      new DinosaurTreasureWrongEffectView();
+    this.dunhuangTreasureWrongEffect = new DunhuangTreasureWrongEffectView();
   }
 
   setActive(active: boolean): void {
     if (!active) {
       this.feedback.hide();
       this.prompt.hide();
+      this.hideClassicTreasureEffect();
     }
     this.background.active = active;
     this.deer.root.active = active;
@@ -108,10 +141,253 @@ export class WritingGameView {
       theme.assets.characterAction,
       theme.assets.motion,
       theme.id,
+      theme.assets.feedbackWrong,
     );
     this.books.setTheme(theme.assets, theme.id);
     this.syncBackdrop();
     this.voice.setTheme(theme.assets);
+    if (theme.id === 'treasure' || theme.id === 'magic') {
+      this.classicTreasureEffect.preload();
+    }
+    else this.classicTreasureEffect.hide();
+    if (theme.id === 'desert') this.desertTreasureEffect.preload();
+    else this.desertTreasureEffect.hide();
+    if (theme.id === 'dinosaur') {
+      this.dinosaurTreasureCorrectEffect.preload();
+      this.dinosaurTreasureWrongEffect.preload();
+    } else {
+      this.dinosaurTreasureCorrectEffect.hide();
+      this.dinosaurTreasureWrongEffect.hide();
+    }
+  }
+
+  playClassicTreasureDig(
+    index: number,
+    holdMs: number,
+    impactAtMs: readonly number[],
+    bobOption = true,
+  ): void {
+    this.books.playClassicTreasureDig(index, holdMs, impactAtMs, bobOption);
+  }
+
+  sinkClassicTreasureOption(index: number): Promise<void> {
+    return this.books.sinkClassicTreasureOption(index);
+  }
+
+  playDesertTreasureDig(
+    index: number,
+    impactAtMs: readonly number[],
+  ): void {
+    this.books.playDesertTreasureDig(index, impactAtMs);
+  }
+
+  playDunhuangTreasureCast(
+    index: number,
+    impactAtMs: readonly number[],
+  ): void {
+    this.books.playDunhuangTreasureCast(index, impactAtMs);
+  }
+
+  breakDunhuangTreasureWall(index: number): Promise<void> {
+    return this.books.breakDunhuangTreasureWall(index);
+  }
+
+  dropDunhuangTreasureActor(index: number): Promise<void> {
+    return this.deer.descendWithDunhuangRubble(this.books.columnX(index));
+  }
+
+  openDunhuangTreasureWrongCavity(index: number): Promise<void> {
+    return this.books.openDunhuangTreasureWrongCavity(index);
+  }
+
+  dropDunhuangTreasureWrongActor(index: number): Promise<void> {
+    return this.deer.dropToDunhuangFloor(this.books.columnX(index));
+  }
+
+  liftDunhuangTreasureWrongActor(index: number): Promise<void> {
+    return this.deer.liftWithDunhuangTornado(this.books.columnX(index));
+  }
+
+  playDunhuangTreasureWrongEffect(
+    index: number,
+    callbacks: DunhuangTreasureWrongEffectCallbacks,
+  ): void {
+    this.dunhuangTreasureWrongEffect.play(this.books.columnX(index), callbacks);
+  }
+
+  playMagicAcademyCast(index: number): void {
+    this.books.playMagicAcademyCast(index);
+  }
+
+  openMagicAcademyCavity(index: number): Promise<void> {
+    return this.books.openMagicAcademyCavity(index);
+  }
+
+  dropMagicAcademyActor(
+    index: number,
+    sitting = false,
+  ): Promise<void> {
+    return this.deer.dropToMagicAcademyBook(
+      this.books.columnX(index),
+      sitting,
+    );
+  }
+
+  prepareMagicAcademyWrongActor(index: number): void {
+    this.books.placeMagicAcademyActorBehindBook(index, this.deer.root);
+  }
+
+  unlockMagicAcademyBook(
+    index: number,
+    onOpen?: () => void,
+  ): Promise<void> {
+    return this.books.unlockMagicAcademyBook(index, onOpen);
+  }
+
+  riseMagicAcademyActor(index: number): Promise<void> {
+    return this.deer.riseFromMagicAcademyBook(this.books.columnX(index));
+  }
+
+  showMagicAcademyWrongBook(index: number): Promise<void> {
+    return this.books.showMagicAcademyWrongBook(index);
+  }
+
+  launchMagicAcademyWrongActor(index: number): Promise<void> {
+    this.books.restoreMagicAcademyActorLayer();
+    return this.deer.launchFromMagicAcademyExplosion(
+      this.books.columnX(index),
+    );
+  }
+
+  dropDesertTreasureOption(index: number): Promise<void> {
+    return this.books.dropDesertTreasureOption(index);
+  }
+
+  prepareDesertWrongSarcophagus(index: number): Promise<void> {
+    return this.books.prepareDesertWrongSarcophagus(index);
+  }
+
+  dropDesertWrongSarcophagus(index: number): Promise<void> {
+    return this.books.dropDesertWrongSarcophagus(index);
+  }
+
+  dropDesertTreasureActor(index: number): Promise<void> {
+    return this.deer.dropToDesertTreasureChest(this.books.columnX(index));
+  }
+
+  dropDesertWrongActor(index: number): Promise<void> {
+    return this.deer.dropToDesertTreasurePit(this.books.columnX(index));
+  }
+
+  playDesertTreasureReward(index: number): void {
+    this.desertTreasureEffect.play(this.books.columnX(index));
+  }
+
+  playDesertTreasureBurial(
+    index: number,
+    onCovered: () => void,
+  ): void {
+    this.desertTreasureEffect.playBurial(this.books.columnX(index), onCovered);
+  }
+
+  prepareDinosaurTreasureCorrect(index: number): void {
+    this.books.prepareDinosaurCorrect(index);
+  }
+
+  jumpDinosaurTreasureActor(index: number): Promise<void> {
+    return this.deer.jumpIntoDinosaurPit(this.books.columnX(index));
+  }
+
+  playDinosaurTreasureCorrect(
+    index: number,
+    callbacks: DinosaurTreasureCorrectCallbacks,
+  ): void {
+    this.dinosaurTreasureCorrectEffect.play(
+      this.books.columnX(index),
+      callbacks,
+    );
+  }
+
+  prepareDinosaurTreasureWrong(index: number): void {
+    this.books.prepareDinosaurWrong(index);
+    this.books.placeDinosaurWrongEggInFront(index, this.deer.root);
+  }
+
+  jumpDinosaurTreasureWrongActor(index: number): Promise<void> {
+    return this.deer.jumpIntoDinosaurWrongPit(this.books.columnX(index));
+  }
+
+  watchDinosaurTreasureWrongEgg(index: number): Promise<void> {
+    return this.books.shakeDinosaurWrongEgg(index);
+  }
+
+  hideDinosaurTreasureWrongEgg(index: number): void {
+    this.books.hideDinosaurWrongEgg(index);
+  }
+
+  playDinosaurTreasureWrong(
+    index: number,
+    callbacks: DinosaurTreasureWrongCallbacks,
+  ): void {
+    this.dinosaurTreasureWrongEffect.play(
+      this.books.columnX(index),
+      callbacks,
+    );
+  }
+
+  escapeDinosaurTreasureWrongActor(index: number): Promise<void> {
+    return this.deer.escapeFromDinosaurWrongPit(this.books.columnX(index));
+  }
+
+  chaseDinosaurTreasureWrongActor(index: number): Promise<void> {
+    return this.deer.chaseDinosaurTreasureWrongActor(
+      this.books.columnX(index),
+    );
+  }
+
+  playDinosaurTreasureWrongChase(index: number): Promise<void> {
+    return new Promise((resolve) => {
+      this.dinosaurTreasureWrongEffect.playChase({
+        onComplete: resolve,
+      });
+    });
+  }
+
+  returnDinosaurTreasureWrongActor(index: number): Promise<void> {
+    return this.deer.returnDinosaurTreasureWrongActor(
+      this.books.columnX(index),
+    );
+  }
+
+  sinkClassicTreasureActor(index: number): Promise<void> {
+    return this.deer.sinkToClassicTreasureChest(this.books.columnX(index));
+  }
+
+  launchClassicTreasureActor(index: number): Promise<void> {
+    return this.deer.launchFromClassicTreasureChest(this.books.columnX(index));
+  }
+
+  playClassicTreasureReward(index: number): void {
+    this.classicTreasureEffect.playReward(this.books.columnX(index));
+  }
+
+  playClassicTreasureExplosion(
+    index: number,
+    callbacks: ClassicTreasureExplosionCallbacks,
+  ): void {
+    this.classicTreasureEffect.playExplosion(this.books.columnX(index), callbacks);
+  }
+
+  hideClassicTreasureEffect(): void {
+    this.classicTreasureEffect.hide();
+    this.books.hideClassicTreasureHole();
+    this.desertTreasureEffect.hide();
+    this.books.hideDesertTreasureHole();
+    this.dinosaurTreasureCorrectEffect.hide();
+    this.dinosaurTreasureWrongEffect.hide();
+    this.dunhuangTreasureWrongEffect.hide();
+    this.books.hideDunhuangTreasureBreak();
+    this.books.hideMagicAcademyBreak();
   }
 
   playTransition(source: string | undefined): void {
@@ -175,6 +451,11 @@ export class WritingGameView {
     }
     this.transition.dispose();
     this.scoreCoins.dispose();
+    this.classicTreasureEffect.dispose();
+    this.desertTreasureEffect.dispose();
+    this.dinosaurTreasureCorrectEffect.dispose();
+    this.dinosaurTreasureWrongEffect.dispose();
+    this.dunhuangTreasureWrongEffect.dispose();
     this.deer.dispose();
     this.feedback.dispose();
   }

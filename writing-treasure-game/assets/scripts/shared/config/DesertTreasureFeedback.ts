@@ -1,0 +1,31 @@
+export const DESERT_TREASURE_FEEDBACK = {
+  holeSurfaceY: -24,
+  optionDropY: -118,
+  optionDropMs: 520,
+  actorChestInsetY: -8,
+  actorDropMs: 520,
+  actorChestHoldMs: 220,
+  wrongSarcophagusWidth: 270,
+  wrongSarcophagusHeight: 200,
+  wrongSarcophagusStartY: 75,
+  wrongSarcophagusBottomY: -22,
+  wrongSarcophagusDropMs: 520,
+  wrongActorSarcophagusInsetY: -6,
+  wrongChestHoldMs: 180,
+  wrongSandFallMs: 1200,
+  wrongSandHandoffProgress: 0.74,
+  correctJumpDelayMs: 180,
+  scoreCoinDelayMs: 420,
+  rewardDurationMs: 1900,
+  rewardCompletionTailMs: 180,
+  rewardGemCount: 30,
+  rewardSymbolCount: 8,
+  rewardRayCount: 16,
+  dirtChunksPerImpact: 14,
+  dirtDustPuffsPerImpact: 7,
+  effectAnchorY: -158,
+} as const;
+
+export const DESERT_TREASURE_GEM_SIZES = [
+  30, 36, 44, 52, 62, 74,
+] as const;

@@ -1,8 +1,12 @@
-import { Node, tween, Tween, UIOpacity, UITransform, Vec3 } from 'cc';
+import {
+  Graphics, Node, tween, Tween, UIOpacity, UITransform, Vec3,
+} from 'cc';
 import { spriteLoader } from '../core/assets/SpriteLoader';
 import { DomMotionSprite } from '../core/media/DomMotionSprite';
 import type { MotionPlaybackCallbacks } from '../core/media/DomMotionSprite';
 import { createUiNode } from '../core/ui/UiFactory';
+import { color } from '../core/ui/colors';
+import { DUNHUANG_TREASURE_FEEDBACK } from '../shared/config/DunhuangTreasureFeedback';
 import {
   feedbackStageMotionPath, FeedbackSequencePlan, writingFeedbackMotionLayout,
 } from '../shared/config/WritingFeedbackPolicy';
@@ -19,6 +23,8 @@ function toAbsoluteUrl(path: string): string {
 
 export class FeedbackView {
   private readonly root: Node;
+  private readonly dunhuangRiseBeam: Node;
+  private readonly dunhuangRiseBeamOpacity: UIOpacity;
   private readonly fallbackImage: Node;
   private readonly fallbackSprite: Node;
   private readonly fallbackMotion: DomMotionSprite;
@@ -31,6 +37,17 @@ export class FeedbackView {
   constructor(parent: Node, private readonly background: Node) {
     this.root = createUiNode(parent, 'Feedback', 1440, 810, Vec3.ZERO);
     this.root.addComponent(UIOpacity);
+    this.dunhuangRiseBeam = createUiNode(
+      this.root,
+      'DunhuangTreasureRiseBeam',
+      DUNHUANG_TREASURE_FEEDBACK.riseBeamWidth,
+      DUNHUANG_TREASURE_FEEDBACK.riseBeamHeight,
+      new Vec3(0, DUNHUANG_TREASURE_FEEDBACK.riseBeamBottomY),
+    );
+    this.dunhuangRiseBeam.getComponent(UITransform)?.setAnchorPoint(0.5, 0);
+    this.dunhuangRiseBeamOpacity = this.dunhuangRiseBeam.addComponent(UIOpacity);
+    this.drawDunhuangRiseBeam(this.dunhuangRiseBeam.addComponent(Graphics));
+    this.dunhuangRiseBeam.active = false;
     const [fw, fh] = WritingPlayLayout.feedbackMotion.size;
     // Layout node stays active for DomMotionSprite transform; sprite child is the
     // Cocos fallback that can be deactivated when webp loads (same pattern as reading).
@@ -61,6 +78,7 @@ export class FeedbackView {
     callbacks: MotionPlaybackCallbacks = {},
   ): void {
     this.removeLegacyFeedbackShade();
+    this.hideDunhuangRiseBeam();
     if (typeof document !== 'undefined') {
       document.body.dataset.feedbackUnderlay = '0';
     }
@@ -127,9 +145,11 @@ export class FeedbackView {
 
   hide(): void {
     Tween.stopAllByTarget(this.root);
+    Tween.stopAllByTarget(this.fallbackImage);
     this.fallbackMotion.hide();
     this.layers.hide();
     this.stageMotion.hide();
+    this.hideDunhuangRiseBeam();
     this.fallbackSprite.active = false;
     this.fallbackImage.active = false;
     if (this.usingStatic && this.restoreBackground) {
@@ -141,6 +161,8 @@ export class FeedbackView {
     if (typeof document !== 'undefined') {
       delete document.body.dataset.feedbackUnderlay;
       delete document.body.dataset.feedbackMotionReady;
+      delete document.body.dataset.dunhuangTreasureRisePhase;
+      delete document.body.dataset.dunhuangTreasureRiseBeam;
     }
   }
 
@@ -180,17 +202,41 @@ export class FeedbackView {
     const x = columns[col] ?? 0;
     const [fw, fh] = WritingPlayLayout.feedbackMotion.size;
     const layout = writingFeedbackMotionLayout(sceneId, correct);
-    const y = WritingPlayLayout.feedbackMotion.position.y + (layout.offsetY ?? 0);
+    const baseY = WritingPlayLayout.feedbackMotion.position.y + (layout.offsetY ?? 0);
+    const finalX = x + (layout.offsetX ?? 0);
+    const targetScale = layout.scale;
+    const dunhuangRise = sceneId === 'dunhuang' && correct;
+    const finalY = baseY + (
+      dunhuangRise ? DUNHUANG_TREASURE_FEEDBACK.riseFinalLiftY : 0
+    );
     this.fallbackImage.getComponent(UITransform)?.setContentSize(fw, fh);
     this.fallbackSprite.getComponent(UITransform)?.setContentSize(fw, fh);
     this.fallbackMotion.resize(fw, fh);
-    this.fallbackImage.setPosition(x + (layout.offsetX ?? 0), y);
+    Tween.stopAllByTarget(this.fallbackImage);
+    if (dunhuangRise) {
+      this.fallbackImage.setPosition(
+        finalX,
+        finalY - DUNHUANG_TREASURE_FEEDBACK.riseDistanceY,
+      );
+      this.fallbackImage.setScale(
+        targetScale * 0.86,
+        targetScale * 0.86,
+        1,
+      );
+    } else {
+      this.hideDunhuangRiseBeam();
+      this.fallbackImage.setPosition(finalX, finalY);
+      this.fallbackImage.setScale(targetScale * 0.88, targetScale * 0.88, 1);
+    }
     this.fallbackImage.active = true;
     if (motionPath) {
       // Do not flash static sticker under webp (瞬间失真).
       this.fallbackSprite.active = false;
       this.fallbackMotion.show(motionPath, true, true, {
         onReady: () => {
+          if (dunhuangRise) {
+            this.playDunhuangRise(finalX, finalY, targetScale);
+          }
           if (typeof document !== 'undefined') {
             document.body.dataset.feedbackMotionReady = 'true';
           }
@@ -209,20 +255,106 @@ export class FeedbackView {
       this.fallbackSprite.active = true;
       spriteLoader.apply(this.fallbackSprite, assetPath, 'contain');
       this.fallbackMotion.hide();
+      if (dunhuangRise) {
+        this.playDunhuangRise(finalX, finalY, targetScale);
+      }
       callbacks.onReady?.();
     }
-    const targetScale = layout.scale;
-    this.fallbackImage.setScale(targetScale * 0.88, targetScale * 0.88, 1);
-    tween(this.fallbackImage)
-      .to(
-        0.18,
-        { scale: new Vec3(targetScale, targetScale, 1) },
-        { easing: 'backOut' },
-      )
-      .start();
+    if (!dunhuangRise) {
+      tween(this.fallbackImage)
+        .to(
+          0.18,
+          { scale: new Vec3(targetScale, targetScale, 1) },
+          { easing: 'backOut' },
+        )
+        .start();
+    }
     if (typeof document !== 'undefined') {
       document.body.dataset.feedbackMotionScale = targetScale.toFixed(3);
     }
+  }
+
+  private playDunhuangRise(x: number, finalY: number, targetScale: number): void {
+    const durationSeconds = DUNHUANG_TREASURE_FEEDBACK.riseDurationMs / 1000;
+    const startY = finalY - DUNHUANG_TREASURE_FEEDBACK.riseDistanceY;
+    Tween.stopAllByTarget(this.fallbackImage);
+    Tween.stopAllByTarget(this.dunhuangRiseBeam);
+    Tween.stopAllByTarget(this.dunhuangRiseBeamOpacity);
+    this.fallbackImage.setPosition(x, startY);
+    this.fallbackImage.setScale(
+      targetScale * 0.86,
+      targetScale * 0.86,
+      1,
+    );
+    this.dunhuangRiseBeam.active = true;
+    this.dunhuangRiseBeam.setPosition(
+      x,
+      DUNHUANG_TREASURE_FEEDBACK.riseBeamBottomY,
+    );
+    this.dunhuangRiseBeam.setScale(0.72, 0.42, 1);
+    this.dunhuangRiseBeamOpacity.opacity = 0;
+    tween(this.dunhuangRiseBeam)
+      .to(durationSeconds, { scale: Vec3.ONE }, { easing: 'quadOut' })
+      .start();
+    tween(this.dunhuangRiseBeamOpacity)
+      .to(0.14, { opacity: 255 })
+      .delay(Math.max(0, durationSeconds - 0.34))
+      .to(0.2, { opacity: 218 })
+      .start();
+    tween(this.fallbackImage)
+      .to(durationSeconds, {
+        position: new Vec3(x, finalY, 0),
+        scale: new Vec3(targetScale, targetScale, 1),
+      }, { easing: 'quadOut' })
+      .call(() => {
+        if (typeof document !== 'undefined') {
+          document.body.dataset.dunhuangTreasureRisePhase = 'risen';
+        }
+      })
+      .start();
+    if (typeof document !== 'undefined') {
+      document.body.dataset.dunhuangTreasureRisePhase = 'rising';
+      document.body.dataset.dunhuangTreasureRiseBeam = 'lotus-to-character';
+    }
+  }
+
+  private hideDunhuangRiseBeam(): void {
+    Tween.stopAllByTarget(this.dunhuangRiseBeam);
+    Tween.stopAllByTarget(this.dunhuangRiseBeamOpacity);
+    this.dunhuangRiseBeam.active = false;
+    this.dunhuangRiseBeam.setScale(Vec3.ONE);
+    this.dunhuangRiseBeamOpacity.opacity = 0;
+  }
+
+  private drawDunhuangRiseBeam(graphics: Graphics): void {
+    const width = DUNHUANG_TREASURE_FEEDBACK.riseBeamWidth;
+    const height = DUNHUANG_TREASURE_FEEDBACK.riseBeamHeight;
+    graphics.fillColor = color('#FFD85A', 52);
+    graphics.moveTo(-width * 0.48, 0);
+    graphics.lineTo(-width * 0.2, height);
+    graphics.lineTo(width * 0.2, height);
+    graphics.lineTo(width * 0.48, 0);
+    graphics.close();
+    graphics.fill();
+    graphics.fillColor = color('#FFE98A', 108);
+    graphics.moveTo(-width * 0.25, 0);
+    graphics.lineTo(-width * 0.11, height);
+    graphics.lineTo(width * 0.11, height);
+    graphics.lineTo(width * 0.25, 0);
+    graphics.close();
+    graphics.fill();
+    graphics.fillColor = color('#FFF7C7', 190);
+    graphics.roundRect(-10, 0, 20, height, 10);
+    graphics.fill();
+    graphics.fillColor = color('#FFFFFF', 245);
+    graphics.roundRect(-4, 0, 8, height, 4);
+    graphics.fill();
+    graphics.fillColor = color('#FFE76C', 92);
+    graphics.circle(0, 0, width * 0.42);
+    graphics.fill();
+    graphics.fillColor = color('#FFF8C8', 148);
+    graphics.circle(0, 0, width * 0.22);
+    graphics.fill();
   }
 
   private showStatic(

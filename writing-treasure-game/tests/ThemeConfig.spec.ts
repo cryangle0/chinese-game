@@ -19,7 +19,7 @@ describe('writing campaign themes', () => {
   it('ships choice-state art only for scenes the customer cut actually covers', () => {
     const availability: Record<string, { success: boolean; fail: boolean }> = {
       treasure: { success: true, fail: true },
-      desert: { success: true, fail: false },
+      desert: { success: true, fail: true },
       dinosaur: { success: false, fail: false },
       dunhuang: { success: true, fail: true },
       magic: { success: true, fail: true },

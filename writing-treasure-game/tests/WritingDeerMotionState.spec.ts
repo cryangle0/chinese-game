@@ -39,8 +39,13 @@ describe('Writing deer motion states', () => {
     expect(sceneLayout).toContain('idle: box(614, 168, 173, 253)');
     expect(sceneLayout).toContain('idle: box(609, 175, 179, 256)');
     expect(sceneLayout).toContain('idle: box(627, 161, 187, 259)');
-    expect(sceneLayout).toContain('idle: box(595, 172, 250, 250)');
+    expect(sceneLayout).toContain('idle: box(557.5, 90, 325, 450)');
     expect(sceneLayout).toContain('idle: box(614, 125, 200, 297)');
+  });
+
+  it('matches the Dunhuang idle frame to casting and places it lower', () => {
+    expect(sceneLayout).toContain('idle: box(557.5, 90, 325, 450)');
+    expect(sceneLayout).toContain('action: box(531.64, 32.68, 325, 450)');
   });
 
   it('uses independent road-aligned boxes while running', () => {
@@ -54,10 +59,17 @@ describe('Writing deer motion states', () => {
   });
 
   it('preserves the source aspect ratio for run and action motion', () => {
-    expect(view.match(/this\.motion\.setFit\('contain'\);/g)).toHaveLength(4);
+    expect(
+      view.match(/this\.motion\.setFit\('contain'\);/g)?.length ?? 0,
+    ).toBeGreaterThanOrEqual(8);
+    expect(view).toContain('const wrongMotion = this.motionAssets?.wrong;');
     expect(view).not.toContain("this.motion.setFit('fill');");
     expect(theme).toContain("const characterMotionVersion = id === 'treasure'");
-    expect(theme).toContain('action: `${media}/action.webp${characterMotionVersion}`');
+    expect(theme).toContain(
+      'action: `${media}/action.webp${characterMotionVersion}`',
+    );
+    expect(theme).not.toContain('dig.png');
+    expect(sceneLayout).toContain('action: box(519.07, -28.5, 399, 552.46)');
     expect(theme).toContain('runLeft: `${media}/run-left.webp${characterMotionVersion}`');
     expect(theme).toContain('runRight: `${media}/run-right.webp${characterMotionVersion}`');
   });
@@ -85,11 +97,37 @@ describe('Writing deer motion states', () => {
       "this.applyFrame(run.size[0], run.size[1]);\n    this.root.setPosition(startX",
     );
     const castSection = view.slice(
-      view.indexOf('castAt(columnX'),
+      view.indexOf('  castAt('),
       view.indexOf('idle(preserveColumn'),
     );
     expect(castSection).not.toContain(
       "spriteLoader.apply(this.visual, this.actionAsset, 'contain');",
     );
+  });
+
+  it('waits for the classic digging motion before starting hole and impact timing', () => {
+    const castSection = view.slice(
+      view.indexOf('  castAt('),
+      view.indexOf('idle(preserveColumn'),
+    );
+    const classicGate = castSection.indexOf("if (this.sceneId === 'treasure')");
+    const readyPose = castSection.indexOf(
+      'this.applyActionPose(columnX, beginDigHold);',
+    );
+    const immediatePose = castSection.indexOf('this.applyActionPose(columnX);');
+    expect(classicGate).toBeGreaterThanOrEqual(0);
+    expect(readyPose).toBeGreaterThan(classicGate);
+    expect(immediatePose).toBeGreaterThan(readyPose);
+    expect(castSection).toContain('if (digStarted) return;');
+    expect(castSection).toContain('onDigStart?.();');
+    expect(castSection).toContain('.delay(digHold)');
+
+    const actionPose = view.slice(
+      view.indexOf('private applyActionPose('),
+      view.lastIndexOf('\n}'),
+    );
+    expect(actionPose).toContain('const actionMotion = this.motionAssets?.action;');
+    expect(actionPose).toContain('onReady: onMotionReady');
+    expect(actionPose).toContain('onError: onMotionReady');
   });
 });

@@ -39,6 +39,7 @@ export interface ThemeAssets {
   successStates?: readonly [string, string, string];
   failState?: string;
   failStates?: readonly [string, string, string];
+  dunhuangOpenTop?: string;
   resultBackground?: string;
   resultRank?: string;
   resultRankBase?: string;

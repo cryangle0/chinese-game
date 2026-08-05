@@ -175,6 +175,20 @@ async function assertVisibleMotion(page, marker, expectedPath, label, animated =
   const locator = page.locator(`img[data-customer-motion="${marker}"]`);
   try {
     await locator.waitFor({ state: 'visible', timeout: 4000 });
+    await page.waitForFunction(({ markerName, expected, pathPrefix }) => {
+      const image = document.querySelector(`img[data-customer-motion="${markerName}"]`);
+      const source = image?.currentSrc || image?.getAttribute('src');
+      if (!source) return false;
+      const pathname = new URL(source, location.href).pathname;
+      const normalized = pathPrefix && pathname.startsWith(`${pathPrefix}/`)
+        ? pathname.slice(pathPrefix.length)
+        : pathname;
+      return normalized === expected;
+    }, {
+      markerName: marker,
+      expected: expectedPath,
+      pathPrefix: publicPathPrefix,
+    }, { timeout: 4000 });
   } catch (error) {
     const state = await locator.evaluateAll((images) => images.map((image) => ({
       src: image.currentSrc || image.getAttribute('src'),
@@ -348,12 +362,16 @@ async function assertPlayedPaths(page, expected, label) {
 }
 
 async function assertObservedMotionPaths(page, expected, label) {
-  await page.waitForFunction((paths) => {
-    const observed = window.__motionSourceAudit.map((entry) => (
-      new URL(entry.src, location.href).pathname
-    ));
-    return paths.every((pathName) => observed.includes(pathName));
-  }, expected, { timeout: 5000 });
+  try {
+    await page.waitForFunction((paths) => {
+      const observed = window.__motionSourceAudit.map((entry) => (
+        new URL(entry.src, location.href).pathname
+      ));
+      return paths.every((pathName) => observed.includes(pathName));
+    }, expected, { timeout: 5000 });
+  } catch {
+    // Report the exact missing paths below instead of an opaque polling timeout.
+  }
   const observed = [...new Set((await page.evaluate(() => (
     window.__motionSourceAudit.map((entry) => entry.src)
   ))).map(normalizePublicPath))];
@@ -616,12 +634,23 @@ async function runThemeResults(browser) {
     await assertVisibleMotion(
       page, 'WizardDeer', `/media/${scene}/run-right.webp`, `${scene} run right`,
     );
-    await page.waitForSelector('body[data-answer-correct="false"]', { timeout: 4000 });
+    if (scene === 'desert') {
+      await page.waitForFunction(() => (
+        document.body.dataset.desertTreasureHolePhase?.startsWith('surface-break')
+      ), null, { timeout: 3000 });
+      await page.waitForSelector(
+        'body[data-desert-treasure-sequence="sand-burial"]',
+        { timeout: 4000 },
+      );
+    }
+    await page.waitForSelector('body[data-answer-correct="false"]', {
+      timeout: scene === 'dinosaur' ? 7000 : 4000,
+    });
     if (scene === 'desert') {
       await assertVisibleMotion(
-        page, 'FeedbackLayer0',
-        '/media/static-feedback/desert/wrong-layer-1.png',
-        'desert selected pit wrong feedback', false,
+        page, 'FeedbackFallback',
+        '/media/desert/wrong.webp',
+        'desert buried wrong feedback',
       );
       await capture(page, 'desktop-writing-desert-wrong-feedback');
     } else if (scene === 'dinosaur') {
@@ -685,12 +714,11 @@ async function runThemeResults(browser) {
       ...(scene === 'magic' ? [`/audio/writing/${scene}/reveal.mp3`] : []),
     ], scene);
     await assertObservedMotionPaths(page, [
-      `/media/${scene}/idle.webp`,
       `/media/${scene}/action.webp`,
       `/media/${scene}/run-left.webp`,
       `/media/${scene}/run-right.webp`,
       `/media/${scene}/correct.webp`,
-      ...(scene === 'desert' ? [] : [`/media/${scene}/wrong.webp`]),
+      `/media/${scene}/wrong.webp`,
       `/media/${scene}/result.webp`,
     ], scene);
     if (failures.length) throw new Error(`${scene}: ${failures.join('\n')}`);

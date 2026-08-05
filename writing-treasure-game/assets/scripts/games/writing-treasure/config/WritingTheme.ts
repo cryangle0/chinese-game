@@ -71,7 +71,7 @@ function clientAssets(id: string, _index: number): ThemeAssets {
     readonly fail: boolean;
   }>> = {
     treasure: { success: true, fail: true },
-    desert: { success: true, fail: false },
+    desert: { success: true, fail: true },
     dinosaur: { success: false, fail: false },
     dunhuang: { success: true, fail: true },
     magic: { success: true, fail: true },
@@ -113,6 +113,7 @@ function clientAssets(id: string, _index: number): ThemeAssets {
           `${base}/failState-green`,
         ]
         : undefined,
+    dunhuangOpenTop: id === 'dunhuang' ? `${base}/openTop` : undefined,
     resultBackground: `${base}/resultBackground`,
     motion: {
       idle: `${media}/idle.webp`,
